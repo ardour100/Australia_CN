@@ -1,0 +1,258 @@
+.book-container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.book-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: white;
+}
+
+.book-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.book-subtitle {
+  font-size: 1.8rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+  opacity: 0.9;
+}
+
+.page-counter {
+  font-size: 1.1rem;
+  opacity: 0.8;
+  margin-top: 0.5rem;
+}
+
+.flipbook-wrapper {
+  perspective: 2000px;
+  margin-bottom: 2rem;
+}
+
+.flip-book {
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+.book-page {
+  background-color: #fffef0;
+  background-image:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+  padding: 3rem 2.5rem;
+  box-sizing: border-box;
+  border: 1px solid #d4c5a9;
+  position: relative;
+  overflow: hidden;
+}
+
+.page-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Georgia', serif;
+  color: #2c2c2c;
+  line-height: 1.6;
+}
+
+.page-number {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 2rem;
+  font-size: 0.9rem;
+  color: #888;
+  font-style: italic;
+}
+
+/* Cover Page Styles */
+.cover-page {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.cover-content {
+  text-align: center;
+  color: white;
+}
+
+.cover-content h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 2rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.cover-divider {
+  width: 100px;
+  height: 3px;
+  background: white;
+  margin: 2rem auto;
+  opacity: 0.7;
+}
+
+.cover-content h2 {
+  font-size: 1.8rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+
+.cover-subtitle {
+  font-size: 1.1rem;
+  opacity: 0.8;
+  font-style: italic;
+}
+
+/* Content Page Styles */
+.content-page {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-page h2 {
+  font-size: 1.8rem;
+  color: #1e3c72;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #2a5298;
+  padding-bottom: 0.5rem;
+}
+
+.content-page p {
+  margin-bottom: 1rem;
+  text-align: justify;
+  font-size: 1rem;
+}
+
+.page-note {
+  margin-top: auto;
+  padding: 1rem;
+  background: #fff9e6;
+  border-left: 4px solid #f0ad4e;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+.placeholder-text {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: #f0f0f0;
+  border: 2px dashed #999;
+  border-radius: 8px;
+  color: #666;
+  font-style: italic;
+  text-align: center;
+}
+
+/* Back Cover Styles */
+.back-cover {
+  background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+}
+
+.back-cover-content {
+  text-align: center;
+  color: white;
+}
+
+.back-cover-content h3 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.back-cover-content p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.back-note {
+  margin-top: 2rem;
+  font-style: italic;
+  opacity: 0.8;
+}
+
+/* Control Buttons */
+.book-controls {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.control-btn {
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.control-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.control-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .book-container {
+    padding: 1rem;
+  }
+
+  .book-title {
+    font-size: 1.8rem;
+  }
+
+  .book-subtitle {
+    font-size: 1.3rem;
+  }
+
+  .book-page {
+    padding: 2rem 1.5rem;
+  }
+
+  .cover-content h1 {
+    font-size: 1.8rem;
+  }
+
+  .cover-content h2 {
+    font-size: 1.3rem;
+  }
+
+  .content-page h2 {
+    font-size: 1.5rem;
+  }
+
+  .control-btn {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}
