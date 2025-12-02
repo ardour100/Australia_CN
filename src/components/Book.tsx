@@ -40,18 +40,21 @@ const Book: React.FC = () => {
       <div className="flipbook-wrapper">
         <HTMLFlipBook
           ref={bookRef}
-          width={550}
-          height={733}
+          width={650}
+          height={850}
           size="stretch"
-          minWidth={315}
-          maxWidth={1000}
-          minHeight={420}
-          maxHeight={1350}
+          minWidth={300}
+          maxWidth={800}
+          minHeight={400}
+          maxHeight={1000}
           maxShadowOpacity={0.5}
-          showCover={true}
+          showCover={false}
           mobileScrollSupport={true}
           onFlip={onFlip}
           className="flip-book"
+          usePortrait={false}
+          startPage={0}
+          drawShadow={true}
         >
           {/* Cover Page */}
           <Page number={0}>

@@ -1,47 +1,70 @@
 .book-container {
   width: 100%;
   min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 1rem;
+  padding-top: calc(1rem + 10px);
+  padding-bottom: calc(1rem + 10px);
+  /* Australian-themed gradient: Teal sky, Desert outback, Azure ocean */
+  background: linear-gradient(135deg,
+    #14b8a6 0%,     /* Teal */
+    #0891b2 20%,    /* Cyan/Sky blue */
+    #0ea5e9 40%,    /* Azure ocean */
+    #d97706 70%,    /* Desert outback/amber */
+    #ea580c 90%,    /* Red earth */
+    #14b8a6 100%    /* Back to teal */
+  );
+  overflow: hidden;
 }
 
 .book-header {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 0.5rem;
+  margin-top: 10px;
   color: white;
+  flex-shrink: 0;
 }
 
 .book-title {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 700;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .book-subtitle {
-  font-size: 1.8rem;
+  font-size: 1.4rem;
   font-weight: 400;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   opacity: 0.9;
 }
 
 .page-counter {
-  font-size: 1.1rem;
+  font-size: 1rem;
   opacity: 0.8;
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
 }
 
 .flipbook-wrapper {
-  perspective: 2000px;
-  margin-bottom: 2rem;
+  perspective: 3000px;
+  margin-bottom: 10px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 95vw;
+  max-height: 85vh;
 }
 
 .flip-book {
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+  width: 100% !important;
+  height: 100% !important;
 }
 
 .book-page {
@@ -77,7 +100,8 @@
 
 /* Cover Page Styles */
 .cover-page {
-  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  /* Australian ocean and sky theme */
+  background: linear-gradient(135deg, #0891b2 0%, #0ea5e9 50%, #14b8a6 100%);
   height: 100%;
   display: flex;
   align-items: center;
@@ -127,9 +151,9 @@
 
 .content-page h2 {
   font-size: 1.8rem;
-  color: #1e3c72;
+  color: #0891b2;
   margin-bottom: 1.5rem;
-  border-bottom: 2px solid #2a5298;
+  border-bottom: 2px solid #14b8a6;
   padding-bottom: 0.5rem;
 }
 
@@ -161,7 +185,8 @@
 
 /* Back Cover Styles */
 .back-cover {
-  background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+  /* Australian outback to ocean theme */
+  background: linear-gradient(135deg, #d97706 0%, #ea580c 40%, #0891b2 100%);
   height: 100%;
   display: flex;
   align-items: center;
@@ -194,16 +219,18 @@
 /* Control Buttons */
 .book-controls {
   display: flex;
-  gap: 2rem;
-  margin-top: 1rem;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+  flex-shrink: 0;
 }
 
 .control-btn {
-  padding: 0.75rem 2rem;
-  font-size: 1rem;
+  padding: 0.6rem 1.5rem;
+  font-size: 0.95rem;
   font-weight: 600;
   color: white;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  /* Australian teal and ocean theme for buttons */
+  background: linear-gradient(135deg, #14b8a6 0%, #0891b2 50%, #0ea5e9 100%);
   border: none;
   border-radius: 50px;
   cursor: pointer;
@@ -224,15 +251,27 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .book-container {
-    padding: 1rem;
+    padding: 0.5rem;
+  }
+
+  .book-header {
+    margin-bottom: 0.25rem;
   }
 
   .book-title {
-    font-size: 1.8rem;
+    font-size: 1.3rem;
   }
 
   .book-subtitle {
-    font-size: 1.3rem;
+    font-size: 1rem;
+  }
+
+  .page-counter {
+    font-size: 0.85rem;
+  }
+
+  .flipbook-wrapper {
+    max-height: 80vh;
   }
 
   .book-page {
@@ -240,19 +279,27 @@
   }
 
   .cover-content h1 {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
   }
 
   .cover-content h2 {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
   }
 
   .content-page h2 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
+  }
+
+  .content-page p {
+    font-size: 0.9rem;
   }
 
   .control-btn {
-    padding: 0.6rem 1.5rem;
-    font-size: 0.9rem;
+    padding: 0.5rem 1.2rem;
+    font-size: 0.85rem;
+  }
+
+  .book-controls {
+    gap: 1rem;
   }
 }
