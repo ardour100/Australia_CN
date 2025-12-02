@@ -55,6 +55,15 @@ const Book: React.FC = () => {
           usePortrait={false}
           startPage={0}
           drawShadow={true}
+          flippingTime={1000}
+          style={{}}
+          startZIndex={0}
+          autoSize={true}
+          clickEventForward={true}
+          useMouseEvents={true}
+          swipeDistance={30}
+          showPageCorners={true}
+          disableFlipByClick={false}
         >
           {/* Cover Page */}
           <Page number={0}>
