@@ -1,0 +1,86 @@
+{
+  "bookTitle": "How an Ancient Land Became a Great Democracy",
+  "bookSubtitle": "Australia History",
+  "cover": {
+    "title": "How an Ancient Land\nBecame a\nGreat Democracy",
+    "subtitle": "Australia History",
+    "description": "From Ancient Times to Modern Nation"
+  },
+  "chapters": [
+    {
+      "id": 1,
+      "pageNumber": 1,
+      "title": "Chapter 1: The Ancient Land",
+      "content": [
+        "Long before European explorers set foot on its shores, Australia was home to one of the world's oldest continuous cultures. For over 65,000 years, Aboriginal and Torres Strait Islander peoples have inhabited this ancient continent.",
+        "The land they called home was vast and varied - from tropical rainforests in the north to arid deserts in the center, from snow-capped mountains to endless coastlines."
+      ],
+      "note": "This content is placeholder. Add your own historical content here."
+    },
+    {
+      "id": 2,
+      "pageNumber": 2,
+      "title": "Indigenous Governance",
+      "content": [
+        "Indigenous Australians developed sophisticated systems of law, governance, and land management. Their connection to country was not merely physical but deeply spiritual.",
+        "Dreamtime stories passed down through generations contained not just mythology, but practical knowledge about navigation, seasons, and sustainable living."
+      ],
+      "placeholder": "[Add more content about indigenous governance systems...]"
+    },
+    {
+      "id": 3,
+      "pageNumber": 3,
+      "title": "Chapter 2: European Exploration",
+      "content": [
+        "In 1770, Captain James Cook claimed the east coast of Australia for Britain. This moment would change the continent forever."
+      ],
+      "placeholder": "[Add content about early European exploration...]"
+    },
+    {
+      "id": 4,
+      "pageNumber": 4,
+      "title": "The First Fleet",
+      "content": [
+        "On January 26, 1788, the First Fleet arrived in Port Jackson (Sydney Harbour), bringing convicts, marines, and officials to establish a penal colony."
+      ],
+      "placeholder": "[Add content about the First Fleet and early settlement...]"
+    },
+    {
+      "id": 5,
+      "pageNumber": 5,
+      "title": "Chapter 3: Path to Federation",
+      "content": [],
+      "placeholder": "[Add content about the movement towards federation...]"
+    },
+    {
+      "id": 6,
+      "pageNumber": 6,
+      "title": "Birth of a Nation",
+      "content": [
+        "On January 1, 1901, the six colonies federated to form the Commonwealth of Australia."
+      ],
+      "placeholder": "[Add content about the birth of the Australian nation...]"
+    },
+    {
+      "id": 7,
+      "pageNumber": 7,
+      "title": "Chapter 4: Democracy Evolves",
+      "content": [],
+      "placeholder": "[Add content about the evolution of Australian democracy...]"
+    },
+    {
+      "id": 8,
+      "pageNumber": 8,
+      "title": "Modern Australia",
+      "content": [],
+      "placeholder": "[Add content about modern Australia and its democratic institutions...]"
+    }
+  ],
+  "backCover": {
+    "title": "Continue Your Journey",
+    "content": [
+      "This book is a work in progress. More chapters and content will be added as we explore the fascinating history of how Australia developed into the democracy it is today."
+    ],
+    "note": "Add your own content to bring this historical narrative to life."
+  }
+}
