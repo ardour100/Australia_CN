@@ -1,5 +1,6 @@
 import React, { useRef, useState, forwardRef } from 'react';
 import HTMLFlipBook from 'react-pageflip';
+import coverImage from '../assets/cover.png';
 import './Book.css';
 
 interface PageProps {
@@ -13,7 +14,7 @@ const Page = forwardRef<HTMLDivElement, PageProps>(({ number, children }, ref) =
       <div className="page-content">
         {children}
       </div>
-      <div className="page-number">{number}</div>
+      {number > 0 && <div className="page-number">{number}</div>}
     </div>
   );
 });
@@ -31,12 +32,6 @@ const Book: React.FC = () => {
 
   return (
     <div className="book-container">
-      <div className="book-header">
-        <h1 className="book-title">How an Ancient Land Became a Great Democracy</h1>
-        <h2 className="book-subtitle">Australia History</h2>
-        <p className="page-counter">Page {currentPage + 1} of {totalPages}</p>
-      </div>
-
       <div className="flipbook-wrapper">
         <HTMLFlipBook
           ref={bookRef}
@@ -59,12 +54,7 @@ const Book: React.FC = () => {
           {/* Cover Page */}
           <Page number={0}>
             <div className="cover-page">
-              <div className="cover-content">
-                <h1>How an Ancient Land<br/>Became a<br/>Great Democracy</h1>
-                <div className="cover-divider"></div>
-                <h2>Australia History</h2>
-                <p className="cover-subtitle">From Ancient Times to Modern Nation</p>
-              </div>
+              <img src={coverImage} alt="Book Cover" className="cover-image" />
             </div>
           </Page>
 
