@@ -39,6 +39,15 @@
   height: 100% !important;
 }
 
+/* Reduce gap between pages in landscape mode to 20% of default */
+.stf__wrapper--landscape {
+  gap: 2px !important;
+}
+
+.stf__wrapper--landscape .stf__item {
+  margin: 0 1px !important;
+}
+
 .book-page {
   background-color: #fffef0;
   background-image:
