@@ -162,38 +162,6 @@
   opacity: 0.8;
 }
 
-/* Control Buttons */
-.book-controls {
-  display: flex;
-  gap: 1.5rem;
-  margin-top: 0.5rem;
-  flex-shrink: 0;
-}
-
-.control-btn {
-  padding: 0.6rem 1.5rem;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: white;
-  /* Australian teal and ocean theme for buttons */
-  background: linear-gradient(135deg, #14b8a6 0%, #0891b2 50%, #0ea5e9 100%);
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-.control-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-}
-
-.control-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
   .book-container {
@@ -214,14 +182,5 @@
 
   .content-page p {
     font-size: 0.9rem;
-  }
-
-  .control-btn {
-    padding: 0.5rem 1.2rem;
-    font-size: 0.85rem;
-  }
-
-  .book-controls {
-    gap: 1rem;
   }
 }

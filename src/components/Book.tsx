@@ -1,4 +1,4 @@
-import React, { useRef, useState, forwardRef } from 'react';
+import React, { useRef, useState, useEffect, forwardRef } from 'react';
 import HTMLFlipBook from 'react-pageflip';
 import coverImage from '../assets/cover.png';
 import './Book.css';
@@ -29,6 +29,26 @@ const Book: React.FC = () => {
   const onFlip = (e: any) => {
     setCurrentPage(e.data);
   };
+
+  // Add keyboard arrow key support
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') {
+        // Previous page
+        if (currentPage > 0) {
+          bookRef.current?.pageFlip().flipPrev();
+        }
+      } else if (e.key === 'ArrowRight') {
+        // Next page
+        if (currentPage < totalPages - 1) {
+          bookRef.current?.pageFlip().flipNext();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [currentPage, totalPages]);
 
   return (
     <div className="book-container">
@@ -178,23 +198,6 @@ const Book: React.FC = () => {
             </div>
           </Page>
         </HTMLFlipBook>
-      </div>
-
-      <div className="book-controls">
-        <button
-          onClick={() => bookRef.current?.pageFlip().flipPrev()}
-          disabled={currentPage === 0}
-          className="control-btn"
-        >
-          ← Previous
-        </button>
-        <button
-          onClick={() => bookRef.current?.pageFlip().flipNext()}
-          disabled={currentPage >= totalPages - 1}
-          className="control-btn"
-        >
-          Next →
-        </button>
       </div>
     </div>
   );
