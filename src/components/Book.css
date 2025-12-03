@@ -7,17 +7,6 @@
   align-items: center;
   justify-content: center;
   padding: 1rem;
-  padding-top: calc(1rem + 3.33px);
-  padding-bottom: calc(1rem + 3.33px);
-  /* Australian-themed gradient: Teal sky, Desert outback, Azure ocean */
-  background: linear-gradient(135deg,
-    #14b8a6 0%,     /* Teal */
-    #0891b2 20%,    /* Cyan/Sky blue */
-    #0ea5e9 40%,    /* Azure ocean */
-    #d97706 70%,    /* Desert outback/amber */
-    #ea580c 90%,    /* Red earth */
-    #14b8a6 100%    /* Back to teal */
-  );
   overflow: hidden;
 }
 
@@ -54,7 +43,7 @@
     linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
     linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px);
   background-size: 20px 20px;
-  padding: 3rem 2.5rem;
+  padding: 1rem;
   box-sizing: border-box;
   border: 1px solid #d4c5a9;
   position: relative;
@@ -182,7 +171,7 @@
   }
 
   .book-page {
-    padding: 2rem 1.5rem;
+    padding: .5rem;
   }
 
   .content-page h2 {
