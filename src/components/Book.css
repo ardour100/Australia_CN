@@ -7,51 +7,12 @@
   align-items: center;
   justify-content: center;
   padding: 1rem;
-  padding-top: calc(1rem + 10px);
-  padding-bottom: calc(1rem + 10px);
-  /* Australian-themed gradient: Teal sky, Desert outback, Azure ocean */
-  background: linear-gradient(135deg,
-    #14b8a6 0%,     /* Teal */
-    #0891b2 20%,    /* Cyan/Sky blue */
-    #0ea5e9 40%,    /* Azure ocean */
-    #d97706 70%,    /* Desert outback/amber */
-    #ea580c 90%,    /* Red earth */
-    #14b8a6 100%    /* Back to teal */
-  );
   overflow: hidden;
-}
-
-.book-header {
-  text-align: center;
-  margin-bottom: 0.5rem;
-  margin-top: 10px;
-  color: white;
-  flex-shrink: 0;
-}
-
-.book-title {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 0.25rem;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.book-subtitle {
-  font-size: 1.4rem;
-  font-weight: 400;
-  margin-bottom: 0.5rem;
-  opacity: 0.9;
-}
-
-.page-counter {
-  font-size: 1rem;
-  opacity: 0.8;
-  margin-top: 0.25rem;
 }
 
 .flipbook-wrapper {
   perspective: 3000px;
-  margin-bottom: 10px;
+  margin-bottom: 3.33px;
   flex: 1;
   display: flex;
   align-items: center;
@@ -67,13 +28,22 @@
   height: 100% !important;
 }
 
+/* Reduce gap between pages in landscape mode to 20% of default */
+.stf__wrapper--landscape {
+  gap: 2px !important;
+}
+
+.stf__wrapper--landscape .stf__item {
+  margin: 0 1px !important;
+}
+
 .book-page {
   background-color: #fffef0;
   background-image:
     linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
     linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px);
   background-size: 20px 20px;
-  padding: 3rem 2.5rem;
+  padding: 1rem;
   box-sizing: border-box;
   border: 1px solid #d4c5a9;
   position: relative;
@@ -100,46 +70,20 @@
 
 /* Cover Page Styles */
 .cover-page {
-  /* Australian ocean and sky theme */
-  background: linear-gradient(135deg, #0891b2 0%, #0ea5e9 50%, #14b8a6 100%);
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: 0;
+  overflow: hidden;
+  background: #fff;
 }
 
-.cover-content {
-  text-align: center;
-  color: white;
-}
-
-.cover-content h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  line-height: 1.3;
-  margin-bottom: 2rem;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.cover-divider {
-  width: 100px;
-  height: 3px;
-  background: white;
-  margin: 2rem auto;
-  opacity: 0.7;
-}
-
-.cover-content h2 {
-  font-size: 1.8rem;
-  font-weight: 400;
-  margin-bottom: 1rem;
-}
-
-.cover-subtitle {
-  font-size: 1.1rem;
-  opacity: 0.8;
-  font-style: italic;
+.cover-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 /* Content Page Styles */
@@ -216,58 +160,10 @@
   opacity: 0.8;
 }
 
-/* Control Buttons */
-.book-controls {
-  display: flex;
-  gap: 1.5rem;
-  margin-top: 0.5rem;
-  flex-shrink: 0;
-}
-
-.control-btn {
-  padding: 0.6rem 1.5rem;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: white;
-  /* Australian teal and ocean theme for buttons */
-  background: linear-gradient(135deg, #14b8a6 0%, #0891b2 50%, #0ea5e9 100%);
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-.control-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-}
-
-.control-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
   .book-container {
     padding: 0.5rem;
-  }
-
-  .book-header {
-    margin-bottom: 0.25rem;
-  }
-
-  .book-title {
-    font-size: 1.3rem;
-  }
-
-  .book-subtitle {
-    font-size: 1rem;
-  }
-
-  .page-counter {
-    font-size: 0.85rem;
   }
 
   .flipbook-wrapper {
@@ -275,15 +171,7 @@
   }
 
   .book-page {
-    padding: 2rem 1.5rem;
-  }
-
-  .cover-content h1 {
-    font-size: 1.6rem;
-  }
-
-  .cover-content h2 {
-    font-size: 1.2rem;
+    padding: .5rem;
   }
 
   .content-page h2 {
@@ -292,14 +180,5 @@
 
   .content-page p {
     font-size: 0.9rem;
-  }
-
-  .control-btn {
-    padding: 0.5rem 1.2rem;
-    font-size: 0.85rem;
-  }
-
-  .book-controls {
-    gap: 1rem;
   }
 }

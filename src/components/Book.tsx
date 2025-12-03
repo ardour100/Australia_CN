@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect, forwardRef } from 'react';
 import HTMLFlipBook from 'react-pageflip';
 import bookData from '../data/chapters.json';
+import coverImage from '../assets/cover.png';
 import './Book.css';
 
 interface PageProps {
@@ -34,10 +35,12 @@ const Book: React.FC = () => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft') {
+        // Previous page
         if (currentPage > 0) {
           bookRef.current?.pageFlip().flipPrev();
         }
       } else if (e.key === 'ArrowRight') {
+        // Next page
         if (currentPage < totalPages - 1) {
           bookRef.current?.pageFlip().flipNext();
         }
@@ -81,18 +84,7 @@ const Book: React.FC = () => {
           {/* Cover Page */}
           <Page number={0}>
             <div className="cover-page">
-              <div className="cover-content">
-                <h1>
-                  {bookData.cover.title.split('\n').map((line, i) => (
-                    <React.Fragment key={i}>
-                      {line}{i < bookData.cover.title.split('\n').length - 1 && <br />}
-                    </React.Fragment>
-                  ))}
-                </h1>
-                <div className="cover-divider"></div>
-                <h2>{bookData.cover.subtitle}</h2>
-                <p className="cover-subtitle">{bookData.cover.description}</p>
-              </div>
+              <img src={coverImage} alt="Book Cover" className="cover-image" />
             </div>
           </Page>
 
