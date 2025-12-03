@@ -1,5 +1,6 @@
-import React, { useRef, useState, forwardRef } from 'react';
+import React, { useRef, useState, useEffect, forwardRef } from 'react';
 import HTMLFlipBook from 'react-pageflip';
+import coverImage from '../assets/cover.png';
 import './Book.css';
 
 interface PageProps {
@@ -13,7 +14,7 @@ const Page = forwardRef<HTMLDivElement, PageProps>(({ number, children }, ref) =
       <div className="page-content">
         {children}
       </div>
-      <div className="page-number">{number}</div>
+      {number > 0 && <div className="page-number">{number}</div>}
     </div>
   );
 });
@@ -29,14 +30,28 @@ const Book: React.FC = () => {
     setCurrentPage(e.data);
   };
 
+  // Add keyboard arrow key support
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') {
+        // Previous page
+        if (currentPage > 0) {
+          bookRef.current?.pageFlip().flipPrev();
+        }
+      } else if (e.key === 'ArrowRight') {
+        // Next page
+        if (currentPage < totalPages - 1) {
+          bookRef.current?.pageFlip().flipNext();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [currentPage, totalPages]);
+
   return (
     <div className="book-container">
-      <div className="book-header">
-        <h1 className="book-title">How an Ancient Land Became a Great Democracy</h1>
-        <h2 className="book-subtitle">Australia History</h2>
-        <p className="page-counter">Page {currentPage + 1} of {totalPages}</p>
-      </div>
-
       <div className="flipbook-wrapper">
         <HTMLFlipBook
           ref={bookRef}
@@ -68,12 +83,7 @@ const Book: React.FC = () => {
           {/* Cover Page */}
           <Page number={0}>
             <div className="cover-page">
-              <div className="cover-content">
-                <h1>How an Ancient Land<br/>Became a<br/>Great Democracy</h1>
-                <div className="cover-divider"></div>
-                <h2>Australia History</h2>
-                <p className="cover-subtitle">From Ancient Times to Modern Nation</p>
-              </div>
+              <img src={coverImage} alt="Book Cover" className="cover-image" />
             </div>
           </Page>
 
@@ -197,23 +207,6 @@ const Book: React.FC = () => {
             </div>
           </Page>
         </HTMLFlipBook>
-      </div>
-
-      <div className="book-controls">
-        <button
-          onClick={() => bookRef.current?.pageFlip().flipPrev()}
-          disabled={currentPage === 0}
-          className="control-btn"
-        >
-          ← Previous
-        </button>
-        <button
-          onClick={() => bookRef.current?.pageFlip().flipNext()}
-          disabled={currentPage >= totalPages - 1}
-          className="control-btn"
-        >
-          Next →
-        </button>
       </div>
     </div>
   );
