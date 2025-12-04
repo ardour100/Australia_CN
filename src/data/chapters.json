@@ -9,71 +9,147 @@
   "chapters": [
     {
       "id": 1,
-      "pageNumber": 1,
-      "title": "Chapter 1: The Ancient Land",
-      "content": [
-        "Long before European explorers set foot on its shores, Australia was home to one of the world's oldest continuous cultures. For over 65,000 years, Aboriginal and Torres Strait Islander peoples have inhabited this ancient continent.",
-        "The land they called home was vast and varied - from tropical rainforests in the north to arid deserts in the center, from snow-capped mountains to endless coastlines."
-      ],
-      "note": "This content is placeholder. Add your own historical content here."
+      "pageNumber": 21,
+      "title": "An Enlightened Beginning",
+      "chineseTitle": "一个开明的开端",
+      "content": [],
+      "placeholder": "[Add content about An Enlightened Beginning...]"
     },
     {
       "id": 2,
-      "pageNumber": 2,
-      "title": "Indigenous Governance",
-      "content": [
-        "Indigenous Australians developed sophisticated systems of law, governance, and land management. Their connection to country was not merely physical but deeply spiritual.",
-        "Dreamtime stories passed down through generations contained not just mythology, but practical knowledge about navigation, seasons, and sustainable living."
-      ],
-      "placeholder": "[Add more content about indigenous governance systems...]"
+      "pageNumber": 41,
+      "title": "Rebellion and Restoration",
+      "chineseTitle": "叛乱与复辟",
+      "content": [],
+      "placeholder": "[Add content about Rebellion and Restoration...]"
     },
     {
       "id": 3,
-      "pageNumber": 3,
-      "title": "Chapter 2: European Exploration",
-      "content": [
-        "In 1770, Captain James Cook claimed the east coast of Australia for Britain. This moment would change the continent forever."
-      ],
-      "placeholder": "[Add content about early European exploration...]"
+      "pageNumber": 62,
+      "title": "'Not all the armies of England'",
+      "chineseTitle": "\"并非英格兰所有的军队\"",
+      "content": [],
+      "placeholder": "[Add content about 'Not all the armies of England'...]"
     },
     {
       "id": 4,
-      "pageNumber": 4,
-      "title": "The First Fleet",
-      "content": [
-        "On January 26, 1788, the First Fleet arrived in Port Jackson (Sydney Harbour), bringing convicts, marines, and officials to establish a penal colony."
-      ],
-      "placeholder": "[Add content about the First Fleet and early settlement...]"
+      "pageNumber": 82,
+      "title": "Towards Self-government",
+      "chineseTitle": "走向自治",
+      "content": [],
+      "placeholder": "[Add content about Towards Self-government...]"
     },
     {
       "id": 5,
-      "pageNumber": 5,
-      "title": "Chapter 3: Path to Federation",
+      "pageNumber": 101,
+      "title": "Gold!",
+      "chineseTitle": "淘金热/黄金时代！",
       "content": [],
-      "placeholder": "[Add content about the movement towards federation...]"
+      "placeholder": "[Add content about Gold!...]"
     },
     {
       "id": 6,
-      "pageNumber": 6,
-      "title": "Birth of a Nation",
-      "content": [
-        "On January 1, 1901, the six colonies federated to form the Commonwealth of Australia."
-      ],
-      "placeholder": "[Add content about the birth of the Australian nation...]"
+      "pageNumber": 116,
+      "title": "Colonial Liberalism",
+      "chineseTitle": "殖民地自由主义",
+      "content": [],
+      "placeholder": "[Add content about Colonial Liberalism...]"
     },
     {
       "id": 7,
-      "pageNumber": 7,
-      "title": "Chapter 4: Democracy Evolves",
+      "pageNumber": 137,
+      "title": "Seeking a Nation",
+      "chineseTitle": "寻求建国",
       "content": [],
-      "placeholder": "[Add content about the evolution of Australian democracy...]"
+      "placeholder": "[Add content about Seeking a Nation...]"
     },
     {
       "id": 8,
-      "pageNumber": 8,
-      "title": "Modern Australia",
+      "pageNumber": 155,
+      "title": "A Liberal Federation",
+      "chineseTitle": "自由联邦",
       "content": [],
-      "placeholder": "[Add content about modern Australia and its democratic institutions...]"
+      "placeholder": "[Add content about A Liberal Federation...]"
+    },
+    {
+      "id": 9,
+      "pageNumber": 172,
+      "title": "Solidarity",
+      "chineseTitle": "团结",
+      "content": [],
+      "placeholder": "[Add content about Solidarity...]"
+    },
+    {
+      "id": 10,
+      "pageNumber": 191,
+      "title": "War",
+      "chineseTitle": "战争",
+      "content": [],
+      "placeholder": "[Add content about War...]"
+    },
+    {
+      "id": 11,
+      "pageNumber": 210,
+      "title": "Reaction",
+      "chineseTitle": "反应",
+      "content": [],
+      "placeholder": "[Add content about Reaction...]"
+    },
+    {
+      "id": 12,
+      "pageNumber": 226,
+      "title": "New Deals",
+      "chineseTitle": "新政",
+      "content": [],
+      "placeholder": "[Add content about New Deals...]"
+    },
+    {
+      "id": 13,
+      "pageNumber": 243,
+      "title": "War Again",
+      "chineseTitle": "再次战争",
+      "content": [],
+      "placeholder": "[Add content about War Again...]"
+    },
+    {
+      "id": 14,
+      "pageNumber": 261,
+      "title": "Recovery",
+      "chineseTitle": "复苏",
+      "content": [],
+      "placeholder": "[Add content about Recovery...]"
+    },
+    {
+      "id": 15,
+      "pageNumber": 278,
+      "title": "Golden Years",
+      "chineseTitle": "黄金岁月",
+      "content": [],
+      "placeholder": "[Add content about Golden Years...]"
+    },
+    {
+      "id": 16,
+      "pageNumber": 295,
+      "title": "New Directions",
+      "chineseTitle": "新方向",
+      "content": [],
+      "placeholder": "[Add content about New Directions...]"
+    },
+    {
+      "id": 17,
+      "pageNumber": 315,
+      "title": "Fracture",
+      "chineseTitle": "分裂",
+      "content": [],
+      "placeholder": "[Add content about Fracture...]"
+    },
+    {
+      "id": 18,
+      "pageNumber": 333,
+      "title": "Reconstruction",
+      "chineseTitle": "重建",
+      "content": [],
+      "placeholder": "[Add content about Reconstruction...]"
     }
   ],
   "backCover": {
