@@ -10,6 +10,126 @@
   overflow: hidden;
 }
 
+/* Floating Navigation Styles */
+.floating-nav {
+  position: fixed;
+  top: 2rem;
+  left: 2rem;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.nav-toggle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0891b2 0%, #14b8a6 100%);
+  color: white;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(8, 145, 178, 0.4);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 24px rgba(8, 145, 178, 0.5);
+}
+
+.nav-toggle:active {
+  transform: scale(0.95);
+}
+
+.nav-content {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  animation: slideIn 0.3s ease;
+  min-width: 280px;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.current-page-display {
+  font-size: 0.95rem;
+  color: #0891b2;
+  font-weight: 600;
+  text-align: center;
+  padding: 0.5rem;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border-radius: 6px;
+  border: 2px solid #0891b2;
+}
+
+.go-to-page-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.go-to-page-form label {
+  font-size: 0.9rem;
+  color: #0891b2;
+  font-weight: 600;
+}
+
+.page-input {
+  width: 100%;
+  padding: 0.6rem;
+  border: 2px solid #0891b2;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  text-align: center;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.page-input:focus {
+  border-color: #14b8a6;
+  box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.1);
+}
+
+.go-button {
+  padding: 0.6rem 1.2rem;
+  background: linear-gradient(135deg, #0891b2 0%, #14b8a6 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.go-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(8, 145, 178, 0.3);
+}
+
+.go-button:active {
+  transform: translateY(0);
+}
+
 .flipbook-wrapper {
   perspective: 3000px;
   margin-bottom: 3.33px;
@@ -28,13 +148,14 @@
   height: 100% !important;
 }
 
-/* Reduce gap between pages in landscape mode to 20% of default */
-.stf__wrapper--landscape {
-  gap: 2px !important;
-}
+/* Increase stf__block height by 10px */
+/* .stf__block {
+  height: calc(100% + 10px) !important;
+} */
 
-.stf__wrapper--landscape .stf__item {
-  margin: 0 1px !important;
+/* Increase stf__parent height by 20px */
+.stf__parent {
+  height: calc(100% + 80px) !important;
 }
 
 .book-page {
@@ -48,6 +169,12 @@
   border: 1px solid #d4c5a9;
   position: relative;
   overflow: hidden;
+}
+
+/* Remove padding for cover page */
+.book-page:has(.cover-page) {
+  padding: 0;
+  border: none;
 }
 
 .page-content {
@@ -71,10 +198,12 @@
 /* Cover Page Styles */
 .cover-page {
   height: 100%;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
+  margin: 0;
   overflow: hidden;
   background: #fff;
 }
@@ -84,6 +213,91 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  margin: 0;
+  padding: 0;
+}
+
+/* Blank Page Styles */
+.blank-page {
+  height: 100%;
+  background: #fffef0;
+}
+
+/* Catalog Page Styles */
+.catalog-page {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1.5rem;
+  overflow-y: auto;
+}
+
+.catalog-title {
+  font-size: 2rem;
+  color: #0891b2;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  border-bottom: 3px solid #14b8a6;
+  padding-bottom: 0.8rem;
+  line-height: 1.4;
+}
+
+.catalog-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.catalog-item {
+  display: grid;
+  grid-template-columns: 2rem 1fr 3rem;
+  gap: 0.8rem;
+  padding: 0.6rem;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border-left: 3px solid #0891b2;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  align-items: center;
+}
+
+.catalog-item:hover {
+  background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px rgba(8, 145, 178, 0.2);
+}
+
+.chapter-number {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #0891b2;
+  text-align: center;
+}
+
+.chapter-titles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.chapter-title-en {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1e293b;
+  line-height: 1.3;
+}
+
+.chapter-title-zh {
+  font-size: 0.85rem;
+  color: #64748b;
+  line-height: 1.3;
+}
+
+.chapter-page {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #0891b2;
+  text-align: right;
 }
 
 /* Content Page Styles */
@@ -166,6 +380,41 @@
     padding: 0.5rem;
   }
 
+  .floating-nav {
+    top: 1rem;
+    left: 1rem;
+  }
+
+  .nav-toggle {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+  }
+
+  .nav-content {
+    min-width: 240px;
+    padding: 1rem;
+  }
+
+  .current-page-display {
+    font-size: 0.85rem;
+    padding: 0.4rem;
+  }
+
+  .go-to-page-form label {
+    font-size: 0.85rem;
+  }
+
+  .page-input {
+    padding: 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  .go-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+
   .flipbook-wrapper {
     max-height: 80vh;
   }
@@ -179,6 +428,37 @@
   }
 
   .content-page p {
+    font-size: 0.9rem;
+  }
+
+  .catalog-page {
+    padding: 1rem 0.8rem;
+  }
+
+  .catalog-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .catalog-item {
+    grid-template-columns: 1.5rem 1fr 2.5rem;
+    gap: 0.5rem;
+    padding: 0.5rem;
+  }
+
+  .chapter-number {
+    font-size: 0.9rem;
+  }
+
+  .chapter-title-en {
+    font-size: 0.85rem;
+  }
+
+  .chapter-title-zh {
+    font-size: 0.75rem;
+  }
+
+  .chapter-page {
     font-size: 0.9rem;
   }
 }
