@@ -58,63 +58,63 @@
     {
       "id": 7,
       "pageNumber": 137,
-      "title": "Seeking a Nation",
-      "chineseTitle": "寻求建国",
+      "title": "Empire and Federation",
+      "chineseTitle": "帝国与联邦",
       "content": [],
       "placeholder": "[Add content about Seeking a Nation...]"
     },
     {
       "id": 8,
       "pageNumber": 155,
-      "title": "A Liberal Federation",
-      "chineseTitle": "自由联邦",
+      "title": "A Bold Experiment",
+      "chineseTitle": "一项大胆的尝试",
       "content": [],
       "placeholder": "[Add content about A Liberal Federation...]"
     },
     {
       "id": 9,
       "pageNumber": 172,
-      "title": "Solidarity",
-      "chineseTitle": "团结",
+      "title": "The Great War",
+      "chineseTitle": "第一次世界大战",
       "content": [],
       "placeholder": "[Add content about Solidarity...]"
     },
     {
       "id": 10,
       "pageNumber": 191,
-      "title": "War",
-      "chineseTitle": "战争",
+      "title": "A Funereal Decade",
+      "chineseTitle": "葬礼般的十年",
       "content": [],
       "placeholder": "[Add content about War...]"
     },
     {
       "id": 11,
       "pageNumber": 210,
-      "title": "Reaction",
-      "chineseTitle": "反应",
+      "title": "The Economic Crisis",
+      "chineseTitle": "经济危机",
       "content": [],
       "placeholder": "[Add content about Reaction...]"
     },
     {
       "id": 12,
       "pageNumber": 226,
-      "title": "New Deals",
-      "chineseTitle": "新政",
+      "title": "Australia Threatened",
+      "chineseTitle": "澳大利亚受到威胁",
       "content": [],
       "placeholder": "[Add content about New Deals...]"
     },
     {
       "id": 13,
       "pageNumber": 243,
-      "title": "War Again",
-      "chineseTitle": "再次战争",
+      "title": "The Liberal Revival",
+      "chineseTitle": "自由主义的复兴",
       "content": [],
       "placeholder": "[Add content about War Again...]"
     },
     {
       "id": 14,
       "pageNumber": 261,
-      "title": "Recovery",
+      "title": "The Age of Menzies",
       "chineseTitle": "复苏",
       "content": [],
       "placeholder": "[Add content about Recovery...]"
@@ -122,31 +122,31 @@
     {
       "id": 15,
       "pageNumber": 278,
-      "title": "Golden Years",
-      "chineseTitle": "黄金岁月",
+      "title": "Talkers and Doers",
+      "chineseTitle": "空谈家与实干家",
       "content": [],
       "placeholder": "[Add content about Golden Years...]"
     },
     {
       "id": 16,
       "pageNumber": 295,
-      "title": "New Directions",
+      "title": "Opening the Doors",
       "chineseTitle": "新方向",
       "content": [],
-      "placeholder": "[Add content about New Directions...]"
+      "placeholder": "[Add content about Opening the Doors...]"
     },
     {
       "id": 17,
       "pageNumber": 315,
-      "title": "Fracture",
-      "chineseTitle": "分裂",
+      "title": "Consolidation",
+      "chineseTitle": "合并",
       "content": [],
-      "placeholder": "[Add content about Fracture...]"
+      "placeholder": "[Add content about Consolidation...]"
     },
     {
       "id": 18,
       "pageNumber": 333,
-      "title": "Reconstruction",
+      "title": "Drifting Backward",
       "chineseTitle": "重建",
       "content": [],
       "placeholder": "[Add content about Reconstruction...]"

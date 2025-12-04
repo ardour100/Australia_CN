@@ -25,16 +25,31 @@ Page.displayName = 'Page';
 const Book: React.FC = () => {
   const bookRef = useRef<any>(null);
   const [currentPage, setCurrentPage] = useState(0);
-  const totalPages = bookData.chapters.length + 3; // chapters + cover + catalog + back cover
+  const [goToPageInput, setGoToPageInput] = useState('');
+  const [isNavExpanded, setIsNavExpanded] = useState(false);
+  const totalPages = bookData.chapters.length + 4; // chapters + cover + blank + catalog + back cover
 
   const onFlip = (e: any) => {
     setCurrentPage(e.data);
   };
 
   const handleChapterClick = (chapterIndex: number) => {
-    // Navigate to the chapter page (chapter index + 2 because of cover and catalog)
-    const pageIndex = chapterIndex + 2;
+    // Navigate to the chapter page (chapter index + 3 because of cover, blank, and catalog)
+    const pageIndex = chapterIndex + 3;
     bookRef.current?.pageFlip().flip(pageIndex);
+  };
+
+  const handleGoToPage = (e: React.FormEvent) => {
+    e.preventDefault();
+    const pageNum = parseInt(goToPageInput, 10);
+    if (!isNaN(pageNum) && pageNum >= 1 && pageNum <= totalPages) {
+      bookRef.current?.pageFlip().flip(pageNum - 1);
+      setGoToPageInput('');
+    }
+  };
+
+  const toggleNav = () => {
+    setIsNavExpanded(!isNavExpanded);
   };
 
   // Add keyboard arrow key support
@@ -62,19 +77,19 @@ const Book: React.FC = () => {
       <div className="flipbook-wrapper">
         <HTMLFlipBook
           ref={bookRef}
-          width={650}
-          height={850}
+          width={715}
+          height={935}
           size="stretch"
-          minWidth={300}
-          maxWidth={800}
-          minHeight={400}
-          maxHeight={1000}
+          minWidth={330}
+          maxWidth={880}
+          minHeight={440}
+          maxHeight={1100}
           maxShadowOpacity={0.5}
-          showCover={false}
+          showCover={true}
           mobileScrollSupport={true}
           onFlip={onFlip}
           className="flip-book"
-          usePortrait={false}
+          usePortrait={true}
           startPage={0}
           drawShadow={true}
           flippingTime={1000}
@@ -92,6 +107,11 @@ const Book: React.FC = () => {
             <div className="cover-page">
               <img src={coverImage} alt="Book Cover" className="cover-image" />
             </div>
+          </Page>
+
+          {/* Blank Page */}
+          <Page number={0}>
+            <div className="blank-page"></div>
           </Page>
 
           {/* Catalog Page */}
@@ -152,6 +172,35 @@ const Book: React.FC = () => {
             </div>
           </Page>
         </HTMLFlipBook>
+      </div>
+
+      {/* Floating Navigation */}
+      <div className={`floating-nav ${isNavExpanded ? 'expanded' : ''}`}>
+        <button className="nav-toggle" onClick={toggleNav} aria-label="Toggle navigation">
+          {isNavExpanded ? '✕' : '📖'}
+        </button>
+
+        {isNavExpanded && (
+          <div className="nav-content">
+            <div className="current-page-display">
+              Page {currentPage + 1} of {totalPages}
+            </div>
+            <form onSubmit={handleGoToPage} className="go-to-page-form">
+              <label htmlFor="page-input">Go to page:</label>
+              <input
+                id="page-input"
+                type="number"
+                min="1"
+                max={totalPages}
+                value={goToPageInput}
+                onChange={(e) => setGoToPageInput(e.target.value)}
+                placeholder={`1-${totalPages}`}
+                className="page-input"
+              />
+              <button type="submit" className="go-button">Go</button>
+            </form>
+          </div>
+        )}
       </div>
     </div>
   );
