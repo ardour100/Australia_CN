@@ -6,6 +6,19 @@
     "subtitle": "Australia History",
     "description": "From Ancient Times to Modern Nation"
   },
+  "preface": {
+    "title": "Preface",
+    "content": [
+      "This digital book project was created with a clear purpose in mind: to combine learning, sharing, and personal growth through the innovative use of AI tools.",
+      "As I embarked on this journey to present Australia's remarkable transformation from an ancient land to a modern democracy, I had three primary objectives:",
+      "First, this project serves as a study resource. The history of Australia's democratic development offers valuable lessons about governance, social progress, and the evolution of civil society. By creating this interactive book, I aimed to make this important historical narrative more accessible and engaging for readers.",
+      "Second, I wanted to share knowledge in a meaningful way. The bilingual format (English and Chinese) reflects my commitment to making this content available to a wider audience, bridging cultural and linguistic boundaries.",
+      "Third, and perhaps most importantly, this project represents my effort to upskill and enhance my ability to work with AI tools. In an era where artificial intelligence is transforming how we create, learn, and communicate, I saw this as an opportunity to develop practical skills in leveraging AI for content creation, design, and interactive media development.",
+      "The creation of this book has been a learning experience in itself—demonstrating how modern technology can be harnessed to preserve and present historical knowledge in innovative, user-friendly formats. I hope readers will find value not only in the content but also in the interactive reading experience this digital format provides.",
+      "Thank you for taking the time to explore this work. May it serve as both an educational resource and an example of how we can use emerging technologies to make knowledge more accessible and engaging."
+    ],
+    "signature": "— The Author"
+  },
   "chapters": [
     {
       "id": 1,

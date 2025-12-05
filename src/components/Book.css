@@ -223,6 +223,20 @@
   background: #fffef0;
 }
 
+/* Preface Page Styles */
+.preface-page {
+  overflow-y: auto;
+}
+
+.signature {
+  margin-top: auto;
+  text-align: right;
+  font-style: italic;
+  color: #0891b2;
+  font-weight: 600;
+  margin-top: 2rem;
+}
+
 /* Catalog Page Styles */
 .catalog-page {
   height: 100%;
