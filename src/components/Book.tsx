@@ -27,15 +27,15 @@ const Book: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [goToPageInput, setGoToPageInput] = useState('');
   const [isNavExpanded, setIsNavExpanded] = useState(false);
-  const totalPages = bookData.chapters.length + 4; // chapters + cover + blank + catalog + back cover
+  const totalPages = bookData.chapters.length + 5; // chapters + cover + blank + preface + catalog + back cover
 
   const onFlip = (e: any) => {
     setCurrentPage(e.data);
   };
 
   const handleChapterClick = (chapterIndex: number) => {
-    // Navigate to the chapter page (chapter index + 3 because of cover, blank, and catalog)
-    const pageIndex = chapterIndex + 3;
+    // Navigate to the chapter page (chapter index + 4 because of cover, blank, preface, and catalog)
+    const pageIndex = chapterIndex + 4;
     bookRef.current?.pageFlip().flip(pageIndex);
   };
 
@@ -112,6 +112,17 @@ const Book: React.FC = () => {
           {/* Blank Page */}
           <Page number={0}>
             <div className="blank-page"></div>
+          </Page>
+
+          {/* Preface Page */}
+          <Page number={0}>
+            <div className="content-page preface-page">
+              <h2>{bookData.preface.title}</h2>
+              {bookData.preface.content.map((paragraph: string, index: number) => (
+                <p key={index}>{paragraph}</p>
+              ))}
+              <p className="signature">{bookData.preface.signature}</p>
+            </div>
           </Page>
 
           {/* Catalog Page */}
