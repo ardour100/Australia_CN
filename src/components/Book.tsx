@@ -23,11 +23,32 @@ const Page = forwardRef<HTMLDivElement, PageProps>(({ number, children }, ref) =
 Page.displayName = 'Page';
 
 const Book: React.FC = () => {
+  // Detect user's preferred language based on browser settings
+  const detectPreferredLanguage = (): 'zh' | 'zhTraditional' | 'en' => {
+    const userLanguage = navigator.language || (navigator as any).userLanguage;
+
+    // Check for Traditional Chinese (Taiwan, Hong Kong, Macau)
+    if (userLanguage.includes('zh-TW') || userLanguage.includes('zh-HK') || userLanguage.includes('zh-MO')) {
+      return 'zhTraditional';
+    }
+    // Check for Simplified Chinese
+    else if (userLanguage.includes('zh')) {
+      return 'zh';
+    }
+    // Check for English
+    else if (userLanguage.includes('en')) {
+      return 'en';
+    }
+
+    // Default to Simplified Chinese
+    return 'zh';
+  };
+
   const bookRef = useRef<any>(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [goToPageInput, setGoToPageInput] = useState('');
   const [isNavExpanded, setIsNavExpanded] = useState(false);
-  const [prefaceLanguage, setPrefaceLanguage] = useState<'zh' | 'zhTW' | 'en'>('zh');
+  const [prefaceLanguage, setPrefaceLanguage] = useState<'zh' | 'zhTraditional' | 'en'>(detectPreferredLanguage());
   const totalPages = bookData.chapters.length + 5; // chapters + cover + blank + preface + catalog + back cover
 
   const onFlip = (e: any) => {
@@ -126,8 +147,8 @@ const Book: React.FC = () => {
                   简体
                 </button>
                 <button
-                  className={`lang-btn ${prefaceLanguage === 'zhTW' ? 'active' : ''}`}
-                  onClick={() => setPrefaceLanguage('zhTW')}
+                  className={`lang-btn ${prefaceLanguage === 'zhTraditional' ? 'active' : ''}`}
+                  onClick={() => setPrefaceLanguage('zhTraditional')}
                 >
                   繁體
                 </button>
@@ -149,7 +170,7 @@ const Book: React.FC = () => {
           {/* Catalog Page */}
           <Page number={0}>
             <div className="catalog-page">
-              <h2 className="catalog-title">Table of Contents<br/>目录</h2>
+              <h2 className="catalog-title">Table of Contents<br/>目录 / 目錄</h2>
               <div className="catalog-list">
                 {bookData.chapters.map((chapter, index) => (
                   <div
@@ -162,7 +183,9 @@ const Book: React.FC = () => {
                     <span className="chapter-number">{chapter.id}</span>
                     <div className="chapter-titles">
                       <div className="chapter-title-en">{chapter.title}</div>
-                      <div className="chapter-title-zh">{chapter.chineseTitle}</div>
+                      <div className="chapter-title-zh">
+                        {chapter.chineseTitle} / {chapter.chineseTitleTraditional}
+                      </div>
                     </div>
                     <span className="chapter-page">{chapter.pageNumber}</span>
                   </div>
