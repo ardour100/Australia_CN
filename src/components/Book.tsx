@@ -27,6 +27,7 @@ const Book: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [goToPageInput, setGoToPageInput] = useState('');
   const [isNavExpanded, setIsNavExpanded] = useState(false);
+  const [prefaceLanguage, setPrefaceLanguage] = useState<'zh' | 'zhTW' | 'en'>('zh');
   const totalPages = bookData.chapters.length + 5; // chapters + cover + blank + preface + catalog + back cover
 
   const onFlip = (e: any) => {
@@ -117,8 +118,28 @@ const Book: React.FC = () => {
           {/* Preface Page */}
           <Page number={0}>
             <div className="content-page preface-page">
-              <h2>{bookData.preface.title}</h2>
-              {bookData.preface.content.map((paragraph: string, index: number) => (
+              <div className="language-toggle">
+                <button
+                  className={`lang-btn ${prefaceLanguage === 'zh' ? 'active' : ''}`}
+                  onClick={() => setPrefaceLanguage('zh')}
+                >
+                  简体
+                </button>
+                <button
+                  className={`lang-btn ${prefaceLanguage === 'zhTW' ? 'active' : ''}`}
+                  onClick={() => setPrefaceLanguage('zhTW')}
+                >
+                  繁體
+                </button>
+                <button
+                  className={`lang-btn ${prefaceLanguage === 'en' ? 'active' : ''}`}
+                  onClick={() => setPrefaceLanguage('en')}
+                >
+                  EN
+                </button>
+              </div>
+              <h2>{bookData.preface.title[prefaceLanguage]}</h2>
+              {bookData.preface.content[prefaceLanguage].map((paragraph: string, index: number) => (
                 <p key={index}>{paragraph}</p>
               ))}
               <p className="signature">{bookData.preface.signature}</p>
