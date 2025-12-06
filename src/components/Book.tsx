@@ -23,19 +23,41 @@ const Page = forwardRef<HTMLDivElement, PageProps>(({ number, children }, ref) =
 Page.displayName = 'Page';
 
 const Book: React.FC = () => {
+  // Detect user's preferred language based on browser settings
+  const detectPreferredLanguage = (): 'zh' | 'zhTraditional' | 'en' => {
+    const userLanguage = navigator.language || (navigator as any).userLanguage;
+
+    // Check for Traditional Chinese (Taiwan, Hong Kong, Macau)
+    if (userLanguage.includes('zh-TW') || userLanguage.includes('zh-HK') || userLanguage.includes('zh-MO')) {
+      return 'zhTraditional';
+    }
+    // Check for Simplified Chinese
+    else if (userLanguage.includes('zh')) {
+      return 'zh';
+    }
+    // Check for English
+    else if (userLanguage.includes('en')) {
+      return 'en';
+    }
+
+    // Default to Simplified Chinese
+    return 'zh';
+  };
+
   const bookRef = useRef<any>(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [goToPageInput, setGoToPageInput] = useState('');
   const [isNavExpanded, setIsNavExpanded] = useState(false);
-  const totalPages = bookData.chapters.length + 4; // chapters + cover + blank + catalog + back cover
+  const [prefaceLanguage, setPrefaceLanguage] = useState<'zh' | 'zhTraditional' | 'en'>(detectPreferredLanguage());
+  const totalPages = bookData.chapters.length + 5; // chapters + cover + blank + preface + catalog + back cover
 
   const onFlip = (e: any) => {
     setCurrentPage(e.data);
   };
 
   const handleChapterClick = (chapterIndex: number) => {
-    // Navigate to the chapter page (chapter index + 3 because of cover, blank, and catalog)
-    const pageIndex = chapterIndex + 3;
+    // Navigate to the chapter page (chapter index + 4 because of cover, blank, preface, and catalog)
+    const pageIndex = chapterIndex + 4;
     bookRef.current?.pageFlip().flip(pageIndex);
   };
 
@@ -114,10 +136,41 @@ const Book: React.FC = () => {
             <div className="blank-page"></div>
           </Page>
 
+          {/* Preface Page */}
+          <Page number={0}>
+            <div className="content-page preface-page">
+              <div className="language-toggle">
+                <button
+                  className={`lang-btn ${prefaceLanguage === 'zh' ? 'active' : ''}`}
+                  onClick={() => setPrefaceLanguage('zh')}
+                >
+                  简体
+                </button>
+                <button
+                  className={`lang-btn ${prefaceLanguage === 'zhTraditional' ? 'active' : ''}`}
+                  onClick={() => setPrefaceLanguage('zhTraditional')}
+                >
+                  繁體
+                </button>
+                <button
+                  className={`lang-btn ${prefaceLanguage === 'en' ? 'active' : ''}`}
+                  onClick={() => setPrefaceLanguage('en')}
+                >
+                  EN
+                </button>
+              </div>
+              <h2>{bookData.preface.title[prefaceLanguage]}</h2>
+              {bookData.preface.content[prefaceLanguage].map((paragraph: string, index: number) => (
+                <p key={index}>{paragraph}</p>
+              ))}
+              <p className="signature">{bookData.preface.signature}</p>
+            </div>
+          </Page>
+
           {/* Catalog Page */}
           <Page number={0}>
             <div className="catalog-page">
-              <h2 className="catalog-title">Table of Contents<br/>目录</h2>
+              <h2 className="catalog-title">Table of Contents<br/>目录 / 目錄</h2>
               <div className="catalog-list">
                 {bookData.chapters.map((chapter, index) => (
                   <div
@@ -130,7 +183,9 @@ const Book: React.FC = () => {
                     <span className="chapter-number">{chapter.id}</span>
                     <div className="chapter-titles">
                       <div className="chapter-title-en">{chapter.title}</div>
-                      <div className="chapter-title-zh">{chapter.chineseTitle}</div>
+                      <div className="chapter-title-zh">
+                        {chapter.chineseTitle} / {chapter.chineseTitleTraditional}
+                      </div>
                     </div>
                     <span className="chapter-page">{chapter.pageNumber}</span>
                   </div>

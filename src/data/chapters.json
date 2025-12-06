@@ -6,12 +6,74 @@
     "subtitle": "Australia History",
     "description": "From Ancient Times to Modern Nation"
   },
+  "preface": {
+    "title": {
+      "zh": "写在前面的话",
+      "zhTraditional": "寫在前面的話",
+      "en": "Preface"
+    },
+    "content": {
+      "zh": [
+        "献给中文读者：关于澳大利亚历史的个人笔记",
+        "老实说，我发现中文互联网上关于澳大利亚的那些说法，槽点有点多，而且经常跑偏。",
+        "在本人登陆前对澳洲的了解，也停留在袋鼠考拉和一些片面的刻板印象，这种信息差搞得很多事儿都容易被误解，挺可惜的。",
+        "于是登陆七年后我决定自己动手，把看书时整理的这些历史笔记分享出来。这不是什么官方教程，就是纯粹的个人观点和深度八卦。",
+        "为什么我要写这个？",
+        "澳大利亚的历史非常不走寻常路：",
+        "* 它靠黄金和羊毛发家，从一个罪犯殖民地逆袭成了最富裕国家之一",
+        "* 它有和平建国的政治智慧，也有原住民被虐待的惨痛历史",
+        "* 它一边喊着要给每个人公平机会（'a fair go'），一边又搞出了白澳政策这种排外的政策",
+        "* 它在两次世界大战中扮演了重要角色，却又远离欧洲的政治纷争",
+        "* 它是英联邦成员，却又有着强烈的民族认同感和独立精神",
+        "这些矛盾和复杂性，让澳大利亚的历史故事格外引人入胜，也值得我们深入探讨。",
+        "💡 重要小小声明",
+        "因为版权法很严格，笔记里没有大段的原文摘抄，都是我边看书边查资料边思考的个人理解和总结（包括补充查到的各种知识）。如果对这些历史感兴趣的，推荐大家购买原版书籍进一步阅读。",
+        "如果我的解读能让你对澳洲多一点点真实、深入的了解，那我的目的就达到了！内容可能有偏颇或不完整之处，欢迎大家友善批评指正！"
+      ],
+      "zhTraditional": [
+        "獻給中文讀者：關於澳大利亞歷史的個人筆記",
+        "老實說，我發現中文互聯網上關於澳大利亞的那些說法，槽點有點多，而且經常跑偏。",
+        "在本人登陸前對澳洲的了解，也停留在袋鼠考拉和一些片面的刻板印象，這種資訊差搞得很多事兒都容易被誤解，挺可惜的。",
+        "於是登陸七年後我決定自己動手，把看書時整理的這些歷史筆記分享出來。這不是什麼官方教程，就是純粹的個人觀點和深度八卦。",
+        "為什麼我要寫這個？",
+        "澳大利亞的歷史非常不走尋常路：",
+        "* 它靠黃金和羊毛發家，從一個罪犯殖民地逆襲成了最富裕國家之一",
+        "* 它有和平建國的政治智慧，也有原住民被虐待的慘痛歷史",
+        "* 它一邊喊著要給每個人公平機會（'a fair go'），一邊又搞出了白澳政策這種排外的政策",
+        "* 它在兩次世界大戰中扮演了重要角色，卻又遠離歐洲的政治紛爭",
+        "* 它是英聯邦成員，卻又有著強烈的民族認同感和獨立精神",
+        "這些矛盾和複雜性，讓澳大利亞的歷史故事格外引人入勝，也值得我們深入探討。",
+        "💡 重要小小聲明",
+        "因為版權法很嚴格，筆記裡沒有大段的原文摘抄，都是我邊看書邊查資料邊思考的個人理解和總結（包括補充查到的各種知識）。如果對這些歷史感興趣的，推薦大家購買原版書籍進一步閱讀。",
+        "如果我的解讀能讓你對澳洲多一點點真實、深入的了解，那我的目的就達到了！內容可能有偏頗或不完整之處，歡迎大家友善批評指正！"
+      ],
+      "en": [
+        "For Readers: Personal Notes on Australian History",
+        "To be honest, I've found that much of what's discussed about Australia on the Chinese internet has quite a few issues and often misses the mark.",
+        "Before I arrived in Australia, my understanding was limited to kangaroos, koalas, and some superficial stereotypes. This information gap often leads to misunderstandings, which is quite unfortunate.",
+        "So, seven years after arriving, I decided to take matters into my own hands and share these historical notes I've compiled while reading. This isn't some official guide—it's purely my personal perspective and deep dive into the stories.",
+        "Why am I writing this?",
+        "Australia's history takes an extraordinary path:",
+        "* It built wealth from gold and wool, transforming from a convict colony into one of the world's wealthiest nations",
+        "* It demonstrates political wisdom in peaceful nation-building, yet bears the painful history of Aboriginal mistreatment",
+        "* It proclaims 'a fair go' for everyone while implementing exclusionary policies like the White Australia Policy",
+        "* It played significant roles in both World Wars while remaining distant from European political turmoil",
+        "* It's a Commonwealth member yet maintains strong national identity and independent spirit",
+        "These contradictions and complexities make Australia's historical narrative particularly fascinating and worthy of deeper exploration.",
+        "💡 Important Disclaimer",
+        "Due to strict copyright laws, these notes don't contain lengthy excerpts from original texts. They represent my personal understanding and synthesis developed through reading, research, and reflection (including supplementary knowledge I've gathered).If you're interested in this history, I recommend purchasing the original book for further reading.",
+        "If my interpretation helps you gain a slightly more authentic and deeper understanding of Australia, then I've achieved my goal! The content may have biases or gaps—constructive criticism is always welcome!"
+      ]
+    },
+    "signature": "— Judy 2025 in Sydney"
+  },
   "chapters": [
     {
       "id": 1,
       "pageNumber": 21,
       "title": "An Enlightened Beginning",
       "chineseTitle": "一个开明的开端",
+      "chineseTitleTraditional": "一個開明的開端",
       "content": [],
       "placeholder": "[Add content about An Enlightened Beginning...]"
     },
@@ -20,6 +82,7 @@
       "pageNumber": 41,
       "title": "Rebellion and Restoration",
       "chineseTitle": "叛乱与复辟",
+      "chineseTitleTraditional": "叛亂與復辟",
       "content": [],
       "placeholder": "[Add content about Rebellion and Restoration...]"
     },
@@ -28,6 +91,7 @@
       "pageNumber": 62,
       "title": "'Not all the armies of England'",
       "chineseTitle": "\"并非英格兰所有的军队\"",
+      "chineseTitleTraditional": "\"並非英格蘭所有的軍隊\"",
       "content": [],
       "placeholder": "[Add content about 'Not all the armies of England'...]"
     },
@@ -36,6 +100,7 @@
       "pageNumber": 82,
       "title": "Towards Self-government",
       "chineseTitle": "走向自治",
+      "chineseTitleTraditional": "走向自治",
       "content": [],
       "placeholder": "[Add content about Towards Self-government...]"
     },
@@ -43,7 +108,8 @@
       "id": 5,
       "pageNumber": 101,
       "title": "Gold!",
-      "chineseTitle": "淘金热/黄金时代！",
+      "chineseTitle": "淘金热",
+      "chineseTitleTraditional": "淘金熱",
       "content": [],
       "placeholder": "[Add content about Gold!...]"
     },
@@ -52,6 +118,7 @@
       "pageNumber": 116,
       "title": "Colonial Liberalism",
       "chineseTitle": "殖民地自由主义",
+      "chineseTitleTraditional": "殖民地自由主義",
       "content": [],
       "placeholder": "[Add content about Colonial Liberalism...]"
     },
@@ -60,6 +127,7 @@
       "pageNumber": 137,
       "title": "Empire and Federation",
       "chineseTitle": "帝国与联邦",
+      "chineseTitleTraditional": "帝國與聯邦",
       "content": [],
       "placeholder": "[Add content about Seeking a Nation...]"
     },
@@ -68,6 +136,7 @@
       "pageNumber": 155,
       "title": "A Bold Experiment",
       "chineseTitle": "一项大胆的尝试",
+      "chineseTitleTraditional": "一項大膽的嘗試",
       "content": [],
       "placeholder": "[Add content about A Liberal Federation...]"
     },
@@ -76,6 +145,7 @@
       "pageNumber": 172,
       "title": "The Great War",
       "chineseTitle": "第一次世界大战",
+      "chineseTitleTraditional": "第一次世界大戰",
       "content": [],
       "placeholder": "[Add content about Solidarity...]"
     },
@@ -84,6 +154,7 @@
       "pageNumber": 191,
       "title": "A Funereal Decade",
       "chineseTitle": "葬礼般的十年",
+      "chineseTitleTraditional": "葬禮般的十年",
       "content": [],
       "placeholder": "[Add content about War...]"
     },
@@ -92,6 +163,7 @@
       "pageNumber": 210,
       "title": "The Economic Crisis",
       "chineseTitle": "经济危机",
+      "chineseTitleTraditional": "經濟危機",
       "content": [],
       "placeholder": "[Add content about Reaction...]"
     },
@@ -100,6 +172,7 @@
       "pageNumber": 226,
       "title": "Australia Threatened",
       "chineseTitle": "澳大利亚受到威胁",
+      "chineseTitleTraditional": "澳大利亞受到威脅",
       "content": [],
       "placeholder": "[Add content about New Deals...]"
     },
@@ -108,6 +181,7 @@
       "pageNumber": 243,
       "title": "The Liberal Revival",
       "chineseTitle": "自由主义的复兴",
+      "chineseTitleTraditional": "自由主義的復興",
       "content": [],
       "placeholder": "[Add content about War Again...]"
     },
@@ -116,6 +190,7 @@
       "pageNumber": 261,
       "title": "The Age of Menzies",
       "chineseTitle": "复苏",
+      "chineseTitleTraditional": "復甦",
       "content": [],
       "placeholder": "[Add content about Recovery...]"
     },
@@ -124,6 +199,7 @@
       "pageNumber": 278,
       "title": "Talkers and Doers",
       "chineseTitle": "空谈家与实干家",
+      "chineseTitleTraditional": "空談家與實幹家",
       "content": [],
       "placeholder": "[Add content about Golden Years...]"
     },
@@ -132,6 +208,7 @@
       "pageNumber": 295,
       "title": "Opening the Doors",
       "chineseTitle": "新方向",
+      "chineseTitleTraditional": "新方向",
       "content": [],
       "placeholder": "[Add content about Opening the Doors...]"
     },
@@ -140,6 +217,7 @@
       "pageNumber": 315,
       "title": "Consolidation",
       "chineseTitle": "合并",
+      "chineseTitleTraditional": "合併",
       "content": [],
       "placeholder": "[Add content about Consolidation...]"
     },
@@ -148,6 +226,7 @@
       "pageNumber": 333,
       "title": "Drifting Backward",
       "chineseTitle": "重建",
+      "chineseTitleTraditional": "重建",
       "content": [],
       "placeholder": "[Add content about Reconstruction...]"
     }

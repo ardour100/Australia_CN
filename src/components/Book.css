@@ -223,6 +223,55 @@
   background: #fffef0;
 }
 
+/* Preface Page Styles */
+.preface-page {
+  overflow-y: auto;
+}
+
+.language-toggle {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.lang-btn {
+  padding: 0.5rem 1rem;
+  background: white;
+  border: 2px solid #0891b2;
+  border-radius: 6px;
+  color: #0891b2;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.lang-btn:hover {
+  background: #f0f9ff;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(8, 145, 178, 0.2);
+}
+
+.lang-btn.active {
+  background: linear-gradient(135deg, #0891b2 0%, #14b8a6 100%);
+  color: white;
+  border-color: #14b8a6;
+}
+
+.lang-btn:active {
+  transform: translateY(0);
+}
+
+.signature {
+  margin-top: auto;
+  text-align: right;
+  font-style: italic;
+  color: #0891b2;
+  font-weight: 600;
+  margin-top: 2rem;
+}
+
 /* Catalog Page Styles */
 .catalog-page {
   height: 100%;
@@ -429,6 +478,16 @@
 
   .content-page p {
     font-size: 0.9rem;
+  }
+
+  .language-toggle {
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .lang-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
   }
 
   .catalog-page {
