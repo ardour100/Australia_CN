@@ -5,8 +5,27 @@
   "chineseTitle": "叛乱与复辟",
   "chineseTitleTraditional": "叛亂與復辟",
   "contentZh": [
-    ""
+    "这是一个 **Markdown 测试示例**，展示了如何在内容中使用各种 Markdown 格式。",
+    "## 支持的 Markdown 功能\n\n我们支持多种 Markdown 格式：\n\n1. **粗体文本** - 使用双星号\n2. *斜体文本* - 使用单星号\n3. `代码片段` - 使用反引号\n4. [链接文本](https://example.com) - 使用方括号和圆括号",
+    "### 引用示例\n\n> 这是一个引用块的示例。\n> \n> 引用块可以包含多行内容。\n\n---",
+    "### 列表示例\n\n**无序列表：**\n\n- 第一项\n- 第二项\n  - 子项 A\n  - 子项 B\n- 第三项\n\n**有序列表：**\n\n1. 首先...\n2. 然后...\n3. 最后...",
+    "这个示例展示了如何将 **粗体**、*斜体* 和 `代码` 混合使用在同一段落中。你也可以添加 [外部链接](https://github.com)。",
+    "通过这种方式，你可以在 JSON 文件中编写丰富的内容，并在浏览器中看到格式化的结果！"
   ],
-  "content": [],
-  "placeholder": "[Add content about Rebellion and Restoration...]"
+  "contentZhTraditional": [
+    "這是一個 **Markdown 測試示例**，展示了如何在內容中使用各種 Markdown 格式。",
+    "## 支持的 Markdown 功能\n\n我們支持多種 Markdown 格式：\n\n1. **粗體文本** - 使用雙星號\n2. *斜體文本* - 使用單星號\n3. `代碼片段` - 使用反引號\n4. [鏈接文本](https://example.com) - 使用方括號和圓括號",
+    "### 引用示例\n\n> 這是一個引用塊的示例。\n> \n> 引用塊可以包含多行內容。\n\n---",
+    "### 列表示例\n\n**無序列表：**\n\n- 第一項\n- 第二項\n  - 子項 A\n  - 子項 B\n- 第三項\n\n**有序列表：**\n\n1. 首先...\n2. 然後...\n3. 最後...",
+    "這個示例展示了如何將 **粗體**、*斜體* 和 `代碼` 混合使用在同一段落中。你也可以添加 [外部鏈接](https://github.com)。",
+    "通過這種方式，你可以在 JSON 文件中編寫豐富的內容，並在瀏覽器中看到格式化的結果！"
+  ],
+  "content": [
+    "This is a **Markdown test example**, demonstrating how to use various Markdown formats in content.",
+    "## Supported Markdown Features\n\nWe support multiple Markdown formats:\n\n1. **Bold text** - using double asterisks\n2. *Italic text* - using single asterisks\n3. `Code snippets` - using backticks\n4. [Link text](https://example.com) - using brackets and parentheses",
+    "### Quote Example\n\n> This is a blockquote example.\n> \n> Blockquotes can contain multiple lines.\n\n---",
+    "### List Examples\n\n**Unordered list:**\n\n- First item\n- Second item\n  - Sub-item A\n  - Sub-item B\n- Third item\n\n**Ordered list:**\n\n1. First...\n2. Then...\n3. Finally...",
+    "This example shows how to mix **bold**, *italic*, and `code` in the same paragraph. You can also add [external links](https://github.com).",
+    "This way, you can write rich content in JSON files and see formatted results in the browser!"
+  ]
 }

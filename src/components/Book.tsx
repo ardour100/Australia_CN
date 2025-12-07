@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect, forwardRef } from 'react';
 import HTMLFlipBook from 'react-pageflip';
+import ReactMarkdown from 'react-markdown';
 import bookData from '../data/chapters.json';
 import coverImage from '../assets/cover.png';
 import './Book.css';
@@ -317,10 +318,12 @@ const Book: React.FC = () => {
                         </div>
                       )}
 
-                      {/* Render page content */}
+                      {/* Render page content with markdown support */}
                       {pageContent.length > 0 ? (
                         pageContent.map((paragraph: string, pIndex: number) => (
-                          <p key={pIndex}>{paragraph}</p>
+                          <div key={pIndex} className="markdown-content">
+                            <ReactMarkdown>{paragraph}</ReactMarkdown>
+                          </div>
                         ))
                       ) : (
                         fullChapter?.placeholder && (
