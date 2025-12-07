@@ -85,6 +85,13 @@ const Book: React.FC = () => {
   const [fontSize, setFontSize] = useState<'small' | 'medium' | 'large'>('medium'); // Font size control
   const [pageToRestore, setPageToRestore] = useState<number | null>(null); // Store page before language change
 
+  // Touch tracking for smart scroll/swipe detection
+  const touchStartX = useRef<number>(0);
+  const touchStartY = useRef<number>(0);
+  const touchEndX = useRef<number>(0);
+  const touchEndY = useRef<number>(0);
+  const isScrolling = useRef<boolean>(false);
+
   // Split chapter content into pages based on paragraph count
   // Adjusted to fit page height - smaller number for first page (with header), more for subsequent pages
   const splitContentIntoPages = (content: string[], firstPageParagraphs: number = 3, otherPageParagraphs: number = 5) => {
@@ -236,6 +243,87 @@ const Book: React.FC = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentPage, totalPages]);
 
+  // Smart touch handling: distinguish vertical scroll from horizontal swipe
+  useEffect(() => {
+    const flipbookElement = document.querySelector('.flipbook-wrapper');
+    if (!flipbookElement) return;
+
+    const handleTouchStart = (e: Event) => {
+      const touchEvent = e as TouchEvent;
+      touchStartX.current = touchEvent.touches[0].clientX;
+      touchStartY.current = touchEvent.touches[0].clientY;
+      isScrolling.current = false;
+    };
+
+    const handleTouchMove = (e: Event) => {
+      const touchEvent = e as TouchEvent;
+      if (!touchStartX.current || !touchStartY.current) return;
+
+      const currentX = touchEvent.touches[0].clientX;
+      const currentY = touchEvent.touches[0].clientY;
+
+      const deltaX = Math.abs(currentX - touchStartX.current);
+      const deltaY = Math.abs(currentY - touchStartY.current);
+
+      // Determine if this is a scroll or swipe
+      // If vertical movement is greater than horizontal, it's a scroll
+      if (deltaY > deltaX && deltaY > 10) {
+        isScrolling.current = true;
+      }
+
+      // If user is scrolling vertically, prevent page flip
+      if (isScrolling.current) {
+        // Allow the scroll to happen, don't interfere
+        return;
+      }
+    };
+
+    const handleTouchEnd = (e: Event) => {
+      const touchEvent = e as TouchEvent;
+      if (!touchStartX.current || !touchStartY.current) return;
+
+      touchEndX.current = touchEvent.changedTouches[0].clientX;
+      touchEndY.current = touchEvent.changedTouches[0].clientY;
+
+      const deltaX = touchEndX.current - touchStartX.current;
+      const deltaY = touchEndY.current - touchStartY.current;
+
+      const absDeltaX = Math.abs(deltaX);
+      const absDeltaY = Math.abs(deltaY);
+
+      // Only trigger page flip if:
+      // 1. Horizontal movement is greater than vertical
+      // 2. Not currently scrolling
+      // 3. Horizontal swipe distance is significant (> 50px)
+      if (absDeltaX > absDeltaY && !isScrolling.current && absDeltaX > 50) {
+        if (deltaX > 0 && currentPage > 0) {
+          // Swipe right - previous page
+          bookRef.current?.pageFlip().flipPrev();
+        } else if (deltaX < 0 && currentPage < totalPages - 1) {
+          // Swipe left - next page
+          bookRef.current?.pageFlip().flipNext();
+        }
+      }
+
+      // Reset
+      touchStartX.current = 0;
+      touchStartY.current = 0;
+      touchEndX.current = 0;
+      touchEndY.current = 0;
+      isScrolling.current = false;
+    };
+
+    flipbookElement.addEventListener('touchstart', handleTouchStart, { passive: true });
+    flipbookElement.addEventListener('touchmove', handleTouchMove, { passive: true });
+    flipbookElement.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+    return () => {
+      flipbookElement.removeEventListener('touchstart', handleTouchStart);
+      flipbookElement.removeEventListener('touchmove', handleTouchMove);
+      flipbookElement.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, [currentPage, totalPages]);
+
   return (
     <div className={`book-container font-size-${fontSize}`}>
       <div className="flipbook-wrapper">
@@ -262,8 +350,8 @@ const Book: React.FC = () => {
           startZIndex={0}
           autoSize={true}
           clickEventForward={true}
-          useMouseEvents={true}
-          swipeDistance={30}
+          useMouseEvents={false}
+          swipeDistance={50}
           showPageCorners={true}
           disableFlipByClick={false}
         >
