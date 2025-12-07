@@ -180,21 +180,7 @@ const Book: React.FC = () => {
           </Page>
 
           {/* Dynamic Chapter Pages */}
-          {bookData.chapters.map((chapter: any, index: number) => {
-            // Debug: Log chapter content availability
-            if (chapter.id === 1) {
-              console.log('Chapter 1 debug:', {
-                prefaceLanguage,
-                hasContentZh: !!chapter.contentZh,
-                contentZhLength: chapter.contentZh?.length,
-                hasContentZhTraditional: !!chapter.contentZhTraditional,
-                contentZhTraditionalLength: chapter.contentZhTraditional?.length,
-                hasContent: !!chapter.content,
-                contentLength: chapter.content?.length
-              });
-            }
-
-            return (
+          {bookData.chapters.map((chapter: any, index: number) => (
             <Page key={chapter.id} number={index + 1}>
               <div className="content-page">
                 <div className="chapter-header">
@@ -202,16 +188,6 @@ const Book: React.FC = () => {
                   <h2>{chapter.title}</h2>
                   <div className="chapter-title-cn">{chapter.chineseTitle} / {chapter.chineseTitleTraditional}</div>
                 </div>
-
-                {/* DEBUG: Test if rendering works */}
-                {chapter.id === 1 && (
-                  <p style={{color: 'blue', border: '2px solid blue', padding: '10px'}}>
-                    DEBUG: Chapter 1 detected Language: {prefaceLanguage}<br/>
-                    Has contentZh: {chapter.contentZh ? 'YES' : 'NO'}<br/>
-                    contentZh length: {chapter.contentZh?.length || 0}<br/>
-                    First paragraph: {chapter.contentZh?.[0]?.substring(0, 50) || 'N/A'}
-                  </p>
-                )}
 
                 {/* Simplified Chinese content */}
                 {prefaceLanguage === 'zh' && chapter.contentZh && Array.isArray(chapter.contentZh) && chapter.contentZh.length > 0 ? (
@@ -243,8 +219,7 @@ const Book: React.FC = () => {
                 )}
               </div>
             </Page>
-            );
-          })}
+          ))}
 
           {/* Back Cover */}
           <Page number={0}>
