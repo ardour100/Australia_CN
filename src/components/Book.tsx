@@ -54,7 +54,7 @@ interface PageProps {
 
 const Page = forwardRef<HTMLDivElement, PageProps>(({ number, children }, ref) => {
   // Odd pages (1, 3, 5...) are on the right, even pages (2, 4, 6...) are on the left
-  const isLeftPage = number % 2 === 0;
+  const isLeftPage = number % 2 !== 0;
   const pageNumberClass = isLeftPage ? 'page-number left' : 'page-number right';
 
   return (
