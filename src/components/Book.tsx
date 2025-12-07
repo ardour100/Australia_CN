@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, forwardRef } from 'react';
+import React, { useRef, useState, useEffect, forwardRef, useMemo } from 'react';
 import HTMLFlipBook from 'react-pageflip';
 import ReactMarkdown from 'react-markdown';
 import bookData from '../data/chapters.json';
@@ -247,14 +247,14 @@ const Book: React.FC = () => {
             </div>
           </Page>
 
-          {/* Blank Page */}
+          {/* Blank Page
           <Page number={0}>
             <div className="blank-page"></div>
-          </Page>
+          </Page> */}
 
           {/* Preface Page */}
           <Page number={0}>
-            <div className="content-page preface-page">
+            <div className="content-page preface-page" key={`preface-${prefaceLanguage}`}>
               <div className="language-toggle">
                 <button
                   className={`lang-btn ${prefaceLanguage === 'zh' ? 'active' : ''}`}
@@ -275,17 +275,15 @@ const Book: React.FC = () => {
                   EN
                 </button>
               </div>
-              <div key={prefaceLanguage}>
-                <h2>{bookData.preface.title[prefaceLanguage]}</h2>
-                {bookData.preface.content[prefaceLanguage] && Array.isArray(bookData.preface.content[prefaceLanguage]) ? (
-                  bookData.preface.content[prefaceLanguage].map((paragraph: string, index: number) => (
-                    <p key={index}>{paragraph}</p>
-                  ))
-                ) : (
-                  <p>内容加载中...</p>
-                )}
-                <p className="signature">{bookData.preface.signature}</p>
-              </div>
+              <h2>{bookData.preface.title[prefaceLanguage]}</h2>
+              {bookData.preface.content[prefaceLanguage] && Array.isArray(bookData.preface.content[prefaceLanguage]) ? (
+                bookData.preface.content[prefaceLanguage].map((paragraph: string, index: number) => (
+                  <p key={index}>{paragraph}</p>
+                ))
+              ) : (
+                <p>内容加载中...</p>
+              )}
+              <p className="signature">{bookData.preface.signature}</p>
             </div>
           </Page>
 
@@ -465,10 +463,10 @@ const Book: React.FC = () => {
               </div>
             </div>
             <div className="usage-instructions">
-              <h4>How to Use / 使用说明</h4>
+              <h4>How to Use</h4>
               <ul>
-                <li>← → Arrow keys / 左右键翻页</li>
-                <li>Click page to flip / 点击翻页</li>
+                <li>← → Arrow keys</li>
+                <li>Click page to flip</li>
               </ul>
             </div>
           </div>
