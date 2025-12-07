@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, forwardRef, useMemo } from 'react';
+import React, { useRef, useState, useEffect, forwardRef } from 'react';
 import HTMLFlipBook from 'react-pageflip';
 import ReactMarkdown from 'react-markdown';
 import bookData from '../data/chapters.json';
