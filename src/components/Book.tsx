@@ -137,14 +137,14 @@ const Book: React.FC = () => {
   const handleChapterClick = (chapterIndex: number) => {
     // Navigate to the chapter page (chapter index + 4 because of cover, blank, preface, and catalog)
     const pageIndex = chapterIndex + 4;
-    bookRef.current?.pageFlip().flip(pageIndex);
+    bookRef.current?.pageFlip().turnToPage(pageIndex);
   };
 
   const handleGoToPage = (e: React.FormEvent) => {
     e.preventDefault();
     const pageNum = parseInt(goToPageInput, 10);
     if (!isNaN(pageNum) && pageNum >= 1 && pageNum <= totalPages) {
-      bookRef.current?.pageFlip().flip(pageNum - 1);
+      bookRef.current?.pageFlip().turnToPage(pageNum - 1);
       setGoToPageInput('');
     }
   };
