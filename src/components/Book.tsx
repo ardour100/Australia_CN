@@ -277,7 +277,9 @@ const Book: React.FC = () => {
               <h2>{bookData.preface.title[prefaceLanguage]}</h2>
               {bookData.preface.content[prefaceLanguage] && Array.isArray(bookData.preface.content[prefaceLanguage]) ? (
                 bookData.preface.content[prefaceLanguage].map((paragraph: string, index: number) => (
-                  <p key={index}>{paragraph}</p>
+                  <div key={index} className="markdown-content">
+                    <ReactMarkdown>{paragraph}</ReactMarkdown>
+                  </div>
                 ))
               ) : (
                 <p>内容加载中...</p>
