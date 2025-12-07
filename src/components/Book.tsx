@@ -274,17 +274,17 @@ const Book: React.FC = () => {
                   EN
                 </button>
               </div>
-              <h2>{bookData.preface.title[prefaceLanguage]}</h2>
-              {bookData.preface.content[prefaceLanguage] && Array.isArray(bookData.preface.content[prefaceLanguage]) ? (
-                bookData.preface.content[prefaceLanguage].map((paragraph: string, index: number) => (
-                  <div key={`${prefaceLanguage}-${index}`} className="markdown-content">
-                    <ReactMarkdown>{paragraph}</ReactMarkdown>
-                  </div>
-                ))
-              ) : (
-                <p>内容加载中...</p>
-              )}
-              <p className="signature">{bookData.preface.signature}</p>
+              <div key={prefaceLanguage}>
+                <h2>{bookData.preface.title[prefaceLanguage]}</h2>
+                {bookData.preface.content[prefaceLanguage] && Array.isArray(bookData.preface.content[prefaceLanguage]) ? (
+                  bookData.preface.content[prefaceLanguage].map((paragraph: string, index: number) => (
+                    <p key={index}>{paragraph}</p>
+                  ))
+                ) : (
+                  <p>内容加载中...</p>
+                )}
+                <p className="signature">{bookData.preface.signature}</p>
+              </div>
             </div>
           </Page>
 
@@ -356,7 +356,18 @@ const Book: React.FC = () => {
                       {pageContent.length > 0 ? (
                         pageContent.map((paragraph: string, pIndex: number) => (
                           <div key={pIndex} className="markdown-content">
-                            <ReactMarkdown>{paragraph}</ReactMarkdown>
+                            <ReactMarkdown
+                              components={{
+                                img: ({ node, ...props }) => (
+                                  <img
+                                    {...props}
+                                    style={{ width: "380px", height: "200px", objectFit: "cover" }}
+                                  />
+                                ),
+                              }}
+                            >
+                              {paragraph}
+                            </ReactMarkdown>
                           </div>
                         ))
                       ) : (
