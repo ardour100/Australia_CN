@@ -4,6 +4,48 @@ import bookData from '../data/chapters.json';
 import coverImage from '../assets/cover.png';
 import './Book.css';
 
+// Import all chapter files
+import chapter01 from '../data/chapters/chapter-01.json';
+import chapter02 from '../data/chapters/chapter-02.json';
+import chapter03 from '../data/chapters/chapter-03.json';
+import chapter04 from '../data/chapters/chapter-04.json';
+import chapter05 from '../data/chapters/chapter-05.json';
+import chapter06 from '../data/chapters/chapter-06.json';
+import chapter07 from '../data/chapters/chapter-07.json';
+import chapter08 from '../data/chapters/chapter-08.json';
+import chapter09 from '../data/chapters/chapter-09.json';
+import chapter10 from '../data/chapters/chapter-10.json';
+import chapter11 from '../data/chapters/chapter-11.json';
+import chapter12 from '../data/chapters/chapter-12.json';
+import chapter13 from '../data/chapters/chapter-13.json';
+import chapter14 from '../data/chapters/chapter-14.json';
+import chapter15 from '../data/chapters/chapter-15.json';
+import chapter16 from '../data/chapters/chapter-16.json';
+import chapter17 from '../data/chapters/chapter-17.json';
+import chapter18 from '../data/chapters/chapter-18.json';
+
+// Map chapter files to their IDs
+const chapterContents: { [key: number]: any } = {
+  1: chapter01,
+  2: chapter02,
+  3: chapter03,
+  4: chapter04,
+  5: chapter05,
+  6: chapter06,
+  7: chapter07,
+  8: chapter08,
+  9: chapter09,
+  10: chapter10,
+  11: chapter11,
+  12: chapter12,
+  13: chapter13,
+  14: chapter14,
+  15: chapter15,
+  16: chapter16,
+  17: chapter17,
+  18: chapter18,
+};
+
 interface PageProps {
   number: number;
   children: React.ReactNode;
@@ -34,7 +76,58 @@ const Book: React.FC = () => {
   const [goToPageInput, setGoToPageInput] = useState('');
   const [isNavExpanded, setIsNavExpanded] = useState(true); // Start expanded to show instructions
   const [prefaceLanguage, setPrefaceLanguage] = useState<'zh' | 'zhTraditional' | 'en'>(detectPreferredLanguage());
-  const totalPages = bookData.chapters.length + 5; // chapters + cover + blank + preface + catalog + back cover
+  const [fontSize, setFontSize] = useState<'small' | 'medium' | 'large'>('medium'); // Font size control
+
+  // Split chapter content into pages based on paragraph count
+  // Adjusted to fit page height - smaller number for first page (with header), more for subsequent pages
+  const splitContentIntoPages = (content: string[], firstPageParagraphs: number = 3, otherPageParagraphs: number = 5) => {
+    const pages: string[][] = [];
+
+    if (content.length === 0) {
+      return [[]];
+    }
+
+    // First page has less space due to chapter header
+    pages.push(content.slice(0, firstPageParagraphs));
+
+    // Remaining pages can fit more content
+    for (let i = firstPageParagraphs; i < content.length; i += otherPageParagraphs) {
+      pages.push(content.slice(i, i + otherPageParagraphs));
+    }
+
+    return pages;
+  };
+
+  // Calculate total pages dynamically based on content
+  const calculateTotalPages = () => {
+    let pageCount = 4; // cover + blank + preface + catalog
+
+    bookData.chapters.forEach((chapter: any) => {
+      // Get full chapter content from imported files
+      const fullChapter = chapterContents[chapter.id];
+
+      let content: string[] = [];
+      if (prefaceLanguage === 'zh' && fullChapter?.contentZh) {
+        content = fullChapter.contentZh;
+      } else if (prefaceLanguage === 'zhTraditional' && fullChapter?.contentZhTraditional) {
+        content = fullChapter.contentZhTraditional;
+      } else if (prefaceLanguage === 'en' && fullChapter?.content) {
+        content = fullChapter.content;
+      }
+
+      if (content && content.length > 0) {
+        const pages = splitContentIntoPages(content);
+        pageCount += pages.length;
+      } else {
+        pageCount += 1; // Empty chapter still gets one page
+      }
+    });
+
+    pageCount += 1; // back cover
+    return pageCount;
+  };
+
+  const totalPages = calculateTotalPages();
 
   const onFlip = (e: any) => {
     setCurrentPage(e.data);
@@ -52,6 +145,14 @@ const Book: React.FC = () => {
     if (!isNaN(pageNum) && pageNum >= 1 && pageNum <= totalPages) {
       bookRef.current?.pageFlip().flip(pageNum - 1);
       setGoToPageInput('');
+    }
+  };
+
+  const handlePageInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Only allow numbers
+    if (value === '' || /^\d+$/.test(value)) {
+      setGoToPageInput(value);
     }
   };
 
@@ -80,7 +181,7 @@ const Book: React.FC = () => {
   }, [currentPage, totalPages]);
 
   return (
-    <div className="book-container">
+    <div className={`book-container font-size-${fontSize}`}>
       <div className="flipbook-wrapper">
         <HTMLFlipBook
           ref={bookRef}
@@ -180,46 +281,68 @@ const Book: React.FC = () => {
           </Page>
 
           {/* Dynamic Chapter Pages */}
-          {bookData.chapters.map((chapter: any, index: number) => (
-            <Page key={chapter.id} number={index + 1}>
-              <div className="content-page">
-                <div className="chapter-header">
-                  <div className="chapter-number">Chapter {chapter.id}</div>
-                  <h2>{chapter.title}</h2>
-                  <div className="chapter-title-cn">{chapter.chineseTitle} / {chapter.chineseTitleTraditional}</div>
-                </div>
+          {(() => {
+            let currentPageNumber = 1;
+            const pages: React.ReactElement[] = [];
 
-                {/* Simplified Chinese content */}
-                {prefaceLanguage === 'zh' && chapter.contentZh && Array.isArray(chapter.contentZh) && chapter.contentZh.length > 0 ? (
-                  chapter.contentZh.map((paragraph: string, pIndex: number) => (
-                    <p key={pIndex}>{paragraph}</p>
-                  ))
-                ) : null}
+            bookData.chapters.forEach((chapter: any) => {
+              // Get full chapter content from imported files
+              const fullChapter = chapterContents[chapter.id];
 
-                {/* Traditional Chinese content */}
-                {prefaceLanguage === 'zhTraditional' && chapter.contentZhTraditional && Array.isArray(chapter.contentZhTraditional) && chapter.contentZhTraditional.length > 0 ? (
-                  chapter.contentZhTraditional.map((paragraph: string, pIndex: number) => (
-                    <p key={pIndex}>{paragraph}</p>
-                  ))
-                ) : null}
+              // Get content based on language
+              let content: string[] = [];
+              if (prefaceLanguage === 'zh' && fullChapter?.contentZh) {
+                content = fullChapter.contentZh;
+              } else if (prefaceLanguage === 'zhTraditional' && fullChapter?.contentZhTraditional) {
+                content = fullChapter.contentZhTraditional;
+              } else if (prefaceLanguage === 'en' && fullChapter?.content) {
+                content = fullChapter.content;
+              }
 
-                {/* English content */}
-                {prefaceLanguage === 'en' && chapter.content && Array.isArray(chapter.content) && chapter.content.length > 0 ? (
-                  chapter.content.map((paragraph: string, pIndex: number) => (
-                    <p key={pIndex}>{paragraph}</p>
-                  ))
-                ) : null}
-                {(!chapter.contentZh || chapter.contentZh.length === 0) && chapter.placeholder && (
-                  <div className="placeholder-text">{chapter.placeholder}</div>
-                )}
-                {chapter.note && (
-                  <div className="page-note">
-                    <strong>Note:</strong> {chapter.note}
-                  </div>
-                )}
-              </div>
-            </Page>
-          ))}
+              // Split content into pages
+              const contentPages = content && content.length > 0 ? splitContentIntoPages(content) : [[]];
+
+              // Create pages for this chapter
+              contentPages.forEach((pageContent: string[], pageIndex: number) => {
+                const isFirstPage = pageIndex === 0;
+
+                pages.push(
+                  <Page key={`${chapter.id}-${pageIndex}`} number={currentPageNumber}>
+                    <div className="content-page">
+                      {isFirstPage && (
+                        <div className="chapter-header">
+                          <div className="chapter-number">Chapter {chapter.id}</div>
+                          <h2>{chapter.title}</h2>
+                          <div className="chapter-title-cn">{chapter.chineseTitle} / {chapter.chineseTitleTraditional}</div>
+                        </div>
+                      )}
+
+                      {/* Render page content */}
+                      {pageContent.length > 0 ? (
+                        pageContent.map((paragraph: string, pIndex: number) => (
+                          <p key={pIndex}>{paragraph}</p>
+                        ))
+                      ) : (
+                        fullChapter?.placeholder && (
+                          <div className="placeholder-text">{fullChapter.placeholder}</div>
+                        )
+                      )}
+
+                      {isFirstPage && fullChapter?.note && (
+                        <div className="page-note">
+                          <strong>Note:</strong> {fullChapter.note}
+                        </div>
+                      )}
+                    </div>
+                  </Page>
+                );
+
+                currentPageNumber++;
+              });
+            });
+
+            return pages;
+          })()}
 
           {/* Back Cover */}
           <Page number={0}>
@@ -251,16 +374,47 @@ const Book: React.FC = () => {
               <label htmlFor="page-input">Go to page:</label>
               <input
                 id="page-input"
-                type="number"
-                min="1"
-                max={totalPages}
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 value={goToPageInput}
-                onChange={(e) => setGoToPageInput(e.target.value)}
-                placeholder={`1-${totalPages}`}
+                onChange={handlePageInputChange}
+                placeholder="Enter page number"
                 className="page-input"
               />
               <button type="submit" className="go-button">Go</button>
             </form>
+
+            {/* Font Size Control */}
+            <div className="font-size-control">
+              <label>Font size:</label>
+              <div className="font-size-buttons">
+                <button
+                  type="button"
+                  className={`font-size-btn ${fontSize === 'small' ? 'active' : ''}`}
+                  onClick={() => setFontSize('small')}
+                  aria-label="Small font"
+                >
+                  Aa
+                </button>
+                <button
+                  type="button"
+                  className={`font-size-btn ${fontSize === 'medium' ? 'active' : ''}`}
+                  onClick={() => setFontSize('medium')}
+                  aria-label="Medium font"
+                >
+                  Aa
+                </button>
+                <button
+                  type="button"
+                  className={`font-size-btn ${fontSize === 'large' ? 'active' : ''}`}
+                  onClick={() => setFontSize('large')}
+                  aria-label="Large font"
+                >
+                  Aa
+                </button>
+              </div>
+            </div>
             <div className="usage-instructions">
               <h4>How to Use / 使用说明</h4>
               <ul>
