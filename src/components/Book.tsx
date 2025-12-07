@@ -134,6 +134,35 @@ const Book: React.FC = () => {
     setCurrentPage(e.data);
   };
 
+  // Calculate the actual page index for each chapter based on content
+  const getChapterPageIndex = (chapterIndex: number) => {
+    let pageIndex = 4; // Start after cover + blank + preface + catalog
+
+    // Calculate pages for all chapters before this one
+    for (let i = 0; i < chapterIndex; i++) {
+      const chapter = bookData.chapters[i];
+      const fullChapter = chapterContents[chapter.id];
+
+      let content: string[] = [];
+      if (prefaceLanguage === 'zh' && fullChapter?.contentZh) {
+        content = fullChapter.contentZh;
+      } else if (prefaceLanguage === 'zhTraditional' && fullChapter?.contentZhTraditional) {
+        content = fullChapter.contentZhTraditional;
+      } else if (prefaceLanguage === 'en' && fullChapter?.content) {
+        content = fullChapter.content;
+      }
+
+      if (content && content.length > 0) {
+        const pages = splitContentIntoPages(content);
+        pageIndex += pages.length;
+      } else {
+        pageIndex += 1; // Empty chapter still gets one page
+      }
+    }
+
+    return pageIndex;
+  };
+
   const handleChapterClick = (chapterIndex: number) => {
     // Navigate to the chapter page (chapter index + 4 because of cover, blank, preface, and catalog)
     const pageIndex = chapterIndex + 4;
@@ -246,11 +275,17 @@ const Book: React.FC = () => {
                   EN
                 </button>
               </div>
-              <h2>{bookData.preface.title[prefaceLanguage]}</h2>
-              {bookData.preface.content[prefaceLanguage].map((paragraph: string, index: number) => (
-                <p key={index}>{paragraph}</p>
-              ))}
-              <p className="signature">{bookData.preface.signature}</p>
+              <div key={prefaceLanguage}>
+                <h2>{bookData.preface.title[prefaceLanguage]}</h2>
+                {bookData.preface.content[prefaceLanguage] && Array.isArray(bookData.preface.content[prefaceLanguage]) ? (
+                  bookData.preface.content[prefaceLanguage].map((paragraph: string, index: number) => (
+                    <p key={index}>{paragraph}</p>
+                  ))
+                ) : (
+                  <p>内容加载中...</p>
+                )}
+                <p className="signature">{bookData.preface.signature}</p>
+              </div>
             </div>
           </Page>
 
@@ -274,7 +309,7 @@ const Book: React.FC = () => {
                         {chapter.chineseTitle} / {chapter.chineseTitleTraditional}
                       </div>
                     </div>
-                    <span className="chapter-page">{chapter.pageNumber}</span>
+                    <span className="chapter-page">{getChapterPageIndex(index) + 1}</span>
                   </div>
                 ))}
               </div>
@@ -322,7 +357,18 @@ const Book: React.FC = () => {
                       {pageContent.length > 0 ? (
                         pageContent.map((paragraph: string, pIndex: number) => (
                           <div key={pIndex} className="markdown-content">
-                            <ReactMarkdown>{paragraph}</ReactMarkdown>
+                            <ReactMarkdown
+                              components={{
+                                img: ({ node, ...props }) => (
+                                  <img
+                                    {...props}
+                                    style={{ width: "380px", height: "200px", objectFit: "cover" }}
+                                  />
+                                ),
+                              }}
+                            >
+                              {paragraph}
+                            </ReactMarkdown>
                           </div>
                         ))
                       ) : (
