@@ -312,11 +312,20 @@
 
 .page-number {
   position: absolute;
-  bottom: 1.5rem;
-  right: 2rem;
+  top: 0.8rem;
   font-size: 0.9rem;
   color: #888;
   font-style: italic;
+}
+
+/* Left pages: page number on top-left */
+.page-number.left {
+  left: 2rem;
+}
+
+/* Right pages: page number on top-right */
+.page-number.right {
+  right: 2rem;
 }
 
 /* Cover Page Styles */
@@ -485,7 +494,7 @@
 .catalog-item .chapter-number {
   font-size: 1.1rem;
   font-weight: bold;
-  color: #0891b2;
+  color: #ffffff;
   text-align: center;
   display: flex;
   align-items: center;

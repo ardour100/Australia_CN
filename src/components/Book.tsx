@@ -53,12 +53,16 @@ interface PageProps {
 }
 
 const Page = forwardRef<HTMLDivElement, PageProps>(({ number, children }, ref) => {
+  // Odd pages (1, 3, 5...) are on the right, even pages (2, 4, 6...) are on the left
+  const isLeftPage = number % 2 !== 0;
+  const pageNumberClass = isLeftPage ? 'page-number left' : 'page-number right';
+
   return (
     <div className="book-page" ref={ref}>
       <div className="page-content">
         {children}
       </div>
-      {number > 0 && <div className="page-number">{number}</div>}
+      {number > 0 && <div className={pageNumberClass}>{number}</div>}
     </div>
   );
 });
@@ -84,6 +88,7 @@ const Book: React.FC = () => {
   const [prefaceLanguage, setPrefaceLanguage] = useState<'zh' | 'zhTraditional' | 'en'>(detectPreferredLanguage());
   const [fontSize, setFontSize] = useState<'small' | 'medium' | 'large'>('medium'); // Font size control
   const [pageToRestore, setPageToRestore] = useState<number | null>(null); // Store page before language change
+  const [flippingTime, setFlippingTime] = useState<number>(1000); // Control animation duration
 
   // Touch tracking for smart scroll/swipe detection
   const touchStartX = useRef<number>(0);
@@ -177,16 +182,34 @@ const Book: React.FC = () => {
   };
 
   const handleChapterClick = (chapterIndex: number) => {
-    // Navigate to the chapter page (chapter index + 4 because of cover, blank, preface, and catalog)
-    const pageIndex = chapterIndex + 4;
-    bookRef.current?.pageFlip().turnToPage(pageIndex);
+    // Navigate to the chapter page directly without animation
+    const pageIndex = getChapterPageIndex(chapterIndex);
+
+    // Temporarily disable animation by setting flipping time to 0
+    setFlippingTime(0);
+
+    // Navigate to the page
+    setTimeout(() => {
+      bookRef.current?.pageFlip().turnToPage(pageIndex);
+
+      // Restore animation after navigation completes
+      setTimeout(() => {
+        setFlippingTime(1000);
+      }, 50);
+    }, 0);
   };
 
   const handleGoToPage = (e: React.FormEvent) => {
     e.preventDefault();
     const pageNum = parseInt(goToPageInput, 10);
-    if (!isNaN(pageNum) && pageNum >= 1 && pageNum <= totalPages) {
-      bookRef.current?.pageFlip().turnToPage(pageNum - 1);
+
+    // Calculate the actual flipbook page index for the given page number
+    // Pages are structured as: cover(0), blank(0), preface(0), catalog(0), then chapters starting from page 1
+    // So page number N corresponds to flipbook index: 4 + (N - 1) = 3 + N
+    const pageIndex = 3 + pageNum;
+
+    if (!isNaN(pageNum) && pageNum >= 1 && pageIndex < totalPages) {
+      bookRef.current?.pageFlip().turnToPage(pageIndex);
       setGoToPageInput('');
     }
   };
@@ -345,7 +368,7 @@ const Book: React.FC = () => {
           usePortrait={true}
           startPage={0}
           drawShadow={true}
-          flippingTime={1000}
+          flippingTime={flippingTime}
           style={{}}
           startZIndex={0}
           autoSize={true}
