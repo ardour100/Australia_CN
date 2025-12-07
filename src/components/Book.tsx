@@ -55,10 +55,15 @@ const chapterContents: { [key: number]: any } = {
 };
 
 const Book: React.FC = () => {
+  // Detect mobile device
+  const isMobile = () => {
+    return window.innerWidth <= 768;
+  };
+
   const bookRef = useRef<any>(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [goToPageInput, setGoToPageInput] = useState('');
-  const [isNavExpanded, setIsNavExpanded] = useState(true);
+  const [isNavExpanded, setIsNavExpanded] = useState(!isMobile()); // Collapsed on mobile by default
   const [prefaceLanguage] = useState<'zh' | 'zhTraditional' | 'en'>('zh');
   const [fontSize, setFontSize] = useState<'small' | 'medium' | 'large'>('medium');
 
@@ -243,7 +248,7 @@ const Book: React.FC = () => {
           maxHeight={1100}
           maxShadowOpacity={0.5}
           showCover={true}
-          mobileScrollSupport={true}
+          mobileScrollSupport={false}
           onFlip={onFlip}
           className="flip-book"
           usePortrait={true}
