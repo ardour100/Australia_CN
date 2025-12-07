@@ -8,9 +8,9 @@
   },
   "preface": {
     "title": {
-      "zh": "写在前面的话",
-      "zhTraditional": "寫在前面的話",
-      "en": "Preface"
+      "zh": "写在前面的话 （Work in Progress）",
+      "zhTraditional": "寫在前面的話 （Work in Progress）",
+      "en": "Preface（Work in Progress）"
     },
     "content": {
       "zh": [
@@ -74,23 +74,7 @@
       "title": "An Enlightened Beginning",
       "chineseTitle": "一个开明的开端",
       "chineseTitleTraditional": "一個開明的開端",
-      "contentZh": [
-        "1788年，第一舰队（First Fleet）抵达悉尼时，带来的不仅仅是罪犯和补给品。在货物中，有两本书将从根本上塑造这个新定居点的性格。",
-        "第一本是《圣经》（The Bible），代表着信仰和道德指引。它承载着将成为殖民地社会结构基石的精神和伦理传统。",
-        "第二本书，对于一个罪犯殖民地来说或许更令人惊讶，是布莱克斯通的《英国法释义》（Blackstone's Commentaries on the Laws of England）。这部由威廉·布莱克斯通爵士撰写的综合性法律论著，是英国普通法的权威指南。它出现在第一舰队上绝非偶然——这代表着在这片遥远土地上建立法治的明确承诺。",
-        "这种宗教信仰与法律原则的结合，揭示了殖民地建立愿景中的深刻内涵。从一开始，悉尼就不打算仅仅成为一个奴隶殖民地或无法无天的惩罚之地。相反，布莱克斯通著作的引入表明，英国法律将在这里适用，即使是罪犯也将享有法律权利，定居点将由既定的法律原则而非专制权力来治理。",
-        "信息是明确的：这将是一个建立在法治基础上的社会，法律程序和保护将得到遵守。虽然现实往往很严酷，正义可能很粗糙，但《英国法释义》的存在树立了一个重要的先例——澳大利亚将是一个法律而非武力最终占上风的地方。",
-        "这个开明的开端，植根于道德和法律框架，将被证明对澳大利亚的发展至关重要。它为一个社会奠定了基础，尽管起源于罪犯殖民地，却最终演变成世界上最稳定的民主国家之一，法治仍然是国家认同的基石。"
-      ],
-      "contentZhTraditional": [
-        "1788年，第一艦隊（First Fleet）抵達悉尼時，帶來的不僅僅是罪犯和補給品。在貨物中，有兩本書將從根本上塑造這個新定居點的性格。",
-        "第一本是《聖經》（The Bible），代表著信仰和道德指引。它承載著將成為殖民地社會結構基石的精神和倫理傳統。",
-        "第二本書，對於一個罪犯殖民地來說或許更令人驚訝，是布萊克斯通的《英國法釋義》（Blackstone's Commentaries on the Laws of England）。這部由威廉·布萊克斯通爵士撰寫的綜合性法律論著，是英國普通法的權威指南。它出現在第一艦隊上絕非偶然——這代表著在這片遙遠土地上建立法治的明確承諾。",
-        "這種宗教信仰與法律原則的結合，揭示了殖民地建立願景中的深刻內涵。從一開始，悉尼就不打算僅僅成為一個奴隸殖民地或無法無天的懲罰之地。相反，布萊克斯通著作的引入表明，英國法律將在這裡適用，即使是罪犯也將享有法律權利，定居點將由既定的法律原則而非專制權力來治理。",
-        "信息是明確的：這將是一個建立在法治基礎上的社會，法律程序和保護將得到遵守。雖然現實往往很嚴酷，正義可能很粗糙，但《英國法釋義》的存在樹立了一個重要的先例——澳大利亞將是一個法律而非武力最終佔上風的地方。",
-        "這個開明的開端，植根於道德和法律框架，將被證明對澳大利亞的發展至關重要。它為一個社會奠定了基礎，儘管起源於罪犯殖民地，卻最終演變成世界上最穩定的民主國家之一，法治仍然是國家認同的基石。"
-      ],
-      "content": []
+      "file": "./chapters/chapter-01.json"
     },
     {
       "id": 2,
@@ -98,8 +82,7 @@
       "title": "Rebellion and Restoration",
       "chineseTitle": "叛乱与复辟",
       "chineseTitleTraditional": "叛亂與復辟",
-      "content": [],
-      "placeholder": "[Add content about Rebellion and Restoration...]"
+      "file": "./chapters/chapter-02.json"
     },
     {
       "id": 3,
@@ -107,8 +90,7 @@
       "title": "'Not all the armies of England'",
       "chineseTitle": "\"并非英格兰所有的军队\"",
       "chineseTitleTraditional": "\"並非英格蘭所有的軍隊\"",
-      "content": [],
-      "placeholder": "[Add content about 'Not all the armies of England'...]"
+      "file": "./chapters/chapter-03.json"
     },
     {
       "id": 4,
@@ -116,8 +98,7 @@
       "title": "Towards Self-government",
       "chineseTitle": "走向自治",
       "chineseTitleTraditional": "走向自治",
-      "content": [],
-      "placeholder": "[Add content about Towards Self-government...]"
+      "file": "./chapters/chapter-04.json"
     },
     {
       "id": 5,
@@ -125,8 +106,7 @@
       "title": "Gold!",
       "chineseTitle": "淘金热",
       "chineseTitleTraditional": "淘金熱",
-      "content": [],
-      "placeholder": "[Add content about Gold!...]"
+      "file": "./chapters/chapter-05.json"
     },
     {
       "id": 6,
@@ -134,8 +114,7 @@
       "title": "Colonial Liberalism",
       "chineseTitle": "殖民地自由主义",
       "chineseTitleTraditional": "殖民地自由主義",
-      "content": [],
-      "placeholder": "[Add content about Colonial Liberalism...]"
+      "file": "./chapters/chapter-06.json"
     },
     {
       "id": 7,
@@ -143,8 +122,7 @@
       "title": "Empire and Federation",
       "chineseTitle": "帝国与联邦",
       "chineseTitleTraditional": "帝國與聯邦",
-      "content": [],
-      "placeholder": "[Add content about Seeking a Nation...]"
+      "file": "./chapters/chapter-07.json"
     },
     {
       "id": 8,
@@ -152,8 +130,7 @@
       "title": "A Bold Experiment",
       "chineseTitle": "一项大胆的尝试",
       "chineseTitleTraditional": "一項大膽的嘗試",
-      "content": [],
-      "placeholder": "[Add content about A Liberal Federation...]"
+      "file": "./chapters/chapter-08.json"
     },
     {
       "id": 9,
@@ -161,8 +138,7 @@
       "title": "The Great War",
       "chineseTitle": "第一次世界大战",
       "chineseTitleTraditional": "第一次世界大戰",
-      "content": [],
-      "placeholder": "[Add content about Solidarity...]"
+      "file": "./chapters/chapter-09.json"
     },
     {
       "id": 10,
@@ -170,8 +146,7 @@
       "title": "A Funereal Decade",
       "chineseTitle": "葬礼般的十年",
       "chineseTitleTraditional": "葬禮般的十年",
-      "content": [],
-      "placeholder": "[Add content about War...]"
+      "file": "./chapters/chapter-10.json"
     },
     {
       "id": 11,
@@ -179,8 +154,7 @@
       "title": "The Economic Crisis",
       "chineseTitle": "经济危机",
       "chineseTitleTraditional": "經濟危機",
-      "content": [],
-      "placeholder": "[Add content about Reaction...]"
+      "file": "./chapters/chapter-11.json"
     },
     {
       "id": 12,
@@ -188,8 +162,7 @@
       "title": "Australia Threatened",
       "chineseTitle": "澳大利亚受到威胁",
       "chineseTitleTraditional": "澳大利亞受到威脅",
-      "content": [],
-      "placeholder": "[Add content about New Deals...]"
+      "file": "./chapters/chapter-12.json"
     },
     {
       "id": 13,
@@ -197,8 +170,7 @@
       "title": "The Liberal Revival",
       "chineseTitle": "自由主义的复兴",
       "chineseTitleTraditional": "自由主義的復興",
-      "content": [],
-      "placeholder": "[Add content about War Again...]"
+      "file": "./chapters/chapter-13.json"
     },
     {
       "id": 14,
@@ -206,8 +178,7 @@
       "title": "The Age of Menzies",
       "chineseTitle": "复苏",
       "chineseTitleTraditional": "復甦",
-      "content": [],
-      "placeholder": "[Add content about Recovery...]"
+      "file": "./chapters/chapter-14.json"
     },
     {
       "id": 15,
@@ -215,8 +186,7 @@
       "title": "Talkers and Doers",
       "chineseTitle": "空谈家与实干家",
       "chineseTitleTraditional": "空談家與實幹家",
-      "content": [],
-      "placeholder": "[Add content about Golden Years...]"
+      "file": "./chapters/chapter-15.json"
     },
     {
       "id": 16,
@@ -224,8 +194,7 @@
       "title": "Opening the Doors",
       "chineseTitle": "新方向",
       "chineseTitleTraditional": "新方向",
-      "content": [],
-      "placeholder": "[Add content about Opening the Doors...]"
+      "file": "./chapters/chapter-16.json"
     },
     {
       "id": 17,
@@ -233,8 +202,7 @@
       "title": "Consolidation",
       "chineseTitle": "合并",
       "chineseTitleTraditional": "合併",
-      "content": [],
-      "placeholder": "[Add content about Consolidation...]"
+      "file": "./chapters/chapter-17.json"
     },
     {
       "id": 18,
@@ -242,8 +210,7 @@
       "title": "Drifting Backward",
       "chineseTitle": "重建",
       "chineseTitleTraditional": "重建",
-      "content": [],
-      "placeholder": "[Add content about Reconstruction...]"
+      "file": "./chapters/chapter-18.json"
     }
   ],
   "backCover": {

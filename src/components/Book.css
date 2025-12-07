@@ -130,6 +130,108 @@
   transform: translateY(0);
 }
 
+/* Font Size Control */
+.font-size-control {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding-top: 1rem;
+  border-top: 2px solid #e0f2fe;
+}
+
+.font-size-control label {
+  font-size: 0.9rem;
+  color: #0891b2;
+  font-weight: 600;
+}
+
+.font-size-buttons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+}
+
+.font-size-btn {
+  flex: 1;
+  padding: 0.5rem;
+  background: white;
+  border: 2px solid #0891b2;
+  border-radius: 6px;
+  color: #0891b2;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.font-size-btn:first-child {
+  font-size: 0.75rem;
+}
+
+.font-size-btn:nth-child(2) {
+  font-size: 0.95rem;
+}
+
+.font-size-btn:last-child {
+  font-size: 1.2rem;
+}
+
+.font-size-btn:hover {
+  background: #f0f9ff;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(8, 145, 178, 0.2);
+}
+
+.font-size-btn.active {
+  background: linear-gradient(135deg, #0891b2 0%, #14b8a6 100%);
+  color: white;
+  border-color: #14b8a6;
+}
+
+.font-size-btn:active {
+  transform: translateY(0);
+}
+
+/* Font size application to content */
+.font-size-small .content-page p {
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.font-size-small .content-page h2 {
+  font-size: 1.6rem;
+}
+
+.font-size-small .chapter-title-cn {
+  font-size: 0.95rem;
+}
+
+.font-size-medium .content-page p {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.font-size-medium .content-page h2 {
+  font-size: 2rem;
+}
+
+.font-size-medium .chapter-title-cn {
+  font-size: 1.1rem;
+}
+
+.font-size-large .content-page p {
+  font-size: 1.15rem;
+  line-height: 1.7;
+}
+
+.font-size-large .content-page h2 {
+  font-size: 2.3rem;
+}
+
+.font-size-large .chapter-title-cn {
+  font-size: 1.25rem;
+}
+
 .flipbook-wrapper {
   perspective: 3000px;
   margin-bottom: 3.33px;
@@ -358,11 +460,14 @@
   box-shadow: 0 2px 8px rgba(8, 145, 178, 0.2);
 }
 
-.chapter-number {
+.catalog-item .chapter-number {
   font-size: 1.1rem;
   font-weight: bold;
   color: #0891b2;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .chapter-titles {
