@@ -69,6 +69,8 @@ const Book: React.FC = () => {
   // Detect mobile device
   const isMobile = () => {
     return window.innerWidth <= 768;
+  };
+
   // Default to Simplified Chinese for all users
   const detectPreferredLanguage = (): 'zh' | 'zhTraditional' | 'en' => {
     // Always default to Simplified Chinese
@@ -78,7 +80,7 @@ const Book: React.FC = () => {
   const bookRef = useRef<any>(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [goToPageInput, setGoToPageInput] = useState('');
-  const [isNavExpanded, setIsNavExpanded] = useState(true); // Start expanded to show instructions
+  const [isNavExpanded, setIsNavExpanded] = useState(!isMobile()); // Collapsed on mobile by default
   const [prefaceLanguage, setPrefaceLanguage] = useState<'zh' | 'zhTraditional' | 'en'>(detectPreferredLanguage());
   const [fontSize, setFontSize] = useState<'small' | 'medium' | 'large'>('medium'); // Font size control
   const [pageToRestore, setPageToRestore] = useState<number | null>(null); // Store page before language change
