@@ -78,6 +78,7 @@ const Book: React.FC = () => {
   const [isNavExpanded, setIsNavExpanded] = useState(true); // Start expanded to show instructions
   const [prefaceLanguage, setPrefaceLanguage] = useState<'zh' | 'zhTraditional' | 'en'>(detectPreferredLanguage());
   const [fontSize, setFontSize] = useState<'small' | 'medium' | 'large'>('medium'); // Font size control
+  const [pageToRestore, setPageToRestore] = useState<number | null>(null); // Store page before language change
 
   // Split chapter content into pages based on paragraph count
   // Adjusted to fit page height - smaller number for first page (with header), more for subsequent pages
@@ -190,6 +191,26 @@ const Book: React.FC = () => {
     setIsNavExpanded(!isNavExpanded);
   };
 
+  // Handle language change with page restoration
+  const handleLanguageChange = (newLanguage: 'zh' | 'zhTraditional' | 'en') => {
+    if (newLanguage !== prefaceLanguage) {
+      // Save current page before language change
+      setPageToRestore(currentPage);
+      setPrefaceLanguage(newLanguage);
+    }
+  };
+
+  // Restore page after HTMLFlipBook remounts
+  useEffect(() => {
+    if (pageToRestore !== null && bookRef.current) {
+      // Use setTimeout to ensure flipbook is fully initialized
+      setTimeout(() => {
+        bookRef.current?.pageFlip().turnToPage(pageToRestore);
+        setPageToRestore(null);
+      }, 100);
+    }
+  }, [prefaceLanguage, pageToRestore]);
+
   // Add keyboard arrow key support
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -214,6 +235,7 @@ const Book: React.FC = () => {
     <div className={`book-container font-size-${fontSize}`}>
       <div className="flipbook-wrapper">
         <HTMLFlipBook
+          key={prefaceLanguage}
           ref={bookRef}
           width={715}
           height={935}
@@ -247,10 +269,10 @@ const Book: React.FC = () => {
             </div>
           </Page>
 
-          {/* Blank Page */}
+          {/* Blank Page
           <Page number={0}>
             <div className="blank-page"></div>
-          </Page>
+          </Page> */}
 
           {/* Preface Page */}
           <Page number={0}>
@@ -258,34 +280,32 @@ const Book: React.FC = () => {
               <div className="language-toggle">
                 <button
                   className={`lang-btn ${prefaceLanguage === 'zh' ? 'active' : ''}`}
-                  onClick={() => setPrefaceLanguage('zh')}
+                  onClick={() => handleLanguageChange('zh')}
                 >
                   简体
                 </button>
                 <button
                   className={`lang-btn ${prefaceLanguage === 'zhTraditional' ? 'active' : ''}`}
-                  onClick={() => setPrefaceLanguage('zhTraditional')}
+                  onClick={() => handleLanguageChange('zhTraditional')}
                 >
                   繁體
                 </button>
                 <button
                   className={`lang-btn ${prefaceLanguage === 'en' ? 'active' : ''}`}
-                  onClick={() => setPrefaceLanguage('en')}
+                  onClick={() => handleLanguageChange('en')}
                 >
                   EN
                 </button>
               </div>
-              <div key={prefaceLanguage}>
-                <h2>{bookData.preface.title[prefaceLanguage]}</h2>
-                {bookData.preface.content[prefaceLanguage] && Array.isArray(bookData.preface.content[prefaceLanguage]) ? (
-                  bookData.preface.content[prefaceLanguage].map((paragraph: string, index: number) => (
-                    <p key={index}>{paragraph}</p>
-                  ))
-                ) : (
-                  <p>内容加载中...</p>
-                )}
-                <p className="signature">{bookData.preface.signature}</p>
-              </div>
+              <h2>{bookData.preface.title[prefaceLanguage]}</h2>
+              {bookData.preface.content[prefaceLanguage] && Array.isArray(bookData.preface.content[prefaceLanguage]) ? (
+                bookData.preface.content[prefaceLanguage].map((paragraph: string, index: number) => (
+                  <p key={index}>{paragraph}</p>
+                ))
+              ) : (
+                <p>内容加载中...</p>
+              )}
+              <p className="signature">{bookData.preface.signature}</p>
             </div>
           </Page>
 
@@ -465,10 +485,10 @@ const Book: React.FC = () => {
               </div>
             </div>
             <div className="usage-instructions">
-              <h4>How to Use / 使用说明</h4>
+              <h4>How to Use</h4>
               <ul>
-                <li>← → Arrow keys / 左右键翻页</li>
-                <li>Click page to flip / 点击翻页</li>
+                <li>← → Arrow keys</li>
+                <li>Click page to flip</li>
               </ul>
             </div>
           </div>
