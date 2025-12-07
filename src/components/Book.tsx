@@ -23,31 +23,16 @@ const Page = forwardRef<HTMLDivElement, PageProps>(({ number, children }, ref) =
 Page.displayName = 'Page';
 
 const Book: React.FC = () => {
-  // Detect user's preferred language based on browser settings
+  // Default to Simplified Chinese for all users
   const detectPreferredLanguage = (): 'zh' | 'zhTraditional' | 'en' => {
-    const userLanguage = navigator.language || (navigator as any).userLanguage;
-
-    // Check for Traditional Chinese (Taiwan, Hong Kong, Macau)
-    if (userLanguage.includes('zh-TW') || userLanguage.includes('zh-HK') || userLanguage.includes('zh-MO')) {
-      return 'zhTraditional';
-    }
-    // Check for Simplified Chinese
-    else if (userLanguage.includes('zh')) {
-      return 'zh';
-    }
-    // Check for English
-    else if (userLanguage.includes('en')) {
-      return 'en';
-    }
-
-    // Default to Simplified Chinese
+    // Always default to Simplified Chinese
     return 'zh';
   };
 
   const bookRef = useRef<any>(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [goToPageInput, setGoToPageInput] = useState('');
-  const [isNavExpanded, setIsNavExpanded] = useState(false);
+  const [isNavExpanded, setIsNavExpanded] = useState(true); // Start expanded to show instructions
   const [prefaceLanguage, setPrefaceLanguage] = useState<'zh' | 'zhTraditional' | 'en'>(detectPreferredLanguage());
   const totalPages = bookData.chapters.length + 5; // chapters + cover + blank + preface + catalog + back cover
 
@@ -195,14 +180,60 @@ const Book: React.FC = () => {
           </Page>
 
           {/* Dynamic Chapter Pages */}
-          {bookData.chapters.map((chapter: any) => (
-            <Page key={chapter.id} number={chapter.pageNumber}>
+          {bookData.chapters.map((chapter: any, index: number) => {
+            // Debug: Log chapter content availability
+            if (chapter.id === 1) {
+              console.log('Chapter 1 debug:', {
+                prefaceLanguage,
+                hasContentZh: !!chapter.contentZh,
+                contentZhLength: chapter.contentZh?.length,
+                hasContentZhTraditional: !!chapter.contentZhTraditional,
+                contentZhTraditionalLength: chapter.contentZhTraditional?.length,
+                hasContent: !!chapter.content,
+                contentLength: chapter.content?.length
+              });
+            }
+
+            return (
+            <Page key={chapter.id} number={index + 1}>
               <div className="content-page">
-                <h2>{chapter.title}</h2>
-                {chapter.content.map((paragraph: string, index: number) => (
-                  <p key={index}>{paragraph}</p>
-                ))}
-                {chapter.placeholder && (
+                <div className="chapter-header">
+                  <div className="chapter-number">Chapter {chapter.id}</div>
+                  <h2>{chapter.title}</h2>
+                  <div className="chapter-title-cn">{chapter.chineseTitle} / {chapter.chineseTitleTraditional}</div>
+                </div>
+
+                {/* DEBUG: Test if rendering works */}
+                {chapter.id === 1 && (
+                  <p style={{color: 'blue', border: '2px solid blue', padding: '10px'}}>
+                    DEBUG: Chapter 1 detected Language: {prefaceLanguage}<br/>
+                    Has contentZh: {chapter.contentZh ? 'YES' : 'NO'}<br/>
+                    contentZh length: {chapter.contentZh?.length || 0}<br/>
+                    First paragraph: {chapter.contentZh?.[0]?.substring(0, 50) || 'N/A'}
+                  </p>
+                )}
+
+                {/* Simplified Chinese content */}
+                {prefaceLanguage === 'zh' && chapter.contentZh && Array.isArray(chapter.contentZh) && chapter.contentZh.length > 0 ? (
+                  chapter.contentZh.map((paragraph: string, pIndex: number) => (
+                    <p key={pIndex}>{paragraph}</p>
+                  ))
+                ) : null}
+
+                {/* Traditional Chinese content */}
+                {prefaceLanguage === 'zhTraditional' && chapter.contentZhTraditional && Array.isArray(chapter.contentZhTraditional) && chapter.contentZhTraditional.length > 0 ? (
+                  chapter.contentZhTraditional.map((paragraph: string, pIndex: number) => (
+                    <p key={pIndex}>{paragraph}</p>
+                  ))
+                ) : null}
+
+                {/* English content */}
+                {prefaceLanguage === 'en' && chapter.content && Array.isArray(chapter.content) && chapter.content.length > 0 ? (
+                  chapter.content.map((paragraph: string, pIndex: number) => (
+                    <p key={pIndex}>{paragraph}</p>
+                  ))
+                ) : null}
+                {(!chapter.contentZh || chapter.contentZh.length === 0) && chapter.placeholder && (
                   <div className="placeholder-text">{chapter.placeholder}</div>
                 )}
                 {chapter.note && (
@@ -212,10 +243,11 @@ const Book: React.FC = () => {
                 )}
               </div>
             </Page>
-          ))}
+            );
+          })}
 
           {/* Back Cover */}
-          <Page number={bookData.chapters.length + 1}>
+          <Page number={0}>
             <div className="back-cover">
               <div className="back-cover-content">
                 <h3>{bookData.backCover.title}</h3>
@@ -254,6 +286,13 @@ const Book: React.FC = () => {
               />
               <button type="submit" className="go-button">Go</button>
             </form>
+            <div className="usage-instructions">
+              <h4>How to Use / 使用说明</h4>
+              <ul>
+                <li>← → Arrow keys / 左右键翻页</li>
+                <li>Click page to flip / 点击翻页</li>
+              </ul>
+            </div>
           </div>
         )}
       </div>
