@@ -270,7 +270,27 @@
   box-sizing: border-box;
   border: 1px solid #d4c5a9;
   position: relative;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar styling for book pages */
+.book-page::-webkit-scrollbar {
+  width: 8px;
+}
+
+.book-page::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.book-page::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #0891b2 0%, #14b8a6 100%);
+  border-radius: 4px;
+}
+
+.book-page::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #0e7490 0%, #0f766e 100%);
 }
 
 /* Remove padding for cover page */
@@ -286,6 +306,8 @@
   font-family: 'Georgia', serif;
   color: #2c2c2c;
   line-height: 1.6;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .page-number {
@@ -501,6 +523,9 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .chapter-header {
