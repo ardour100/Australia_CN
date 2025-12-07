@@ -1,11 +1,18 @@
-import React, { useRef, useState, useEffect, forwardRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import HTMLFlipBook from 'react-pageflip';
-import ReactMarkdown from 'react-markdown';
 import bookData from '../data/chapters.json';
-import coverImage from '../assets/cover.png';
 import './Book.css';
 
-// Import all chapter files
+// Import components
+import Page from './Page';
+import Cover from './Cover';
+import Preface from './Preface';
+import TableOfContents from './TableOfContents';
+import ChapterPage from './ChapterPage';
+import BackCover from './BackCover';
+import FloatingNavigation from './FloatingNavigation';
+
+// Import chapter files
 import chapter01 from '../data/chapters/chapter-01.json';
 import chapter02 from '../data/chapters/chapter-02.json';
 import chapter03 from '../data/chapters/chapter-03.json';
@@ -47,41 +54,15 @@ const chapterContents: { [key: number]: any } = {
   18: chapter18,
 };
 
-interface PageProps {
-  number: number;
-  children: React.ReactNode;
-}
-
-const Page = forwardRef<HTMLDivElement, PageProps>(({ number, children }, ref) => {
-  return (
-    <div className="book-page" ref={ref}>
-      <div className="page-content">
-        {children}
-      </div>
-      {number > 0 && <div className="page-number">{number}</div>}
-    </div>
-  );
-});
-
-Page.displayName = 'Page';
-
 const Book: React.FC = () => {
-  // Default to Simplified Chinese for all users
-  const detectPreferredLanguage = (): 'zh' | 'zhTraditional' | 'en' => {
-    // Always default to Simplified Chinese
-    return 'zh';
-  };
-
   const bookRef = useRef<any>(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [goToPageInput, setGoToPageInput] = useState('');
-  const [isNavExpanded, setIsNavExpanded] = useState(true); // Start expanded to show instructions
-  const [prefaceLanguage, setPrefaceLanguage] = useState<'zh' | 'zhTraditional' | 'en'>(detectPreferredLanguage());
-  const [fontSize, setFontSize] = useState<'small' | 'medium' | 'large'>('medium'); // Font size control
-  const [pageToRestore, setPageToRestore] = useState<number | null>(null); // Store page before language change
+  const [isNavExpanded, setIsNavExpanded] = useState(true);
+  const [prefaceLanguage] = useState<'zh' | 'zhTraditional' | 'en'>('zh');
+  const [fontSize, setFontSize] = useState<'small' | 'medium' | 'large'>('medium');
 
-  // Split chapter content into pages based on paragraph count
-  // Adjusted to fit page height - smaller number for first page (with header), more for subsequent pages
+  // Split chapter content into pages
   const splitContentIntoPages = (content: string[], firstPageParagraphs: number = 3, otherPageParagraphs: number = 5) => {
     const pages: string[][] = [];
 
@@ -89,10 +70,8 @@ const Book: React.FC = () => {
       return [[]];
     }
 
-    // First page has less space due to chapter header
     pages.push(content.slice(0, firstPageParagraphs));
 
-    // Remaining pages can fit more content
     for (let i = firstPageParagraphs; i < content.length; i += otherPageParagraphs) {
       pages.push(content.slice(i, i + otherPageParagraphs));
     }
@@ -100,12 +79,11 @@ const Book: React.FC = () => {
     return pages;
   };
 
-  // Calculate total pages dynamically based on content
+  // Calculate total pages dynamically
   const calculateTotalPages = () => {
     let pageCount = 4; // cover + blank + preface + catalog
 
     bookData.chapters.forEach((chapter: any) => {
-      // Get full chapter content from imported files
       const fullChapter = chapterContents[chapter.id];
 
       let content: string[] = [];
@@ -121,7 +99,7 @@ const Book: React.FC = () => {
         const pages = splitContentIntoPages(content);
         pageCount += pages.length;
       } else {
-        pageCount += 1; // Empty chapter still gets one page
+        pageCount += 1;
       }
     });
 
@@ -135,11 +113,10 @@ const Book: React.FC = () => {
     setCurrentPage(e.data);
   };
 
-  // Calculate the actual page index for each chapter based on content
+  // Calculate the actual page index for each chapter
   const getChapterPageIndex = (chapterIndex: number) => {
     let pageIndex = 4; // Start after cover + blank + preface + catalog
 
-    // Calculate pages for all chapters before this one
     for (let i = 0; i < chapterIndex; i++) {
       const chapter = bookData.chapters[i];
       const fullChapter = chapterContents[chapter.id];
@@ -157,7 +134,7 @@ const Book: React.FC = () => {
         const pages = splitContentIntoPages(content);
         pageIndex += pages.length;
       } else {
-        pageIndex += 1; // Empty chapter still gets one page
+        pageIndex += 1;
       }
     }
 
@@ -165,7 +142,6 @@ const Book: React.FC = () => {
   };
 
   const handleChapterClick = (chapterIndex: number) => {
-    // Navigate to the chapter page (chapter index + 4 because of cover, blank, preface, and catalog)
     const pageIndex = chapterIndex + 4;
     bookRef.current?.pageFlip().turnToPage(pageIndex);
   };
@@ -181,7 +157,6 @@ const Book: React.FC = () => {
 
   const handlePageInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    // Only allow numbers
     if (value === '' || /^\d+$/.test(value)) {
       setGoToPageInput(value);
     }
@@ -191,36 +166,14 @@ const Book: React.FC = () => {
     setIsNavExpanded(!isNavExpanded);
   };
 
-  // Handle language change with page restoration
-  const handleLanguageChange = (newLanguage: 'zh' | 'zhTraditional' | 'en') => {
-    if (newLanguage !== prefaceLanguage) {
-      // Save current page before language change
-      setPageToRestore(currentPage);
-      setPrefaceLanguage(newLanguage);
-    }
-  };
-
-  // Restore page after HTMLFlipBook remounts
-  useEffect(() => {
-    if (pageToRestore !== null && bookRef.current) {
-      // Use setTimeout to ensure flipbook is fully initialized
-      setTimeout(() => {
-        bookRef.current?.pageFlip().turnToPage(pageToRestore);
-        setPageToRestore(null);
-      }, 100);
-    }
-  }, [prefaceLanguage, pageToRestore]);
-
-  // Add keyboard arrow key support
+  // Keyboard arrow key support
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft') {
-        // Previous page
         if (currentPage > 0) {
           bookRef.current?.pageFlip().flipPrev();
         }
       } else if (e.key === 'ArrowRight') {
-        // Next page
         if (currentPage < totalPages - 1) {
           bookRef.current?.pageFlip().flipNext();
         }
@@ -230,6 +183,50 @@ const Book: React.FC = () => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentPage, totalPages]);
+
+  // Render chapter pages
+  const renderChapterPages = () => {
+    let currentPageNumber = 1;
+    const pages: React.ReactElement[] = [];
+
+    bookData.chapters.forEach((chapter: any) => {
+      const fullChapter = chapterContents[chapter.id];
+
+      let content: string[] = [];
+      if (prefaceLanguage === 'zh' && fullChapter?.contentZh) {
+        content = fullChapter.contentZh;
+      } else if (prefaceLanguage === 'zhTraditional' && fullChapter?.contentZhTraditional) {
+        content = fullChapter.contentZhTraditional;
+      } else if (prefaceLanguage === 'en' && fullChapter?.content) {
+        content = fullChapter.content;
+      }
+
+      const contentPages = content && content.length > 0 ? splitContentIntoPages(content) : [[]];
+
+      contentPages.forEach((pageContent: string[], pageIndex: number) => {
+        const isFirstPage = pageIndex === 0;
+
+        pages.push(
+          <ChapterPage
+            key={`${chapter.id}-${pageIndex}`}
+            chapterId={chapter.id}
+            chapterTitle={chapter.title}
+            chineseTitle={chapter.chineseTitle}
+            chineseTitleTraditional={chapter.chineseTitleTraditional}
+            pageNumber={currentPageNumber}
+            pageContent={pageContent}
+            isFirstPage={isFirstPage}
+            placeholder={fullChapter?.placeholder}
+            note={fullChapter?.note}
+          />
+        );
+
+        currentPageNumber++;
+      });
+    });
+
+    return pages;
+  };
 
   return (
     <div className={`book-container font-size-${fontSize}`}>
@@ -262,238 +259,36 @@ const Book: React.FC = () => {
           showPageCorners={true}
           disableFlipByClick={false}
         >
-          {/* Cover Page */}
-          <Page number={0}>
-            <div className="cover-page">
-              <img src={coverImage} alt="Book Cover" className="cover-image" />
-            </div>
-          </Page>
+          <Cover />
 
-          {/* Blank Page
           <Page number={0}>
             <div className="blank-page"></div>
-          </Page> */}
-
-          {/* Preface Page */}
-          <Page number={0}>
-            <div className="content-page preface-page">
-              <div className="language-toggle">
-                <button
-                  className={`lang-btn ${prefaceLanguage === 'zh' ? 'active' : ''}`}
-                  onClick={() => handleLanguageChange('zh')}
-                >
-                  简体
-                </button>
-                <button
-                  className={`lang-btn ${prefaceLanguage === 'zhTraditional' ? 'active' : ''}`}
-                  onClick={() => handleLanguageChange('zhTraditional')}
-                >
-                  繁體
-                </button>
-                <button
-                  className={`lang-btn ${prefaceLanguage === 'en' ? 'active' : ''}`}
-                  onClick={() => handleLanguageChange('en')}
-                >
-                  EN
-                </button>
-              </div>
-              <h2>{bookData.preface.title[prefaceLanguage]}</h2>
-              {bookData.preface.content[prefaceLanguage] && Array.isArray(bookData.preface.content[prefaceLanguage]) ? (
-                bookData.preface.content[prefaceLanguage].map((paragraph: string, index: number) => (
-                  <p key={index}>{paragraph}</p>
-                ))
-              ) : (
-                <p>内容加载中...</p>
-              )}
-              <p className="signature">{bookData.preface.signature}</p>
-            </div>
           </Page>
 
-          {/* Catalog Page */}
-          <Page number={0}>
-            <div className="catalog-page">
-              <h2 className="catalog-title">Table of Contents<br/>目录 / 目錄</h2>
-              <div className="catalog-list">
-                {bookData.chapters.map((chapter, index) => (
-                  <div
-                    key={chapter.id}
-                    className="catalog-item"
-                    onClick={() => handleChapterClick(index)}
-                    role="button"
-                    tabIndex={0}
-                  >
-                    <span className="chapter-number">{chapter.id}</span>
-                    <div className="chapter-titles">
-                      <div className="chapter-title-en">{chapter.title}</div>
-                      <div className="chapter-title-zh">
-                        {chapter.chineseTitle} / {chapter.chineseTitleTraditional}
-                      </div>
-                    </div>
-                    <span className="chapter-page">{getChapterPageIndex(index) + 1}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </Page>
+          <Preface />
 
-          {/* Dynamic Chapter Pages */}
-          {(() => {
-            let currentPageNumber = 1;
-            const pages: React.ReactElement[] = [];
+          <TableOfContents
+            onChapterClick={handleChapterClick}
+            getChapterPageIndex={getChapterPageIndex}
+          />
 
-            bookData.chapters.forEach((chapter: any) => {
-              // Get full chapter content from imported files
-              const fullChapter = chapterContents[chapter.id];
+          {renderChapterPages()}
 
-              // Get content based on language
-              let content: string[] = [];
-              if (prefaceLanguage === 'zh' && fullChapter?.contentZh) {
-                content = fullChapter.contentZh;
-              } else if (prefaceLanguage === 'zhTraditional' && fullChapter?.contentZhTraditional) {
-                content = fullChapter.contentZhTraditional;
-              } else if (prefaceLanguage === 'en' && fullChapter?.content) {
-                content = fullChapter.content;
-              }
-
-              // Split content into pages
-              const contentPages = content && content.length > 0 ? splitContentIntoPages(content) : [[]];
-
-              // Create pages for this chapter
-              contentPages.forEach((pageContent: string[], pageIndex: number) => {
-                const isFirstPage = pageIndex === 0;
-
-                pages.push(
-                  <Page key={`${chapter.id}-${pageIndex}`} number={currentPageNumber}>
-                    <div className="content-page">
-                      {isFirstPage && (
-                        <div className="chapter-header">
-                          <div className="chapter-number">Chapter {chapter.id}</div>
-                          <h2>{chapter.title}</h2>
-                          <div className="chapter-title-cn">{chapter.chineseTitle} / {chapter.chineseTitleTraditional}</div>
-                        </div>
-                      )}
-
-                      {/* Render page content with markdown support */}
-                      {pageContent.length > 0 ? (
-                        pageContent.map((paragraph: string, pIndex: number) => (
-                          <div key={pIndex} className="markdown-content">
-                            <ReactMarkdown
-                              components={{
-                                img: ({ node, ...props }) => (
-                                  <img
-                                    {...props}
-                                    style={{ width: "380px", height: "200px", objectFit: "cover" }}
-                                  />
-                                ),
-                              }}
-                            >
-                              {paragraph}
-                            </ReactMarkdown>
-                          </div>
-                        ))
-                      ) : (
-                        fullChapter?.placeholder && (
-                          <div className="placeholder-text">{fullChapter.placeholder}</div>
-                        )
-                      )}
-
-                      {isFirstPage && fullChapter?.note && (
-                        <div className="page-note">
-                          <strong>Note:</strong> {fullChapter.note}
-                        </div>
-                      )}
-                    </div>
-                  </Page>
-                );
-
-                currentPageNumber++;
-              });
-            });
-
-            return pages;
-          })()}
-
-          {/* Back Cover */}
-          <Page number={0}>
-            <div className="back-cover">
-              <div className="back-cover-content">
-                <h3>{bookData.backCover.title}</h3>
-                {bookData.backCover.content.map((paragraph, index) => (
-                  <p key={index}>{paragraph}</p>
-                ))}
-                <p className="back-note">{bookData.backCover.note}</p>
-              </div>
-            </div>
-          </Page>
+          <BackCover />
         </HTMLFlipBook>
       </div>
 
-      {/* Floating Navigation */}
-      <div className={`floating-nav ${isNavExpanded ? 'expanded' : ''}`}>
-        <button className="nav-toggle" onClick={toggleNav} aria-label="Toggle navigation">
-          {isNavExpanded ? '✕' : '📖'}
-        </button>
-
-        {isNavExpanded && (
-          <div className="nav-content">
-            <div className="current-page-display">
-              Page {currentPage + 1} of {totalPages}
-            </div>
-            <form onSubmit={handleGoToPage} className="go-to-page-form">
-              <label htmlFor="page-input">Go to page:</label>
-              <input
-                id="page-input"
-                type="text"
-                inputMode="numeric"
-                pattern="[0-9]*"
-                value={goToPageInput}
-                onChange={handlePageInputChange}
-                placeholder="Enter page number"
-                className="page-input"
-              />
-              <button type="submit" className="go-button">Go</button>
-            </form>
-
-            {/* Font Size Control */}
-            <div className="font-size-control">
-              <label>Font size:</label>
-              <div className="font-size-buttons">
-                <button
-                  type="button"
-                  className={`font-size-btn ${fontSize === 'small' ? 'active' : ''}`}
-                  onClick={() => setFontSize('small')}
-                  aria-label="Small font"
-                >
-                  Aa
-                </button>
-                <button
-                  type="button"
-                  className={`font-size-btn ${fontSize === 'medium' ? 'active' : ''}`}
-                  onClick={() => setFontSize('medium')}
-                  aria-label="Medium font"
-                >
-                  Aa
-                </button>
-                <button
-                  type="button"
-                  className={`font-size-btn ${fontSize === 'large' ? 'active' : ''}`}
-                  onClick={() => setFontSize('large')}
-                  aria-label="Large font"
-                >
-                  Aa
-                </button>
-              </div>
-            </div>
-            <div className="usage-instructions">
-              <h4>How to Use</h4>
-              <ul>
-                <li>← → Arrow keys</li>
-                <li>Click page to flip</li>
-              </ul>
-            </div>
-          </div>
-        )}
-      </div>
+      <FloatingNavigation
+        isExpanded={isNavExpanded}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        goToPageInput={goToPageInput}
+        fontSize={fontSize}
+        onToggle={toggleNav}
+        onGoToPage={handleGoToPage}
+        onPageInputChange={handlePageInputChange}
+        onFontSizeChange={setFontSize}
+      />
     </div>
   );
 };
