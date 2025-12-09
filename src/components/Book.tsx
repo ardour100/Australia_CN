@@ -90,6 +90,16 @@ const Book: React.FC = () => {
   const [pageToRestore, setPageToRestore] = useState<number | null>(null); // Store page before language change
   const [flippingTime, setFlippingTime] = useState<number>(1000); // Control animation duration
 
+  // Draggable navigation state
+  const [navPosition, setNavPosition] = useState(() => {
+    const saved = localStorage.getItem('navPosition');
+    return saved ? JSON.parse(saved) : { x: 32, y: 32 }; // Default: 2rem = 32px
+  });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const [dragMoved, setDragMoved] = useState(false);
+  const navRef = useRef<HTMLDivElement>(null);
+
   // Touch tracking for smart scroll/swipe detection
   const touchStartX = useRef<number>(0);
   const touchStartY = useRef<number>(0);
@@ -265,6 +275,75 @@ const Book: React.FC = () => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentPage, totalPages]);
+
+  // Handle drag start
+  const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
+    setIsDragging(true);
+    setDragMoved(false);
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+
+    setDragOffset({
+      x: clientX - navPosition.x,
+      y: clientY - navPosition.y
+    });
+  };
+
+  // Handle drag move
+  const handleDragMove = (e: MouseEvent | TouchEvent) => {
+    if (!isDragging) return;
+
+    e.preventDefault();
+    setDragMoved(true);
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+
+    const newX = clientX - dragOffset.x;
+    const newY = clientY - dragOffset.y;
+
+    // Keep navigation within viewport bounds
+    const maxX = window.innerWidth - (navRef.current?.offsetWidth || 0);
+    const maxY = window.innerHeight - (navRef.current?.offsetHeight || 0);
+
+    const boundedX = Math.max(0, Math.min(newX, maxX));
+    const boundedY = Math.max(0, Math.min(newY, maxY));
+
+    setNavPosition({ x: boundedX, y: boundedY });
+  };
+
+  // Handle drag end
+  const handleDragEnd = () => {
+    if (isDragging) {
+      setIsDragging(false);
+      // Save position to localStorage
+      localStorage.setItem('navPosition', JSON.stringify(navPosition));
+    }
+  };
+
+  // Handle toggle click - only if not dragged
+  const handleToggleClick = () => {
+    if (!dragMoved) {
+      toggleNav();
+    }
+    setDragMoved(false);
+  };
+
+  // Set up drag event listeners
+  useEffect(() => {
+    if (isDragging) {
+      window.addEventListener('mousemove', handleDragMove);
+      window.addEventListener('mouseup', handleDragEnd);
+      window.addEventListener('touchmove', handleDragMove, { passive: false });
+      window.addEventListener('touchend', handleDragEnd);
+
+      return () => {
+        window.removeEventListener('mousemove', handleDragMove);
+        window.removeEventListener('mouseup', handleDragEnd);
+        window.removeEventListener('touchmove', handleDragMove);
+        window.removeEventListener('touchend', handleDragEnd);
+      };
+    }
+  }, [isDragging, dragOffset, navPosition]);
 
   // Smart touch handling: distinguish vertical scroll from horizontal swipe
   useEffect(() => {
@@ -545,8 +624,22 @@ const Book: React.FC = () => {
       </div>
 
       {/* Floating Navigation */}
-      <div className={`floating-nav ${isNavExpanded ? 'expanded' : ''}`}>
-        <button className="nav-toggle" onClick={toggleNav} aria-label="Toggle navigation">
+      <div
+        ref={navRef}
+        className={`floating-nav ${isNavExpanded ? 'expanded' : ''} ${isDragging ? 'dragging' : ''}`}
+        style={{
+          left: `${navPosition.x}px`,
+          top: `${navPosition.y}px`
+        }}
+      >
+        <button
+          className="nav-toggle"
+          onClick={handleToggleClick}
+          onMouseDown={handleDragStart}
+          onTouchStart={handleDragStart}
+          aria-label="Toggle navigation (drag to move)"
+          style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+        >
           {isNavExpanded ? '✕' : '📖'}
         </button>
 
