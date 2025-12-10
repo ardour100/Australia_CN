@@ -316,20 +316,31 @@
 
 .page-number {
   position: absolute;
-  top: 0.8rem;
-  font-size: 0.9rem;
-  color: #888;
-  font-style: italic;
+  top: 1.5rem;
+  font-size: 0.75rem;
+  color: #a0a0a0;
+  font-style: normal;
+  font-weight: 400;
+  font-family: 'Georgia', serif;
+  letter-spacing: 0.05em;
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.page-number:hover {
+  opacity: 0.9;
 }
 
 /* Left pages: page number on top-left */
 .page-number.left {
   left: 2rem;
+  text-align: left;
 }
 
 /* Right pages: page number on top-right */
 .page-number.right {
   right: 2rem;
+  text-align: right;
 }
 
 /* Cover Page Styles */
