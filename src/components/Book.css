@@ -274,8 +274,7 @@
   box-sizing: border-box;
   border: 1px solid #d4c5a9;
   position: relative;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden; /* No scrollbars - content must fit exactly */
 }
 
 /* Custom scrollbar styling for book pages */
@@ -415,7 +414,7 @@
 
 /* Preface Page Styles */
 .preface-page {
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 .language-toggle {
@@ -468,7 +467,7 @@
   display: flex;
   flex-direction: column;
   padding: 2rem 1.5rem;
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 .catalog-title {

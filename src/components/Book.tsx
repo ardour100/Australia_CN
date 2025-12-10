@@ -107,21 +107,116 @@ const Book: React.FC = () => {
   const touchEndY = useRef<number>(0);
   const isScrolling = useRef<boolean>(false);
 
+  // Calculate dynamic page sizes based on viewport height
+  // Goal: NO scrollbars, content fits perfectly on each page
+  const calculateDynamicPageSizes = () => {
+    const viewportHeight = window.innerHeight;
+
+    // Conservative estimates to ensure NO overflow (measured from actual rendered content)
+    const estimatedParagraphHeight = 100;    // Each paragraph entry (including markdown) - conservative estimate
+    const chapterHeaderHeight = 200;         // Chapter header with title and subtitle - with extra spacing
+    const pageTopBottomPadding = 32;         // 1rem top + 1rem bottom from .book-page
+    const safetyMargin = 100;                // Extra safety margin to prevent any overflow
+
+    // Calculate available content height based on viewport
+    // We need to leave enough room so content NEVER overflows
+    const totalAvailableHeight = viewportHeight - pageTopBottomPadding - safetyMargin;
+
+    // First page: subtract chapter header space
+    const firstPageContentHeight = totalAvailableHeight - chapterHeaderHeight;
+    const firstPageParagraphs = Math.max(1, Math.floor(firstPageContentHeight / estimatedParagraphHeight));
+
+    // Other pages: full content area available
+    const otherPageParagraphs = Math.max(2, Math.floor(totalAvailableHeight / estimatedParagraphHeight));
+
+    console.log('📖 Dynamic page size calculation (NO overflow):', {
+      viewportHeight,
+      totalAvailableHeight,
+      firstPageContentHeight,
+      firstPageParagraphs,
+      otherPageParagraphs,
+      note: 'Conservative estimates to prevent scrollbars'
+    });
+
+    return {
+      firstPageParagraphs,
+      otherPageParagraphs
+    };
+  };
+
+  // State for dynamic page sizes (changes with screen resize)
+  const [dynamicPageSizes, setDynamicPageSizes] = useState<{
+    firstPageParagraphs: number;
+    otherPageParagraphs: number;
+  }>(() => calculateDynamicPageSizes());
+
+  // Update page sizes when window is resized (for different screen sizes)
+  useEffect(() => {
+    const handleResize = () => {
+      const newSizes = calculateDynamicPageSizes();
+      // Only update if values actually changed
+      if (newSizes.firstPageParagraphs !== dynamicPageSizes.firstPageParagraphs ||
+          newSizes.otherPageParagraphs !== dynamicPageSizes.otherPageParagraphs) {
+        console.log('🔄 Screen resized - updating page layout');
+        setDynamicPageSizes(newSizes);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [dynamicPageSizes]);
+
+  // Intelligently split long paragraphs into smaller chunks
+  // This prevents content from being hidden due to overflow
+  const splitLongParagraphs = (content: string[]): string[] => {
+    const result: string[] = [];
+
+    content.forEach(paragraph => {
+      // Split by double newlines (Markdown paragraph separator)
+      const subParagraphs = paragraph.split('\n\n').filter(p => p.trim());
+
+      // If we got multiple sub-paragraphs, add them separately
+      if (subParagraphs.length > 1) {
+        result.push(...subParagraphs);
+      } else {
+        // If still one long paragraph, check if it has headers or lists
+        // Split by headers (## or ###)
+        const headerSplit = paragraph.split(/(?=\n#{2,3} )/);
+        if (headerSplit.length > 1) {
+          result.push(...headerSplit.map(p => p.trim()).filter(p => p));
+        } else {
+          // Keep as is
+          result.push(paragraph);
+        }
+      }
+    });
+
+    console.log(`📝 Split ${content.length} entries into ${result.length} smaller paragraphs`);
+    return result;
+  };
+
   // Split chapter content into pages based on paragraph count
-  // Adjusted to fit page height - smaller number for first page (with header), more for subsequent pages
-  const splitContentIntoPages = (content: string[], firstPageParagraphs: number = 3, otherPageParagraphs: number = 5) => {
+  // Dynamically adjusted based on viewport height
+  const splitContentIntoPages = (content: string[], firstPageParagraphs?: number, otherPageParagraphs?: number) => {
     const pages: string[][] = [];
 
     if (content.length === 0) {
       return [[]];
     }
 
+    // First, intelligently split long paragraphs
+    const splitContent = splitLongParagraphs(content);
+
+    // Use provided values or dynamic values based on screen size
+    const firstPage = firstPageParagraphs ?? dynamicPageSizes.firstPageParagraphs;
+    const otherPages = otherPageParagraphs ?? dynamicPageSizes.otherPageParagraphs;
+
     // First page has less space due to chapter header
-    pages.push(content.slice(0, firstPageParagraphs));
+    pages.push(splitContent.slice(0, firstPage));
 
     // Remaining pages can fit more content
-    for (let i = firstPageParagraphs; i < content.length; i += otherPageParagraphs) {
-      pages.push(content.slice(i, i + otherPageParagraphs));
+    for (let i = firstPage; i < splitContent.length; i += otherPages) {
+      pages.push(splitContent.slice(i, i + otherPages));
     }
 
     return pages;
@@ -156,7 +251,13 @@ const Book: React.FC = () => {
     return pageCount;
   };
 
-  const totalPages = calculateTotalPages();
+  const [totalPages, setTotalPages] = useState(calculateTotalPages());
+
+  // Recalculate total pages when dynamic page sizes or language changes
+  useEffect(() => {
+    const newTotalPages = calculateTotalPages();
+    setTotalPages(newTotalPages);
+  }, [dynamicPageSizes, prefaceLanguage]);
 
   const onFlip = (e: any) => {
     setCurrentPage(e.data);
