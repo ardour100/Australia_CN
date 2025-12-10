@@ -107,66 +107,49 @@ const Book: React.FC = () => {
   const touchEndY = useRef<number>(0);
   const isScrolling = useRef<boolean>(false);
 
-  // Dynamic page size calculation based on screen height
-  const [dynamicPageSizes, setDynamicPageSizes] = useState<{
-    firstPageParagraphs: number;
-    otherPageParagraphs: number;
-  }>(() => calculateDynamicPageSizes());
+  // Calculate optimal page sizes based on fixed book page height (935px)
+  // IMPORTANT: The book page has a FIXED height of 935px (defined in HTMLFlipBook)
+  // This does NOT change with screen size - the book scales but maintains this internal height
+  const calculateOptimizedPageSizes = () => {
+    const bookPageHeight = 935;
+    const bookPagePadding = 32;              // 1rem top+bottom
+    const estimatedParagraphHeight = 80;     // Each paragraph entry (including markdown)
+    const chapterHeaderHeight = 160;          // Chapter header with title and subtitle
+    const contentBottomMargin = 20;          // Extra breathing room at bottom
 
-  // Calculate how many paragraphs can fit per page based on viewport height
-  function calculateDynamicPageSizes() {
-    const viewportHeight = window.innerHeight;
+    // Calculate available content height
+    const totalAvailableHeight = bookPageHeight - bookPagePadding - contentBottomMargin;
+    // 935 - 32 - 20 = 883px available
 
-    // Estimate paragraph heights (these are approximations)
-    // A typical paragraph with markdown takes roughly 80-120px depending on content
-    const estimatedParagraphHeight = 100;
+    // First page: subtract chapter header
+    const firstPageContentHeight = totalAvailableHeight - chapterHeaderHeight;
+    // 883 - 160 = 723px for content
+    const firstPageParagraphs = Math.max(2, Math.floor(firstPageContentHeight / estimatedParagraphHeight));
+    // 723 / 80 = 9 paragraphs
 
-    // Chapter header takes up roughly 150-180px
-    const chapterHeaderHeight = 180;
+    // Other pages: full content area available
+    const otherPageParagraphs = Math.max(3, Math.floor(totalAvailableHeight / estimatedParagraphHeight));
+    // 883 / 80 = 11 paragraphs
 
-    // Page margins and padding (approximate)
-    const pageMargins = 120;
-
-    // Calculate available space
-    const availableHeight = viewportHeight - pageMargins;
-
-    // First page: subtract chapter header space
-    const firstPageAvailableHeight = availableHeight - chapterHeaderHeight;
-    const firstPageParagraphs = Math.max(2, Math.floor(firstPageAvailableHeight / estimatedParagraphHeight));
-
-    // Other pages: full height available
-    const otherPageParagraphs = Math.max(3, Math.floor(availableHeight / estimatedParagraphHeight));
+    console.log('📖 Page size calculation:', {
+      bookPageHeight,
+      totalAvailableHeight,
+      firstPageContentHeight,
+      firstPageParagraphs,
+      otherPageParagraphs
+    });
 
     return {
       firstPageParagraphs,
       otherPageParagraphs
     };
-  }
+  };
 
-  // Update page sizes when window is resized
-  useEffect(() => {
-    const handleResize = () => {
-      const newSizes = calculateDynamicPageSizes();
-      // Only update if values actually changed
-      if (newSizes.firstPageParagraphs !== dynamicPageSizes.firstPageParagraphs ||
-          newSizes.otherPageParagraphs !== dynamicPageSizes.otherPageParagraphs) {
-        console.log('Screen resized - updating page layout:', newSizes);
-        setDynamicPageSizes(newSizes);
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [dynamicPageSizes]);
-
-  // Log current dynamic page sizes for debugging
-  useEffect(() => {
-    console.log('Current dynamic page sizes:', dynamicPageSizes);
-    console.log(`First page: ${dynamicPageSizes.firstPageParagraphs} paragraphs, Other pages: ${dynamicPageSizes.otherPageParagraphs} paragraphs`);
-  }, [dynamicPageSizes]);
+  // Calculate once - no need for state since values don't change
+  const optimizedPageSizes = calculateOptimizedPageSizes();
 
   // Split chapter content into pages based on paragraph count
-  // Dynamically adjusted based on screen height
+  // Optimized for book page height (935px)
   const splitContentIntoPages = (content: string[], firstPageParagraphs?: number, otherPageParagraphs?: number) => {
     const pages: string[][] = [];
 
@@ -174,9 +157,9 @@ const Book: React.FC = () => {
       return [[]];
     }
 
-    // Use provided values or dynamic values
-    const firstPage = firstPageParagraphs ?? dynamicPageSizes.firstPageParagraphs;
-    const otherPages = otherPageParagraphs ?? dynamicPageSizes.otherPageParagraphs;
+    // Use provided values or optimized values
+    const firstPage = firstPageParagraphs ?? optimizedPageSizes.firstPageParagraphs;
+    const otherPages = otherPageParagraphs ?? optimizedPageSizes.otherPageParagraphs;
 
     // First page has less space due to chapter header
     pages.push(content.slice(0, firstPage));
@@ -220,11 +203,11 @@ const Book: React.FC = () => {
 
   const [totalPages, setTotalPages] = useState(calculateTotalPages());
 
-  // Recalculate total pages when dynamic page sizes or language changes
+  // Recalculate total pages when language changes
   useEffect(() => {
     const newTotalPages = calculateTotalPages();
     setTotalPages(newTotalPages);
-  }, [dynamicPageSizes, prefaceLanguage]);
+  }, [prefaceLanguage]);
 
   const onFlip = (e: any) => {
     setCurrentPage(e.data);
