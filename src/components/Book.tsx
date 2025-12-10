@@ -107,21 +107,83 @@ const Book: React.FC = () => {
   const touchEndY = useRef<number>(0);
   const isScrolling = useRef<boolean>(false);
 
+  // Dynamic page size calculation based on screen height
+  const [dynamicPageSizes, setDynamicPageSizes] = useState<{
+    firstPageParagraphs: number;
+    otherPageParagraphs: number;
+  }>(() => calculateDynamicPageSizes());
+
+  // Calculate how many paragraphs can fit per page based on viewport height
+  function calculateDynamicPageSizes() {
+    const viewportHeight = window.innerHeight;
+
+    // Estimate paragraph heights (these are approximations)
+    // A typical paragraph with markdown takes roughly 80-120px depending on content
+    const estimatedParagraphHeight = 100;
+
+    // Chapter header takes up roughly 150-180px
+    const chapterHeaderHeight = 180;
+
+    // Page margins and padding (approximate)
+    const pageMargins = 120;
+
+    // Calculate available space
+    const availableHeight = viewportHeight - pageMargins;
+
+    // First page: subtract chapter header space
+    const firstPageAvailableHeight = availableHeight - chapterHeaderHeight;
+    const firstPageParagraphs = Math.max(2, Math.floor(firstPageAvailableHeight / estimatedParagraphHeight));
+
+    // Other pages: full height available
+    const otherPageParagraphs = Math.max(3, Math.floor(availableHeight / estimatedParagraphHeight));
+
+    return {
+      firstPageParagraphs,
+      otherPageParagraphs
+    };
+  }
+
+  // Update page sizes when window is resized
+  useEffect(() => {
+    const handleResize = () => {
+      const newSizes = calculateDynamicPageSizes();
+      // Only update if values actually changed
+      if (newSizes.firstPageParagraphs !== dynamicPageSizes.firstPageParagraphs ||
+          newSizes.otherPageParagraphs !== dynamicPageSizes.otherPageParagraphs) {
+        console.log('Screen resized - updating page layout:', newSizes);
+        setDynamicPageSizes(newSizes);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [dynamicPageSizes]);
+
+  // Log current dynamic page sizes for debugging
+  useEffect(() => {
+    console.log('Current dynamic page sizes:', dynamicPageSizes);
+    console.log(`First page: ${dynamicPageSizes.firstPageParagraphs} paragraphs, Other pages: ${dynamicPageSizes.otherPageParagraphs} paragraphs`);
+  }, [dynamicPageSizes]);
+
   // Split chapter content into pages based on paragraph count
-  // Adjusted to fit page height - smaller number for first page (with header), more for subsequent pages
-  const splitContentIntoPages = (content: string[], firstPageParagraphs: number = 3, otherPageParagraphs: number = 5) => {
+  // Dynamically adjusted based on screen height
+  const splitContentIntoPages = (content: string[], firstPageParagraphs?: number, otherPageParagraphs?: number) => {
     const pages: string[][] = [];
 
     if (content.length === 0) {
       return [[]];
     }
 
+    // Use provided values or dynamic values
+    const firstPage = firstPageParagraphs ?? dynamicPageSizes.firstPageParagraphs;
+    const otherPages = otherPageParagraphs ?? dynamicPageSizes.otherPageParagraphs;
+
     // First page has less space due to chapter header
-    pages.push(content.slice(0, firstPageParagraphs));
+    pages.push(content.slice(0, firstPage));
 
     // Remaining pages can fit more content
-    for (let i = firstPageParagraphs; i < content.length; i += otherPageParagraphs) {
-      pages.push(content.slice(i, i + otherPageParagraphs));
+    for (let i = firstPage; i < content.length; i += otherPages) {
+      pages.push(content.slice(i, i + otherPages));
     }
 
     return pages;
@@ -156,7 +218,13 @@ const Book: React.FC = () => {
     return pageCount;
   };
 
-  const totalPages = calculateTotalPages();
+  const [totalPages, setTotalPages] = useState(calculateTotalPages());
+
+  // Recalculate total pages when dynamic page sizes or language changes
+  useEffect(() => {
+    const newTotalPages = calculateTotalPages();
+    setTotalPages(newTotalPages);
+  }, [dynamicPageSizes, prefaceLanguage]);
 
   const onFlip = (e: any) => {
     setCurrentPage(e.data);
