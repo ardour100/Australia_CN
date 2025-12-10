@@ -108,32 +108,34 @@ const Book: React.FC = () => {
   const isScrolling = useRef<boolean>(false);
 
   // Calculate dynamic page sizes based on viewport height
-  // Different screen sizes (desktop, laptop, tablet, mobile) should show different amounts of content
+  // Goal: NO scrollbars, content fits perfectly on each page
   const calculateDynamicPageSizes = () => {
     const viewportHeight = window.innerHeight;
 
-    // Estimate heights for content elements (measured from actual rendered content)
-    const estimatedParagraphHeight = 80;     // Each paragraph entry (including markdown)
-    const chapterHeaderHeight = 160;          // Chapter header with title and subtitle
-    const pageMargins = 120;                  // Top and bottom margins/padding
-    const contentBottomMargin = 20;          // Extra breathing room
+    // Conservative estimates to ensure NO overflow (measured from actual rendered content)
+    const estimatedParagraphHeight = 100;    // Each paragraph entry (including markdown) - conservative estimate
+    const chapterHeaderHeight = 200;         // Chapter header with title and subtitle - with extra spacing
+    const pageTopBottomPadding = 32;         // 1rem top + 1rem bottom from .book-page
+    const safetyMargin = 100;                // Extra safety margin to prevent any overflow
 
     // Calculate available content height based on viewport
-    const totalAvailableHeight = viewportHeight - pageMargins - contentBottomMargin;
+    // We need to leave enough room so content NEVER overflows
+    const totalAvailableHeight = viewportHeight - pageTopBottomPadding - safetyMargin;
 
     // First page: subtract chapter header space
     const firstPageContentHeight = totalAvailableHeight - chapterHeaderHeight;
-    const firstPageParagraphs = Math.max(2, Math.floor(firstPageContentHeight / estimatedParagraphHeight));
+    const firstPageParagraphs = Math.max(1, Math.floor(firstPageContentHeight / estimatedParagraphHeight));
 
     // Other pages: full content area available
-    const otherPageParagraphs = Math.max(3, Math.floor(totalAvailableHeight / estimatedParagraphHeight));
+    const otherPageParagraphs = Math.max(2, Math.floor(totalAvailableHeight / estimatedParagraphHeight));
 
-    console.log('📖 Dynamic page size calculation:', {
+    console.log('📖 Dynamic page size calculation (NO overflow):', {
       viewportHeight,
       totalAvailableHeight,
       firstPageContentHeight,
       firstPageParagraphs,
-      otherPageParagraphs
+      otherPageParagraphs,
+      note: 'Conservative estimates to prevent scrollbars'
     });
 
     return {
