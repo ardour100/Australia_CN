@@ -166,6 +166,35 @@ const Book: React.FC = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, [dynamicPageSizes]);
 
+  // Intelligently split long paragraphs into smaller chunks
+  // This prevents content from being hidden due to overflow
+  const splitLongParagraphs = (content: string[]): string[] => {
+    const result: string[] = [];
+
+    content.forEach(paragraph => {
+      // Split by double newlines (Markdown paragraph separator)
+      const subParagraphs = paragraph.split('\n\n').filter(p => p.trim());
+
+      // If we got multiple sub-paragraphs, add them separately
+      if (subParagraphs.length > 1) {
+        result.push(...subParagraphs);
+      } else {
+        // If still one long paragraph, check if it has headers or lists
+        // Split by headers (## or ###)
+        const headerSplit = paragraph.split(/(?=\n#{2,3} )/);
+        if (headerSplit.length > 1) {
+          result.push(...headerSplit.map(p => p.trim()).filter(p => p));
+        } else {
+          // Keep as is
+          result.push(paragraph);
+        }
+      }
+    });
+
+    console.log(`📝 Split ${content.length} entries into ${result.length} smaller paragraphs`);
+    return result;
+  };
+
   // Split chapter content into pages based on paragraph count
   // Dynamically adjusted based on viewport height
   const splitContentIntoPages = (content: string[], firstPageParagraphs?: number, otherPageParagraphs?: number) => {
@@ -175,16 +204,19 @@ const Book: React.FC = () => {
       return [[]];
     }
 
+    // First, intelligently split long paragraphs
+    const splitContent = splitLongParagraphs(content);
+
     // Use provided values or dynamic values based on screen size
     const firstPage = firstPageParagraphs ?? dynamicPageSizes.firstPageParagraphs;
     const otherPages = otherPageParagraphs ?? dynamicPageSizes.otherPageParagraphs;
 
     // First page has less space due to chapter header
-    pages.push(content.slice(0, firstPage));
+    pages.push(splitContent.slice(0, firstPage));
 
     // Remaining pages can fit more content
-    for (let i = firstPage; i < content.length; i += otherPages) {
-      pages.push(content.slice(i, i + otherPages));
+    for (let i = firstPage; i < splitContent.length; i += otherPages) {
+      pages.push(splitContent.slice(i, i + otherPages));
     }
 
     return pages;
