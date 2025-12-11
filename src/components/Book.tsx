@@ -786,11 +786,15 @@ const Book: React.FC = () => {
           <Page number={0}>
             <div className="back-cover">
               <div className="back-cover-content">
-                <h3>{bookData.backCover.title}</h3>
-                {bookData.backCover.content.map((paragraph, index) => (
-                  <p key={index}>{paragraph}</p>
-                ))}
-                <p className="back-note">{bookData.backCover.note}</p>
+                <h3>{bookData.backCover.title[prefaceLanguage]}</h3>
+                {bookData.backCover.content[prefaceLanguage] && Array.isArray(bookData.backCover.content[prefaceLanguage]) ? (
+                  bookData.backCover.content[prefaceLanguage].map((paragraph: string, index: number) => (
+                    <p key={index}>{paragraph}</p>
+                  ))
+                ) : (
+                  <p>内容加载中...</p>
+                )}
+                <p className="back-note">{bookData.backCover.note[prefaceLanguage]}</p>
               </div>
             </div>
           </Page>
@@ -820,7 +824,7 @@ const Book: React.FC = () => {
         {isNavExpanded && (
           <div className="nav-content">
             <div className="current-page-display">
-              Page {currentPage + 1} of {totalPages}
+              Page {currentPage + 1} of {totalPages - 5}
             </div>
             <form onSubmit={handleGoToPage} className="go-to-page-form">
               <label htmlFor="page-input">Go to page:</label>

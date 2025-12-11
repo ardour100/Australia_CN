@@ -214,10 +214,26 @@
     }
   ],
   "backCover": {
-    "title": "Continue Your Journey",
-    "content": [
-      "This book is a work in progress. More chapters and content will be added as we explore the fascinating history of how Australia developed into the democracy it is today."
-    ],
-    "note": "Add your own content to bring this historical narrative to life."
+    "title": {
+      "zh": "未完待补充",
+      "zhTraditional": "繼續你的旅程",
+      "en": "Continue Your Journey"
+    },
+    "content": {
+      "zh": [
+        "这本阅读笔记仍在持续更新中。随着我对澳大利亚如何演变至今这一迷人历史的不断探索，未来将陆续添加更多章节与内容。"
+      ],
+      "zhTraditional": [
+        "這本書仍在持續更新中。隨著我們繼續探索澳大利亞如何發展成為今天這樣的民主國家這一迷人歷史，將會添加更多章節和內容。"
+      ],
+      "en": [
+        "This book is a work in progress. More chapters and content will be added as we explore the fascinating history of how Australia developed into the democracy it is today."
+      ]
+    },
+    "note": {
+      "zh": "如果您有任何反馈、指正或疑问，欢迎随时通过邮件与我联系：judylovecoding@gmail.com。 （通常会在7个工作日内回复）",
+      "zhTraditional": "歡迎添加你自己的內容，讓這段歷史敘事更加生動。",
+      "en": "Add your own content to bring this historical narrative to life."
+    }
   }
 }
