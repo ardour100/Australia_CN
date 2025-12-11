@@ -318,7 +318,7 @@
 
 .page-number {
   position: absolute;
-  top: -0.875rem;
+  top: .875rem;
   font-size: 0.85rem;
   color: #2d3748;
   font-style: normal;
@@ -337,13 +337,13 @@
 
 /* Left pages: page number on top-left */
 .page-number.left {
-  left: -10px;
+  left: -1.5rem;
   text-align: left;
 }
 
 /* Right pages: page number on top-right */
 .page-number.right {
-  right: -10px;
+  right: -1.5rem;
   text-align: right;
 }
 
@@ -926,6 +926,11 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  /* Hide page numbers on mobile devices */
+  .page-number {
+    display: none;
+  }
+
   .book-container {
     padding: 0.5rem;
   }
