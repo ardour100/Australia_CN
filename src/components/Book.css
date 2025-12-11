@@ -274,7 +274,8 @@
   box-sizing: border-box;
   border: 1px solid #d4c5a9;
   position: relative;
-  overflow: hidden; /* No scrollbars - content must fit exactly */
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 /* Custom scrollbar styling for book pages */
