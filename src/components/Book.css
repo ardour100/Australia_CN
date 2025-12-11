@@ -274,37 +274,14 @@
   box-sizing: border-box;
   border: 1px solid #d4c5a9;
   position: relative;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: visible;
 }
 
-/* Custom scrollbar styling for book pages */
-.book-page::-webkit-scrollbar {
-  width: 8px;
-}
-
-.book-page::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 4px;
-}
-
-.book-page::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #0891b2 0%, #14b8a6 100%);
-  border-radius: 4px;
-}
-
-.book-page::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #0e7490 0%, #0f766e 100%);
-}
-
-/* Remove padding for cover page */
-.book-page:has(.cover-page) {
-  padding: 0;
-  border: none;
-}
-
+/* Scrollable content wrapper */
 .page-content {
   height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   font-family: 'Georgia', serif;
@@ -314,32 +291,59 @@
   overflow-wrap: break-word;
 }
 
+/* Custom scrollbar styling for page content */
+.page-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.page-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.page-content::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #0891b2 0%, #14b8a6 100%);
+  border-radius: 4px;
+}
+
+.page-content::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #0e7490 0%, #0f766e 100%);
+}
+
+/* Remove padding for cover page */
+.book-page:has(.cover-page) {
+  padding: 0;
+  border: none;
+}
+
 .page-number {
   position: absolute;
-  top: 1.5rem;
-  font-size: 0.75rem;
-  color: #a0a0a0;
+  top: .875rem;
+  font-size: 0.85rem;
+  color: #2d3748;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 600;
   font-family: 'Georgia', serif;
   letter-spacing: 0.05em;
-  opacity: 0.6;
-  transition: opacity 0.3s ease;
+  opacity: 1;
+  transition: all 0.3s ease;
+  z-index: 100;
 }
 
 .page-number:hover {
-  opacity: 0.9;
+  color: #0891b2;
+  transform: scale(1.15);
 }
 
 /* Left pages: page number on top-left */
 .page-number.left {
-  left: 2rem;
+  left: -1.5rem;
   text-align: left;
 }
 
 /* Right pages: page number on top-right */
 .page-number.right {
-  right: 2rem;
+  right: -1.5rem;
   text-align: right;
 }
 
@@ -415,7 +419,8 @@
 
 /* Preface Page Styles */
 .preface-page {
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .language-toggle {
@@ -468,7 +473,8 @@
   display: flex;
   flex-direction: column;
   padding: 2rem 1.5rem;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .catalog-title {
@@ -504,6 +510,18 @@
   background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
   transform: translateX(4px);
   box-shadow: 0 2px 8px rgba(8, 145, 178, 0.2);
+}
+
+.author-catalog-item {
+  margin-top: 1rem;
+  border-top: 2px solid #0891b2;
+  padding-top: 1rem;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border-left-color: #f59e0b;
+}
+
+.author-catalog-item:hover {
+  background: linear-gradient(135deg, #fde68a 0%, #fcd34d 100%);
 }
 
 .catalog-item .chapter-number {
@@ -779,6 +797,100 @@
   text-align: center;
 }
 
+/* Author Introduction Page Styles */
+.author-page {
+  height: 100%;
+  padding: 1.5rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: linear-gradient(to bottom, #fffef0 0%, #f0f9ff 100%);
+}
+
+.author-page-title {
+  font-size: 1.8rem;
+  color: #0891b2;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  border-bottom: 3px solid #14b8a6;
+  padding-bottom: 0.5rem;
+}
+
+.author-name {
+  font-size: 1.3rem;
+  color: #64748b;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.author-intro-section {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: white;
+  border-left: 4px solid #0891b2;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.author-intro-section h4 {
+  font-size: 1.1rem;
+  color: #0891b2;
+  margin-bottom: 0.8rem;
+  font-weight: 700;
+}
+
+.author-intro-section p {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: #2c2c2c;
+  margin-bottom: 0.8rem;
+  text-align: justify;
+}
+
+.author-intro-section p:last-child {
+  margin-bottom: 0;
+}
+
+.author-conclusion {
+  margin-top: 1.5rem;
+  padding: 1.2rem;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border: 2px solid #0891b2;
+  border-radius: 8px;
+}
+
+.author-note {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: #1e293b;
+  margin: 0;
+  text-align: justify;
+}
+
+.author-note strong {
+  color: #0891b2;
+  font-weight: 700;
+}
+
+/* Custom scrollbar for author page */
+.author-page::-webkit-scrollbar {
+  width: 8px;
+}
+
+.author-page::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.author-page::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #0891b2 0%, #14b8a6 100%);
+  border-radius: 4px;
+}
+
+.author-page::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #0e7490 0%, #0f766e 100%);
+}
+
 /* Back Cover Styles */
 .back-cover {
   /* Australian outback to ocean theme */
@@ -814,6 +926,11 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  /* Hide page numbers on mobile devices */
+  .page-number {
+    display: none;
+  }
+
   .book-container {
     padding: 0.5rem;
   }
@@ -938,5 +1055,41 @@
 
   .chapter-page {
     font-size: 0.9rem;
+  }
+
+  .author-page {
+    padding: 1rem;
+  }
+
+  .author-page-title {
+    font-size: 1.4rem;
+  }
+
+  .author-name {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  .author-intro-section {
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .author-intro-section h4 {
+    font-size: 1rem;
+  }
+
+  .author-intro-section p {
+    font-size: 0.85rem;
+    line-height: 1.7;
+  }
+
+  .author-conclusion {
+    padding: 1rem;
+  }
+
+  .author-note {
+    font-size: 0.85rem;
+    line-height: 1.7;
   }
 }

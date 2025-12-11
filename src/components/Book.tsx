@@ -25,6 +25,7 @@ import chapter15 from '../data/chapters/chapter-15.json';
 import chapter16 from '../data/chapters/chapter-16.json';
 import chapter17 from '../data/chapters/chapter-17.json';
 import chapter18 from '../data/chapters/chapter-18.json';
+import authorData from '../data/chapters/author.json';
 
 // Map chapter files to their IDs
 const chapterContents: { [key: number]: any } = {
@@ -259,7 +260,7 @@ const Book: React.FC = () => {
       }
     });
 
-    pageCount += 1; // back cover
+    pageCount += 2; // author introduction page + back cover
     return pageCount;
   };
 
@@ -640,6 +641,25 @@ const Book: React.FC = () => {
                     <span className="chapter-page">{getChapterPageIndex(index) + 1}</span>
                   </div>
                 ))}
+
+                {/* Author Introduction Entry */}
+                <div
+                  className="catalog-item author-catalog-item"
+                  onClick={() => {
+                    // Navigate to author page (second to last page, before back cover)
+                    const authorPageIndex = totalPages - 2;
+                    bookRef.current?.pageFlip().turnToPage(authorPageIndex);
+                  }}
+                  role="button"
+                  tabIndex={0}
+                >
+                  <span className="chapter-number">📖</span>
+                  <div className="chapter-titles">
+                    <div className="chapter-title-en">About the Author</div>
+                    <div className="chapter-title-zh">{authorData.title}</div>
+                  </div>
+                  <span className="chapter-page">{totalPages - 1}</span>
+                </div>
               </div>
             </div>
           </Page>
@@ -739,15 +759,42 @@ const Book: React.FC = () => {
             return pages;
           })()}
 
+          {/* Author Introduction Page */}
+          <Page number={0}>
+            <div className="author-page">
+              <h2 className="author-page-title">{authorData.title}</h2>
+              <h3 className="author-name">{authorData.name}</h3>
+
+              {authorData.sections.map((section, index) => (
+                <div key={index} className="author-intro-section">
+                  <h4>{section.heading}</h4>
+                  {section.paragraphs.map((paragraph, pIndex) => (
+                    <p key={pIndex}>{paragraph}</p>
+                  ))}
+                </div>
+              ))}
+
+              <div className="author-conclusion">
+                <p className="author-note">
+                  <strong>客观评价：</strong>{authorData.conclusion}
+                </p>
+              </div>
+            </div>
+          </Page>
+
           {/* Back Cover */}
           <Page number={0}>
             <div className="back-cover">
               <div className="back-cover-content">
-                <h3>{bookData.backCover.title}</h3>
-                {bookData.backCover.content.map((paragraph, index) => (
-                  <p key={index}>{paragraph}</p>
-                ))}
-                <p className="back-note">{bookData.backCover.note}</p>
+                <h3>{bookData.backCover.title[prefaceLanguage]}</h3>
+                {bookData.backCover.content[prefaceLanguage] && Array.isArray(bookData.backCover.content[prefaceLanguage]) ? (
+                  bookData.backCover.content[prefaceLanguage].map((paragraph: string, index: number) => (
+                    <p key={index}>{paragraph}</p>
+                  ))
+                ) : (
+                  <p>内容加载中...</p>
+                )}
+                <p className="back-note">{bookData.backCover.note[prefaceLanguage]}</p>
               </div>
             </div>
           </Page>
@@ -777,7 +824,7 @@ const Book: React.FC = () => {
         {isNavExpanded && (
           <div className="nav-content">
             <div className="current-page-display">
-              Page {currentPage + 1} of {totalPages}
+              Page {currentPage + 1} of {totalPages - 5}
             </div>
             <form onSubmit={handleGoToPage} className="go-to-page-form">
               <label htmlFor="page-input">Go to page:</label>
