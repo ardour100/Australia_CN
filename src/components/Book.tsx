@@ -3,6 +3,7 @@ import HTMLFlipBook from 'react-pageflip';
 import ReactMarkdown from 'react-markdown';
 import bookData from '../data/chapters.json';
 import coverImage from '../assets/cover.png';
+import CollapsibleSection from './CollapsibleSection';
 import './Book.css';
 
 // Import all chapter files
@@ -165,6 +166,17 @@ const Book: React.FC = () => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, [dynamicPageSizes]);
+
+  // Check if a paragraph starts with a section header (▶▶▶)
+  const isSectionHeader = (paragraph: string): boolean => {
+    return paragraph.trim().startsWith('▶▶▶');
+  };
+
+  // Extract section title from paragraph
+  const extractSectionTitle = (paragraph: string): string => {
+    const match = paragraph.match(/^▶▶▶\s*(.+?)(?:\n|$)/);
+    return match ? match[1].trim() : '';
+  };
 
   // Intelligently split long paragraphs into smaller chunks
   // This prevents content from being hidden due to overflow
@@ -671,22 +683,40 @@ const Book: React.FC = () => {
 
                       {/* Render page content with markdown support */}
                       {pageContent.length > 0 ? (
-                        pageContent.map((paragraph: string, pIndex: number) => (
-                          <div key={pIndex} className="markdown-content">
-                            <ReactMarkdown
-                              components={{
-                                img: ({ node, ...props }) => (
-                                  <img
-                                    {...props}
-                                    style={{ width: "380px", height: "200px", objectFit: "cover" }}
-                                  />
-                                ),
-                              }}
-                            >
-                              {paragraph}
-                            </ReactMarkdown>
-                          </div>
-                        ))
+                        pageContent.map((paragraph: string, pIndex: number) => {
+                          const isSection = isSectionHeader(paragraph);
+                          const sectionTitle = isSection ? extractSectionTitle(paragraph) : '';
+                          const sectionContent = isSection ? paragraph.replace(/^▶▶▶\s*.+?\n/, '') : '';
+
+                          // If it's a section header, use the CollapsibleSection component
+                          if (isSection) {
+                            return (
+                              <CollapsibleSection
+                                key={pIndex}
+                                title={sectionTitle}
+                                content={sectionContent}
+                              />
+                            );
+                          }
+
+                          // Regular paragraph (not a section)
+                          return (
+                            <div key={pIndex} className="markdown-content">
+                              <ReactMarkdown
+                                components={{
+                                  img: ({ node, ...props }) => (
+                                    <img
+                                      {...props}
+                                      style={{ width: "380px", height: "200px", objectFit: "cover" }}
+                                    />
+                                  ),
+                                }}
+                              >
+                                {paragraph}
+                              </ReactMarkdown>
+                            </div>
+                          );
+                        })
                       ) : (
                         fullChapter?.placeholder && (
                           <div className="placeholder-text">{fullChapter.placeholder}</div>
