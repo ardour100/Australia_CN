@@ -415,7 +415,8 @@
 
 /* Preface Page Styles */
 .preface-page {
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .language-toggle {
@@ -468,7 +469,8 @@
   display: flex;
   flex-direction: column;
   padding: 2rem 1.5rem;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .catalog-title {
