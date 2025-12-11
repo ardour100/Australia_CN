@@ -318,7 +318,7 @@
 
 .page-number {
   position: absolute;
-  top: -1.5rem;
+  top: -0.875rem;
   font-size: 0.85rem;
   color: #2d3748;
   font-style: normal;
@@ -337,13 +337,13 @@
 
 /* Left pages: page number on top-left */
 .page-number.left {
-  left: 0;
+  left: -10px;
   text-align: left;
 }
 
 /* Right pages: page number on top-right */
 .page-number.right {
-  right: 0;
+  right: -10px;
   text-align: right;
 }
 
