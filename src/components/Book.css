@@ -781,6 +781,100 @@
   text-align: center;
 }
 
+/* Author Introduction Page Styles */
+.author-page {
+  height: 100%;
+  padding: 1.5rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: linear-gradient(to bottom, #fffef0 0%, #f0f9ff 100%);
+}
+
+.author-page-title {
+  font-size: 1.8rem;
+  color: #0891b2;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  border-bottom: 3px solid #14b8a6;
+  padding-bottom: 0.5rem;
+}
+
+.author-name {
+  font-size: 1.3rem;
+  color: #64748b;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.author-intro-section {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: white;
+  border-left: 4px solid #0891b2;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.author-intro-section h4 {
+  font-size: 1.1rem;
+  color: #0891b2;
+  margin-bottom: 0.8rem;
+  font-weight: 700;
+}
+
+.author-intro-section p {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: #2c2c2c;
+  margin-bottom: 0.8rem;
+  text-align: justify;
+}
+
+.author-intro-section p:last-child {
+  margin-bottom: 0;
+}
+
+.author-conclusion {
+  margin-top: 1.5rem;
+  padding: 1.2rem;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border: 2px solid #0891b2;
+  border-radius: 8px;
+}
+
+.author-note {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: #1e293b;
+  margin: 0;
+  text-align: justify;
+}
+
+.author-note strong {
+  color: #0891b2;
+  font-weight: 700;
+}
+
+/* Custom scrollbar for author page */
+.author-page::-webkit-scrollbar {
+  width: 8px;
+}
+
+.author-page::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.author-page::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #0891b2 0%, #14b8a6 100%);
+  border-radius: 4px;
+}
+
+.author-page::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #0e7490 0%, #0f766e 100%);
+}
+
 /* Back Cover Styles */
 .back-cover {
   /* Australian outback to ocean theme */
@@ -940,5 +1034,41 @@
 
   .chapter-page {
     font-size: 0.9rem;
+  }
+
+  .author-page {
+    padding: 1rem;
+  }
+
+  .author-page-title {
+    font-size: 1.4rem;
+  }
+
+  .author-name {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  .author-intro-section {
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .author-intro-section h4 {
+    font-size: 1rem;
+  }
+
+  .author-intro-section p {
+    font-size: 0.85rem;
+    line-height: 1.7;
+  }
+
+  .author-conclusion {
+    padding: 1rem;
+  }
+
+  .author-note {
+    font-size: 0.85rem;
+    line-height: 1.7;
   }
 }
