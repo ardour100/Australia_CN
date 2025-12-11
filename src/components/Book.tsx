@@ -3,6 +3,7 @@ import HTMLFlipBook from 'react-pageflip';
 import ReactMarkdown from 'react-markdown';
 import bookData from '../data/chapters.json';
 import coverImage from '../assets/cover.png';
+import CollapsibleSection from './CollapsibleSection';
 import './Book.css';
 
 // Import all chapter files
@@ -89,7 +90,6 @@ const Book: React.FC = () => {
   const [fontSize, setFontSize] = useState<'small' | 'medium' | 'large'>('medium'); // Font size control
   const [pageToRestore, setPageToRestore] = useState<number | null>(null); // Store page before language change
   const [flippingTime, setFlippingTime] = useState<number>(1000); // Control animation duration
-  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set()); // Track expanded sections by unique key (default: all collapsed)
 
   // Draggable navigation state
   const [navPosition, setNavPosition] = useState(() => {
@@ -166,19 +166,6 @@ const Book: React.FC = () => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, [dynamicPageSizes]);
-
-  // Toggle section expand state (default: collapsed, click to expand)
-  const toggleSection = (sectionKey: string) => {
-    setExpandedSections(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(sectionKey)) {
-        newSet.delete(sectionKey); // Collapse if already expanded
-      } else {
-        newSet.add(sectionKey); // Expand if collapsed
-      }
-      return newSet;
-    });
-  };
 
   // Check if a paragraph starts with a section header (▶▶▶)
   const isSectionHeader = (paragraph: string): boolean => {
@@ -698,39 +685,17 @@ const Book: React.FC = () => {
                       {pageContent.length > 0 ? (
                         pageContent.map((paragraph: string, pIndex: number) => {
                           const isSection = isSectionHeader(paragraph);
-                          const sectionKey = `${chapter.id}-${pageIndex}-${pIndex}`;
-                          const isExpanded = expandedSections.has(sectionKey);
                           const sectionTitle = isSection ? extractSectionTitle(paragraph) : '';
+                          const sectionContent = isSection ? paragraph.replace(/^▶▶▶\s*.+?\n/, '') : '';
 
-                          // If it's a section header, make it collapsible
+                          // If it's a section header, use the CollapsibleSection component
                           if (isSection) {
                             return (
-                              <div key={pIndex} className="collapsible-section">
-                                <div
-                                  className="section-header"
-                                  onClick={() => toggleSection(sectionKey)}
-                                  style={{ cursor: 'pointer' }}
-                                >
-                                  <span className="collapse-icon">{isExpanded ? '▼' : '▶'}</span>
-                                  <h3>{sectionTitle}</h3>
-                                </div>
-                                {isExpanded && (
-                                  <div className="section-content markdown-content">
-                                    <ReactMarkdown
-                                      components={{
-                                        img: ({ node, ...props }) => (
-                                          <img
-                                            {...props}
-                                            style={{ width: "380px", height: "200px", objectFit: "cover" }}
-                                          />
-                                        ),
-                                      }}
-                                    >
-                                      {paragraph.replace(/^▶▶▶\s*.+?\n/, '')}
-                                    </ReactMarkdown>
-                                  </div>
-                                )}
-                              </div>
+                              <CollapsibleSection
+                                key={pIndex}
+                                title={sectionTitle}
+                                content={sectionContent}
+                              />
                             );
                           }
 
