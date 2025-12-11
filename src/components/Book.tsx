@@ -641,6 +641,25 @@ const Book: React.FC = () => {
                     <span className="chapter-page">{getChapterPageIndex(index) + 1}</span>
                   </div>
                 ))}
+
+                {/* Author Introduction Entry */}
+                <div
+                  className="catalog-item author-catalog-item"
+                  onClick={() => {
+                    // Navigate to author page (second to last page, before back cover)
+                    const authorPageIndex = totalPages - 2;
+                    bookRef.current?.pageFlip().turnToPage(authorPageIndex);
+                  }}
+                  role="button"
+                  tabIndex={0}
+                >
+                  <span className="chapter-number">📖</span>
+                  <div className="chapter-titles">
+                    <div className="chapter-title-en">About the Author</div>
+                    <div className="chapter-title-zh">{authorData.title}</div>
+                  </div>
+                  <span className="chapter-page">{totalPages - 1}</span>
+                </div>
               </div>
             </div>
           </Page>

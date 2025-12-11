@@ -508,6 +508,18 @@
   box-shadow: 0 2px 8px rgba(8, 145, 178, 0.2);
 }
 
+.author-catalog-item {
+  margin-top: 1rem;
+  border-top: 2px solid #0891b2;
+  padding-top: 1rem;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border-left-color: #f59e0b;
+}
+
+.author-catalog-item:hover {
+  background: linear-gradient(135deg, #fde68a 0%, #fcd34d 100%);
+}
+
 .catalog-item .chapter-number {
   font-size: 1.1rem;
   font-weight: bold;
