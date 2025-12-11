@@ -274,37 +274,14 @@
   box-sizing: border-box;
   border: 1px solid #d4c5a9;
   position: relative;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: visible;
 }
 
-/* Custom scrollbar styling for book pages */
-.book-page::-webkit-scrollbar {
-  width: 8px;
-}
-
-.book-page::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 4px;
-}
-
-.book-page::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #0891b2 0%, #14b8a6 100%);
-  border-radius: 4px;
-}
-
-.book-page::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #0e7490 0%, #0f766e 100%);
-}
-
-/* Remove padding for cover page */
-.book-page:has(.cover-page) {
-  padding: 0;
-  border: none;
-}
-
+/* Scrollable content wrapper */
 .page-content {
   height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   font-family: 'Georgia', serif;
@@ -314,32 +291,59 @@
   overflow-wrap: break-word;
 }
 
+/* Custom scrollbar styling for page content */
+.page-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.page-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.page-content::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #0891b2 0%, #14b8a6 100%);
+  border-radius: 4px;
+}
+
+.page-content::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #0e7490 0%, #0f766e 100%);
+}
+
+/* Remove padding for cover page */
+.book-page:has(.cover-page) {
+  padding: 0;
+  border: none;
+}
+
 .page-number {
   position: absolute;
   top: -1.5rem;
-  font-size: 0.75rem;
-  color: #a0a0a0;
+  font-size: 0.85rem;
+  color: #2d3748;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 600;
   font-family: 'Georgia', serif;
   letter-spacing: 0.05em;
-  opacity: 0.6;
-  transition: opacity 0.3s ease;
+  opacity: 1;
+  transition: all 0.3s ease;
+  z-index: 100;
 }
 
 .page-number:hover {
-  opacity: 0.9;
+  color: #0891b2;
+  transform: scale(1.15);
 }
 
 /* Left pages: page number on top-left */
 .page-number.left {
-  left: -1rem;
+  left: 0;
   text-align: left;
 }
 
 /* Right pages: page number on top-right */
 .page-number.right {
-  right: -1rem;
+  right: 0;
   text-align: right;
 }
 
