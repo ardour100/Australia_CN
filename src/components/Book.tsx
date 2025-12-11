@@ -89,6 +89,7 @@ const Book: React.FC = () => {
   const [fontSize, setFontSize] = useState<'small' | 'medium' | 'large'>('medium'); // Font size control
   const [pageToRestore, setPageToRestore] = useState<number | null>(null); // Store page before language change
   const [flippingTime, setFlippingTime] = useState<number>(1000); // Control animation duration
+  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set()); // Track expanded sections by unique key (default: all collapsed)
 
   // Draggable navigation state
   const [navPosition, setNavPosition] = useState(() => {
@@ -165,6 +166,30 @@ const Book: React.FC = () => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, [dynamicPageSizes]);
+
+  // Toggle section expand state (default: collapsed, click to expand)
+  const toggleSection = (sectionKey: string) => {
+    setExpandedSections(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(sectionKey)) {
+        newSet.delete(sectionKey); // Collapse if already expanded
+      } else {
+        newSet.add(sectionKey); // Expand if collapsed
+      }
+      return newSet;
+    });
+  };
+
+  // Check if a paragraph starts with a section header (▶▶▶)
+  const isSectionHeader = (paragraph: string): boolean => {
+    return paragraph.trim().startsWith('▶▶▶');
+  };
+
+  // Extract section title from paragraph
+  const extractSectionTitle = (paragraph: string): string => {
+    const match = paragraph.match(/^▶▶▶\s*(.+?)(?:\n|$)/);
+    return match ? match[1].trim() : '';
+  };
 
   // Intelligently split long paragraphs into smaller chunks
   // This prevents content from being hidden due to overflow
@@ -671,22 +696,62 @@ const Book: React.FC = () => {
 
                       {/* Render page content with markdown support */}
                       {pageContent.length > 0 ? (
-                        pageContent.map((paragraph: string, pIndex: number) => (
-                          <div key={pIndex} className="markdown-content">
-                            <ReactMarkdown
-                              components={{
-                                img: ({ node, ...props }) => (
-                                  <img
-                                    {...props}
-                                    style={{ width: "380px", height: "200px", objectFit: "cover" }}
-                                  />
-                                ),
-                              }}
-                            >
-                              {paragraph}
-                            </ReactMarkdown>
-                          </div>
-                        ))
+                        pageContent.map((paragraph: string, pIndex: number) => {
+                          const isSection = isSectionHeader(paragraph);
+                          const sectionKey = `${chapter.id}-${pageIndex}-${pIndex}`;
+                          const isExpanded = expandedSections.has(sectionKey);
+                          const sectionTitle = isSection ? extractSectionTitle(paragraph) : '';
+
+                          // If it's a section header, make it collapsible
+                          if (isSection) {
+                            return (
+                              <div key={pIndex} className="collapsible-section">
+                                <div
+                                  className="section-header"
+                                  onClick={() => toggleSection(sectionKey)}
+                                  style={{ cursor: 'pointer' }}
+                                >
+                                  <span className="collapse-icon">{isExpanded ? '▼' : '▶'}</span>
+                                  <h3>{sectionTitle}</h3>
+                                </div>
+                                {isExpanded && (
+                                  <div className="section-content markdown-content">
+                                    <ReactMarkdown
+                                      components={{
+                                        img: ({ node, ...props }) => (
+                                          <img
+                                            {...props}
+                                            style={{ width: "380px", height: "200px", objectFit: "cover" }}
+                                          />
+                                        ),
+                                      }}
+                                    >
+                                      {paragraph.replace(/^▶▶▶\s*.+?\n/, '')}
+                                    </ReactMarkdown>
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          }
+
+                          // Regular paragraph (not a section)
+                          return (
+                            <div key={pIndex} className="markdown-content">
+                              <ReactMarkdown
+                                components={{
+                                  img: ({ node, ...props }) => (
+                                    <img
+                                      {...props}
+                                      style={{ width: "380px", height: "200px", objectFit: "cover" }}
+                                    />
+                                  ),
+                                }}
+                              >
+                                {paragraph}
+                              </ReactMarkdown>
+                            </div>
+                          );
+                        })
                       ) : (
                         fullChapter?.placeholder && (
                           <div className="placeholder-text">{fullChapter.placeholder}</div>
