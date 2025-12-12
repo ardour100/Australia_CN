@@ -217,8 +217,11 @@ const Book: React.FC = () => {
         content = fullChapter.contentZh;
       } else if (prefaceLanguage === 'zhTraditional' && fullChapter?.contentZhTraditional) {
         content = fullChapter.contentZhTraditional;
-      } else if (prefaceLanguage === 'en' && fullChapter?.content) {
-        content = fullChapter.content;
+      } else if (prefaceLanguage === 'en') {
+        // Use English if available, otherwise fallback to simplified Chinese
+        content = fullChapter?.content && fullChapter.content.length > 0
+          ? fullChapter.content
+          : fullChapter?.contentZh || [];
       }
 
       if (content && content.length > 0) {
@@ -259,8 +262,11 @@ const Book: React.FC = () => {
         content = fullChapter.contentZh;
       } else if (prefaceLanguage === 'zhTraditional' && fullChapter?.contentZhTraditional) {
         content = fullChapter.contentZhTraditional;
-      } else if (prefaceLanguage === 'en' && fullChapter?.content) {
-        content = fullChapter.content;
+      } else if (prefaceLanguage === 'en') {
+        // Use English if available, otherwise fallback to simplified Chinese
+        content = fullChapter?.content && fullChapter.content.length > 0
+          ? fullChapter.content
+          : fullChapter?.contentZh || [];
       }
 
       if (content && content.length > 0) {
@@ -645,13 +651,17 @@ const Book: React.FC = () => {
               const fullChapter = chapterContents[chapter.id];
 
               // Get content based on language
+              // For English: fallback to simplified Chinese if English content doesn't exist
               let content: string[] = [];
               if (prefaceLanguage === 'zh' && fullChapter?.contentZh) {
                 content = fullChapter.contentZh;
               } else if (prefaceLanguage === 'zhTraditional' && fullChapter?.contentZhTraditional) {
                 content = fullChapter.contentZhTraditional;
-              } else if (prefaceLanguage === 'en' && fullChapter?.content) {
-                content = fullChapter.content;
+              } else if (prefaceLanguage === 'en') {
+                // Use English if available, otherwise fallback to simplified Chinese
+                content = fullChapter?.content && fullChapter.content.length > 0
+                  ? fullChapter.content
+                  : fullChapter?.contentZh || [];
               }
 
               // Split content into pages
@@ -745,8 +755,11 @@ const Book: React.FC = () => {
                   content = authorData.contentZh;
                 } else if (prefaceLanguage === 'zhTraditional' && authorData.contentZhTraditional) {
                   content = authorData.contentZhTraditional;
-                } else if (prefaceLanguage === 'en' && authorData.content) {
-                  content = authorData.content;
+                } else if (prefaceLanguage === 'en') {
+                  // Use English if available, otherwise fallback to simplified Chinese
+                  content = authorData.content && authorData.content.length > 0
+                    ? authorData.content
+                    : authorData.contentZh || [];
                 }
 
                 return content.map((paragraph: string, index: number) => (
