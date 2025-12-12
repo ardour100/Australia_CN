@@ -115,7 +115,7 @@ const Book: React.FC = () => {
     const viewportHeight = window.innerHeight;
 
     // Conservative estimates to ensure NO overflow (measured from actual rendered content)
-    const estimatedParagraphHeight = 100;    // Each paragraph entry (including markdown) - conservative estimate
+    const estimatedParagraphHeight = 220;    // Each paragraph entry (including markdown) - conservative estimate
     const chapterHeaderHeight = 200;         // Chapter header with title and subtitle - with extra spacing
     const pageTopBottomPadding = 32;         // 1rem top + 1rem bottom from .book-page
     const safetyMargin = 100;                // Extra safety margin to prevent any overflow
