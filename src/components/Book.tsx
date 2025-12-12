@@ -813,7 +813,7 @@ const Book: React.FC = () => {
         {isNavExpanded && (
           <div className="nav-content">
             <div className="current-page-display">
-              {currentPage < 3 ? 'Front Matter' : `Page ${currentPage - 2} of ${totalPages - 4}`}
+              {currentPage === 0 ? 'Front Matter' : `Page ${currentPage} of ${totalPages - 4}`}
             </div>
             <form onSubmit={handleGoToPage} className="go-to-page-form">
               <label htmlFor="page-input">Go to page:</label>
