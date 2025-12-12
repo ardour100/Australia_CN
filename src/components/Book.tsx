@@ -624,8 +624,8 @@ const Book: React.FC = () => {
                 >
                   <span className="chapter-number">📖</span>
                   <div className="chapter-titles">
-                    <div className="chapter-title-en">About the Author</div>
-                    <div className="chapter-title-zh">{authorData.title}</div>
+                    <div className="chapter-title-en">{authorData.title}</div>
+                    <div className="chapter-title-zh">{authorData.chineseTitle} / {authorData.chineseTitleTraditional}</div>
                   </div>
                   <span className="chapter-page">{totalPages - 4}</span>
                 </div>
@@ -730,24 +730,29 @@ const Book: React.FC = () => {
 
           {/* Author Introduction Page */}
           <Page number={0}>
-            <div className="author-page">
-              <h2 className="author-page-title">{authorData.title}</h2>
-              <h3 className="author-name">{authorData.name}</h3>
-
-              {authorData.sections.map((section, index) => (
-                <div key={index} className="author-intro-section">
-                  <h4>{section.heading}</h4>
-                  {section.paragraphs.map((paragraph, pIndex) => (
-                    <p key={pIndex}>{paragraph}</p>
-                  ))}
-                </div>
-              ))}
-
-              <div className="author-conclusion">
-                <p className="author-note">
-                  <strong>客观评价：</strong>{authorData.conclusion}
-                </p>
+            <div className="content-page">
+              <div className="chapter-header">
+                <h2>{authorData.title}</h2>
+                <div className="chapter-title-cn">{authorData.chineseTitle} / {authorData.chineseTitleTraditional}</div>
               </div>
+
+              {/* Render author content based on language */}
+              {(() => {
+                let content: string[] = [];
+                if (prefaceLanguage === 'zh' && authorData.contentZh) {
+                  content = authorData.contentZh;
+                } else if (prefaceLanguage === 'zhTraditional' && authorData.contentZhTraditional) {
+                  content = authorData.contentZhTraditional;
+                } else if (prefaceLanguage === 'en' && authorData.content) {
+                  content = authorData.content;
+                }
+
+                return content.map((paragraph: string, index: number) => (
+                  <div key={index} className="markdown-content">
+                    <ReactMarkdown>{paragraph}</ReactMarkdown>
+                  </div>
+                ));
+              })()}
             </div>
           </Page>
 
