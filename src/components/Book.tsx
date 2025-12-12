@@ -618,7 +618,7 @@ const Book: React.FC = () => {
     <div className={`book-container font-size-${fontSize}`}>
       <div className="flipbook-wrapper">
         <HTMLFlipBook
-          key={prefaceLanguage}
+          key={`${prefaceLanguage}-${dynamicPageSizes.firstPageParagraphs}-${dynamicPageSizes.otherPageParagraphs}`}
           ref={bookRef}
           width={715}
           height={935}
