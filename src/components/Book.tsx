@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, forwardRef } from 'react';
+import React, { useRef, useState, useEffect, forwardRef, useMemo } from 'react';
 import HTMLFlipBook from 'react-pageflip';
 import ReactMarkdown from 'react-markdown';
 import bookData from '../data/chapters.json';
@@ -515,11 +515,110 @@ const Book: React.FC = () => {
     };
   }, [currentPage, totalPages]);
 
+  // Memoize chapter pages to prevent unnecessary re-renders during resize
+  const chapterPages = useMemo(() => {
+    let currentPageNumber = 1;
+    const pages: React.ReactElement[] = [];
+
+    bookData.chapters.forEach((chapter: any) => {
+      // Get full chapter content from imported files
+      const fullChapter = chapterContents[chapter.id];
+
+      // Get content based on language
+      // For English: fallback to simplified Chinese if English content doesn't exist
+      let content: string[] = [];
+      if (prefaceLanguage === 'zh' && fullChapter?.contentZh) {
+        content = fullChapter.contentZh;
+      } else if (prefaceLanguage === 'zhTraditional' && fullChapter?.contentZhTraditional) {
+        content = fullChapter.contentZhTraditional;
+      } else if (prefaceLanguage === 'en') {
+        // Use English if available, otherwise fallback to simplified Chinese
+        content = fullChapter?.content && fullChapter.content.length > 0
+          ? fullChapter.content
+          : fullChapter?.contentZh || [];
+      }
+
+      // Split content into pages
+      const contentPages = content && content.length > 0 ? splitContentIntoPages(content) : [[]];
+
+      // Create pages for this chapter
+      contentPages.forEach((pageContent: string[], pageIndex: number) => {
+        const isFirstPage = pageIndex === 0;
+
+        pages.push(
+          <Page key={`${chapter.id}-${pageIndex}`} number={currentPageNumber}>
+            <div className="content-page">
+              {isFirstPage && (
+                <div className="chapter-header">
+                  <div className="chapter-number">Chapter {chapter.id}</div>
+                  <h2>{chapter.title}</h2>
+                  <div className="chapter-title-cn">{chapter.chineseTitle} / {chapter.chineseTitleTraditional}</div>
+                </div>
+              )}
+
+              {/* Render page content with markdown support */}
+              {pageContent.length > 0 ? (
+                pageContent.map((paragraph: string, pIndex: number) => {
+                  const isSection = isSectionHeader(paragraph);
+                  const sectionTitle = isSection ? extractSectionTitle(paragraph) : '';
+                  const sectionContent = isSection ? paragraph.replace(/^▶▶▶\s*.+?\n/, '') : '';
+
+                  // If it's a section header, use the CollapsibleSection component
+                  if (isSection) {
+                    return (
+                      <CollapsibleSection
+                        key={pIndex}
+                        title={sectionTitle}
+                        content={sectionContent}
+                      />
+                    );
+                  }
+
+                  // Regular paragraph (not a section)
+                  return (
+                    <div key={pIndex} className="markdown-content">
+                      <ReactMarkdown
+                        components={{
+                          img: ({ node, ...props }) => (
+                            <img
+                              {...props}
+                              style={{ width: "380px", height: "200px", objectFit: "cover" }}
+                            />
+                          ),
+                        }}
+                      >
+                        {paragraph}
+                      </ReactMarkdown>
+                    </div>
+                  );
+                })
+              ) : (
+                fullChapter?.placeholder && (
+                  <div className="placeholder-text">{fullChapter.placeholder}</div>
+                )
+              )}
+
+              {isFirstPage && fullChapter?.note && (
+                <div className="page-note">
+                  <strong>Note:</strong> {fullChapter.note}
+                </div>
+              )}
+            </div>
+          </Page>
+        );
+
+        currentPageNumber++;
+      });
+    });
+
+    return pages;
+  }, [dynamicPageSizes, prefaceLanguage]);
+
   return (
     <div className={`book-container font-size-${fontSize}`}>
       <div className="flipbook-wrapper">
         <HTMLFlipBook
-          key={prefaceLanguage}
+          key={`${prefaceLanguage}-${dynamicPageSizes.firstPageParagraphs}-${dynamicPageSizes.otherPageParagraphs}`}
           ref={bookRef}
           width={715}
           height={935}
@@ -642,103 +741,7 @@ const Book: React.FC = () => {
           </Page>
 
           {/* Dynamic Chapter Pages */}
-          {(() => {
-            let currentPageNumber = 1;
-            const pages: React.ReactElement[] = [];
-
-            bookData.chapters.forEach((chapter: any) => {
-              // Get full chapter content from imported files
-              const fullChapter = chapterContents[chapter.id];
-
-              // Get content based on language
-              // For English: fallback to simplified Chinese if English content doesn't exist
-              let content: string[] = [];
-              if (prefaceLanguage === 'zh' && fullChapter?.contentZh) {
-                content = fullChapter.contentZh;
-              } else if (prefaceLanguage === 'zhTraditional' && fullChapter?.contentZhTraditional) {
-                content = fullChapter.contentZhTraditional;
-              } else if (prefaceLanguage === 'en') {
-                // Use English if available, otherwise fallback to simplified Chinese
-                content = fullChapter?.content && fullChapter.content.length > 0
-                  ? fullChapter.content
-                  : fullChapter?.contentZh || [];
-              }
-
-              // Split content into pages
-              const contentPages = content && content.length > 0 ? splitContentIntoPages(content) : [[]];
-
-              // Create pages for this chapter
-              contentPages.forEach((pageContent: string[], pageIndex: number) => {
-                const isFirstPage = pageIndex === 0;
-
-                pages.push(
-                  <Page key={`${chapter.id}-${pageIndex}`} number={currentPageNumber}>
-                    <div className="content-page">
-                      {isFirstPage && (
-                        <div className="chapter-header">
-                          <div className="chapter-number">Chapter {chapter.id}</div>
-                          <h2>{chapter.title}</h2>
-                          <div className="chapter-title-cn">{chapter.chineseTitle} / {chapter.chineseTitleTraditional}</div>
-                        </div>
-                      )}
-
-                      {/* Render page content with markdown support */}
-                      {pageContent.length > 0 ? (
-                        pageContent.map((paragraph: string, pIndex: number) => {
-                          const isSection = isSectionHeader(paragraph);
-                          const sectionTitle = isSection ? extractSectionTitle(paragraph) : '';
-                          const sectionContent = isSection ? paragraph.replace(/^▶▶▶\s*.+?\n/, '') : '';
-
-                          // If it's a section header, use the CollapsibleSection component
-                          if (isSection) {
-                            return (
-                              <CollapsibleSection
-                                key={pIndex}
-                                title={sectionTitle}
-                                content={sectionContent}
-                              />
-                            );
-                          }
-
-                          // Regular paragraph (not a section)
-                          return (
-                            <div key={pIndex} className="markdown-content">
-                              <ReactMarkdown
-                                components={{
-                                  img: ({ node, ...props }) => (
-                                    <img
-                                      {...props}
-                                      style={{ width: "380px", height: "200px", objectFit: "cover" }}
-                                    />
-                                  ),
-                                }}
-                              >
-                                {paragraph}
-                              </ReactMarkdown>
-                            </div>
-                          );
-                        })
-                      ) : (
-                        fullChapter?.placeholder && (
-                          <div className="placeholder-text">{fullChapter.placeholder}</div>
-                        )
-                      )}
-
-                      {isFirstPage && fullChapter?.note && (
-                        <div className="page-note">
-                          <strong>Note:</strong> {fullChapter.note}
-                        </div>
-                      )}
-                    </div>
-                  </Page>
-                );
-
-                currentPageNumber++;
-              });
-            });
-
-            return pages;
-          })()}
+          {chapterPages}
 
           {/* Author Introduction Page */}
           <Page number={0}>
