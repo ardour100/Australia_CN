@@ -206,7 +206,7 @@ const Book: React.FC = () => {
 
   // Calculate total pages dynamically based on content
   const calculateTotalPages = () => {
-    let pageCount = 4; // cover + blank + preface + catalog
+    let pageCount = 3; // cover + preface + catalog (blank page is commented out)
 
     bookData.chapters.forEach((chapter: any) => {
       // Get full chapter content from imported files
@@ -247,7 +247,7 @@ const Book: React.FC = () => {
 
   // Calculate the actual page index for each chapter based on content
   const getChapterPageIndex = (chapterIndex: number) => {
-    let pageIndex = 4; // Start after cover + blank + preface + catalog
+    let pageIndex = 3; // Start after cover + preface + catalog
 
     // Calculate pages for all chapters before this one
     for (let i = 0; i < chapterIndex; i++) {
@@ -297,9 +297,9 @@ const Book: React.FC = () => {
     const pageNum = parseInt(goToPageInput, 10);
 
     // Calculate the actual flipbook page index for the given page number
-    // Pages are structured as: cover(0), blank(0), preface(0), catalog(0), then chapters starting from page 1
-    // So page number N corresponds to flipbook index: 4 + (N - 1) = 3 + N
-    const pageIndex = 3 + pageNum;
+    // Pages are structured as: cover(0), preface(1), catalog(2), then chapters starting from page 1 at index 3
+    // So page number N corresponds to flipbook index: 3 + (N - 1) = 2 + N
+    const pageIndex = 2 + pageNum;
 
     if (!isNaN(pageNum) && pageNum >= 1 && pageIndex < totalPages) {
       bookRef.current?.pageFlip().turnToPage(pageIndex);
@@ -607,7 +607,7 @@ const Book: React.FC = () => {
                         {chapter.chineseTitle} / {chapter.chineseTitleTraditional}
                       </div>
                     </div>
-                    <span className="chapter-page">{getChapterPageIndex(index) + 1}</span>
+                    <span className="chapter-page">{getChapterPageIndex(index) - 2}</span>
                   </div>
                 ))}
 
@@ -627,7 +627,7 @@ const Book: React.FC = () => {
                     <div className="chapter-title-en">About the Author</div>
                     <div className="chapter-title-zh">{authorData.title}</div>
                   </div>
-                  <span className="chapter-page">{totalPages - 1}</span>
+                  <span className="chapter-page">{totalPages - 4}</span>
                 </div>
               </div>
             </div>
@@ -793,7 +793,7 @@ const Book: React.FC = () => {
         {isNavExpanded && (
           <div className="nav-content">
             <div className="current-page-display">
-              Page {currentPage + 1} of {totalPages - 5}
+              {currentPage < 3 ? 'Front Matter' : `Page ${currentPage - 2} of ${totalPages - 4}`}
             </div>
             <form onSubmit={handleGoToPage} className="go-to-page-form">
               <label htmlFor="page-input">Go to page:</label>
