@@ -392,6 +392,17 @@ const Book: React.FC = () => {
 
   // Handle drag start
   const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
+    // Prevent dragging if clicking on interactive elements
+    const target = e.target as HTMLElement;
+    if (target.tagName === 'INPUT' ||
+        target.tagName === 'BUTTON' ||
+        target.tagName === 'LABEL' ||
+        target.closest('form') ||
+        target.closest('.font-size-control') ||
+        target.closest('.usage-instructions')) {
+      return;
+    }
+
     setIsDragging(true);
     setDragMoved(false);
     const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
@@ -807,16 +818,16 @@ const Book: React.FC = () => {
         className={`floating-nav ${isNavExpanded ? 'expanded' : ''} ${isDragging ? 'dragging' : ''}`}
         style={{
           left: `${navPosition.x}px`,
-          top: `${navPosition.y}px`
+          top: `${navPosition.y}px`,
+          cursor: isDragging ? 'grabbing' : 'grab'
         }}
+        onMouseDown={handleDragStart}
+        onTouchStart={handleDragStart}
       >
         <button
           className="nav-toggle"
           onClick={handleToggleClick}
-          onMouseDown={handleDragStart}
-          onTouchStart={handleDragStart}
           aria-label="Toggle navigation (drag to move)"
-          style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
         >
           {isNavExpanded ? '✕' : '📖'}
         </button>
