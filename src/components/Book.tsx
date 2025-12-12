@@ -813,7 +813,22 @@ const Book: React.FC = () => {
         {isNavExpanded && (
           <div className="nav-content">
             <div className="current-page-display">
-              {currentPage === 0 ? 'Front Matter' : `Page ${currentPage} of ${totalPages - 4}`}
+              {(() => {
+                // Front matter: cover (0), preface (1), catalog (2)
+                if (currentPage <= 2) {
+                  return 'Front Matter';
+                }
+                // Author page and back cover are at the end
+                const authorIndex = totalPages - 2;
+                const backCoverIndex = totalPages - 1;
+                if (currentPage >= authorIndex) {
+                  return 'Back Matter';
+                }
+                // Content pages: indices 3 to (totalPages - 3)
+                const pageNumber = currentPage - 2;
+                const totalContentPages = totalPages - 4;
+                return `Page ${pageNumber} of ${totalContentPages}`;
+              })()}
             </div>
             <form onSubmit={handleGoToPage} className="go-to-page-form">
               <label htmlFor="page-input">Go to page:</label>
