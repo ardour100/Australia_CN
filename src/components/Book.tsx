@@ -820,7 +820,6 @@ const Book: React.FC = () => {
                 }
                 // Author page and back cover are at the end
                 const authorIndex = totalPages - 2;
-                const backCoverIndex = totalPages - 1;
                 if (currentPage >= authorIndex) {
                   return 'Back Matter';
                 }
