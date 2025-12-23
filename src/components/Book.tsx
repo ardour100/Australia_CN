@@ -87,6 +87,7 @@ const Book: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [goToPageInput, setGoToPageInput] = useState('');
   const [isNavExpanded, setIsNavExpanded] = useState(!isMobile()); // Collapsed on mobile by default
+  const [hasAutoCollapsed, setHasAutoCollapsed] = useState(false);
   const [prefaceLanguage, setPrefaceLanguage] = useState<'zh' | 'zhTraditional' | 'en'>(detectPreferredLanguage());
   const [fontSize, setFontSize] = useState<'small' | 'medium' | 'large'>('medium'); // Font size control
   const [pageToRestore, setPageToRestore] = useState<number | null>(null); // Store page before language change
@@ -515,13 +516,13 @@ const Book: React.FC = () => {
     };
   }, [currentPage, totalPages]);
 
-  // Collapse the navigation when moving past the cover page
   useEffect(() => {
-    // The cover page is 0, preface is 1. If current page is > 0 (not cover) and nav is expanded, collapse it.
-    if (currentPage > 0 && isNavExpanded) {
+    // Auto-collapse only once, when leaving the cover page
+    if (currentPage > 0 && isNavExpanded && !hasAutoCollapsed) {
       setIsNavExpanded(false);
+      setHasAutoCollapsed(true);
     }
-  }, [currentPage, isNavExpanded]);
+  }, [currentPage, isNavExpanded, hasAutoCollapsed]);
 
   // Memoize chapter pages to prevent unnecessary re-renders during resize
   const chapterPages = useMemo(() => {
