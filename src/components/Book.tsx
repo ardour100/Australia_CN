@@ -515,6 +515,14 @@ const Book: React.FC = () => {
     };
   }, [currentPage, totalPages]);
 
+  // Collapse the navigation when moving past the cover page
+  useEffect(() => {
+    // The cover page is 0, preface is 1. If current page is > 0 (not cover) and nav is expanded, collapse it.
+    if (currentPage > 0 && isNavExpanded) {
+      setIsNavExpanded(false);
+    }
+  }, [currentPage, isNavExpanded]);
+
   // Memoize chapter pages to prevent unnecessary re-renders during resize
   const chapterPages = useMemo(() => {
     let currentPageNumber = 1;
