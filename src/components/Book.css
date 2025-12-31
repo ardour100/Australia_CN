@@ -893,8 +893,7 @@
 
 /* Back Cover Styles */
 .back-cover {
-  /* Australian outback to ocean theme */
-  background: linear-gradient(135deg, #d97706 0%, #ea580c 40%, #0891b2 100%);
+  background: #f0f0f0; /* Simple light grey background */
   height: 100%;
   display: flex;
   align-items: center;
@@ -904,7 +903,7 @@
 
 .back-cover-content {
   text-align: center;
-  color: white;
+  color: #333; /* Darker text for contrast on light background */
 }
 
 .back-cover-content h3 {
